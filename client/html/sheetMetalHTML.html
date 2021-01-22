@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+    <base target="_top">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+    crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/style.css">  
+    <link rel="stylesheet" href="../styles/sheetSTYLE.css">  
+    <script src="https://kit.fontawesome.com/6365c07014.js" crossorigin="anonymous"></script>
+    
+  </head>
+  <body>
+  
+  <!-- Modal Project RESTART -->
+  <div id="modalRestart" class="modal">
+    <div class="modal-content">
+      <div style="font-size:3rem;text-align:right"> <i class="material-icons right">warning</i> </div> 
+      <h4>Atention!</h4>
+      <p>This will reset your project. Do you wish to continue?</p>
+    </div>
+    <div class="modal-footer">
+      <a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=home" class="modal-close btn waves-effect btn-flat deep-orange text-darken-1" id="restart" >Yes, restart</a>
+      <a  class="modal-close btn waves-effect btn-flat green text-darken-1">Cancel</a>
+    </div>
+  </div>
+  
+  <!-- Modal INFO -->
+  <div id="modalInfo" class="modal">
+    <div class="modal-content">
+      <div style="font-size:3rem ;text-align:center"> <i class="material-icons md-48 right">info</i> </div> 
+      <h5>How to use: Sheet metal estimator</h5><br/>
+          <h6>Single item estimation</h6>
+          <p>This is a good opotion if you wish to get a quick estimation on one or a couple of parts.</p>
+          <p>You can estimate your items one part at a time by filling the required parameters on the left.</p>
+            <div class="gif"><img src="https://drive.google.com/uc?export=download&id=1RFbl53qjlzBxMMsp52g4Ogz98cyyGs1a"/> </div>
+          <br/>
+          <h6>Mass upload</h6>
+          <p>You have a list of parts that would take you long enough to estimate one by one?</p>
+          <p>Put the required paramenters in the excel template (or google sheet) and you will get your estimatios in seconds.</p>
+          <p>Requirements <i class="fas fa-exclamation"></i></p>
+          <p>We will need a specific template. You can download or (open in google sheets) this template in the menu bar.</p>
+            <div class="gif"><img src="https://drive.google.com/uc?export=download&id=1bEaVh5mlnecFrbPhnehLfDO5I3X1btcU"/> </div>
+          <p>There are certain rules in the template you need to adhere to, such as picking material, finish type, etc, from the dropwdown menu. Make sure you are selecting valid options.</p>
+            <div class="gif"><img src="https://drive.google.com/uc?export=download&id=1kffwJJO-J0LhfSQWdiAVo6L3D0hAFd7N"/> </div>
+    </div>
+    <div class="modal-footer">
+      <a  class="modal-close btn waves-effect btn-flat green text-darken-1">Got it!</a>
+    </div>
+  </div>
+  
+  <!-- Dropdown Structure -->
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href= "https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=sheet" >Sheet metal</a></li>
+  <li><a href="#!">Plastics</a></li>
+  <li><a href="#!"><i class="material-icons right">work_off</i>Machined </a></li>
+  <li><a href="#!"><i class="material-icons right">work_off</i>Part catalogue</a></li>
+    <li class="divider"></li> 
+  <li><a href="https://drive.google.com/file/d/1DOxVZKSSY67L40yavwRMVv_D7lK7t2vn/view?usp=sharing" 
+         id="downloadTemplate" 
+         target="_blank" download>
+         Mass upload<i class="far fa-file-excel">
+  </i></a></li>
+</ul>
+<div class="navbar-fixed">
+<nav>
+  <div class="nav-wrapper">
+    <div><a href="#!" class="brand-logo"></a> </div>
+    <ul class=" hide-on-med-and-down">
+      <!-- Dropdown Trigger -->
+      <li><a href="#" data-target="slide-out" id="slideCeption" class="sidenav-trigger"><i class="fas fa-dollar-sign"></i></a></li>
+      <li><a class="modal-trigger" href="#modalInfo" id="infoButton"><i class="material-icons md-light glow">info</i></a></li>
+      <li><a class="" href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=home"><i class="material-icons">home</i></a></li>
+      <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Menu<i class="material-icons right">arrow_drop_down</i></a></li>
+      <li><a class="modal-trigger" href="#modalRestart"><i class="material-icons" id="powerIcon">power_settings_new</i></a></li>
+    </ul>
+  </div>
+</nav>
+</div>
+
+<div class="backAndInfo">
+  <div class="goBack">
+    <a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=home"> ← Go back </a>
+  </div>
+</div>  
+  
+  <!-- SIDE NAV -->
+  <ul id="slide-out" class="sidenav">
+      <li><div class="user-view">
+        <div class="background">
+        </div>
+        <a href="#user"><img class="circle" alt="someting"></a>
+        <a href="#name"><span class="white-text name">John Doe</span></a>
+        <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+      </div></li>
+      <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+      <li><a href="#!">Second Link</a></li>
+      <li><div class="divider"></div></li>
+      <li><a class="subheader">Subheader</a></li>
+      <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+  </ul>
+   
+<main>   
+<!------------MASTER LEFT BEGINS ----------->  
+<div class="masterLeft">
+ 
+    <h2> Sheet Metal </h2><br/>
+    
+                         <!--   
+                         <div class="fixed-action-btn direction-bottom">
+                              <a class="btn-floating btn-large" title="Open Menu"><i class="large material-icons">menu</i></a>
+                                <ul>                             
+                                <li class="tooltip">
+                                  <span class="tooltiptext">Add PCB</span>
+                                  <a  class="btn-floating"><i class="material-icons">shopping_cart</i></a>
+                                  </li>
+                                <li class="tooltip">
+                                  <span class="tooltiptext">Add plastic</span>
+                                  <a class="btn-floating "><i class="material-icons">shopping_cart</i></a>
+                                  </li>
+                                <li class="tooltip">
+                                  <span class="tooltiptext">Copy G-Sheets link</span>
+                                  <a class="btn-floating" id= "copyLink"><i class="material-icons">link</i></a>
+                                  </li>
+                                <li class="tooltip">
+                                  <span class="tooltiptext">Open in G-Sheets</span>
+                                  <a class="btn-floating" id="openGS" ><i class="material-icons">open_in_new</i></a>
+                                  </li>
+                              </ul>
+                          </div>
+                          -->                       
+    
+    
+    <form id="myForm">
+          <div class="row">
+            <div class="input-field col s6">
+            <i class="material-icons prefix">format_list_numbered</i>   
+              <input id="partNumber" type="text"  class="validate">
+              <label for="partNumber">Part Number</label>
+            </div>
+          </div>
+
+
+    <div class="row"> 
+            <div class="input-field col s10">
+                <i class="material-icons prefix">business_center</i>
+                    <select id="strategy" name="strategy" disabled>
+                      <option  disabled selected>Select</option>
+                      <option value="3">Conservative (room for pricing improvement )</option>
+                      <option selected="selected" value="2">Medium (average market matl costs)</option>
+                      <option value="1">Agressive (lowest materials & labor costs in the market)</option>
+                   </select>
+                    <label>Type of Strategy</label>
+            </div>
+        </div>
+
+
+
+
+<div class="row"> 
+    <div class="input-field col s5">
+        <i class="material-icons prefix">straighten</i>
+            <select id="units" name="units" required>
+              <option  disabled selected>Select</option>
+              <option value="milimeters">Milimeters (mm)</option>
+              <option value="inches">Inches (in)</option>
+           </select>
+            <label>Units</label>
+    </div>
+</div><!--END OF MEASSURES SELECTION-->
+    
+
+     
+    
+              <div class="row">
+                <div class="input-field col s3">
+                <i class="material-icons prefix">trending_flat</i>   
+                  <input id="length" type="text"  class="validate">
+                  <label for="length">Length</label>
+                </div>
+                <div class="input-field col s3">
+                 <i class="material-icons prefix">swap_horiz</i>    
+                  <input id="width" type="text" class="validate">
+                  <label for="width">Width</label>
+                </div>
+                <div class="input-field col s3">
+                    <i class="material-icons prefix">vertical_align_center</i>  
+                        <input id="thickness" type="text" class="validate">
+                        <label for="thickness">Thickness</label>
+                </div>
+              </div> <!--END OF UNITS SELECTION-->
+
+         
+       <div class="form-row">
+        <i class="material-icons prefix">gradient</i>         
+        <label for="material" class="labels"> Material</label>
+           <select name="material" id= "material">
+           <option  disabled selected>Select</option>
+           <option value="Alu alloy 5052">Alu alloy 5052</option>
+           <option value="CRS/SPCC">CRS/SPCC</option>
+           <option value="Zinc pre-plating/SECC">Zinc pre-plating/SECC</option>
+           <option value="Hot dipped Gal /SGCC">Hot dipped Gal /SGCC</option>
+           <option value="Tin pre-plating /SPTE">Tin pre-plating /SPTE</option>
+           <option value="Brass /copper">Brass /copper</option>
+           <option value="Stainless steel (Sus304/Sus301)">Stainless steel (Sus304/301)</option>
+           <option value="Alu alloy 6061">Alu Alloy 6061</option>  
+           </select>   
+        </div>     <!--END OF MATERIAL SELECTION-->
+         
+         
+         <div class="form-row">  
+          <i class="material-icons prefix">texture</i>
+           <label for="finishOne" class="labels">Finish type 1 </label>
+           <select id="finishOne">
+              <option  disabled selected>Select</option>
+              <option value = "Zinc plating ( all types)">Zinc plating ( all types)</option>
+              <option value= "Chromate/alodine/anodized" >Chromate/alodine/anodized</option>
+              <option value="Painting (Powder/oil)">Painting (Powder/oil)</option>
+              <option value="No finish required (degrease)">No finish required (degrease)</option>
+              <option value="Nickel/tin plating">Nickel/tin plating</option>
+              <option value = "Silkscreen /printing">Silkscreen /printing</option>
+           </select>
+          </div>  <!--END OF FINISH TYPE SELECTION 1-->
+          
+        <div class="form-row">  
+          <i class="material-icons prefix">texture</i>
+           <label for="finishTwo" class="labels">Finish type 2 </label>
+           <select id="finishTwo">
+              <option  disabled selected>Select</option>
+              <option value = "Zinc plating ( all types)">Zinc plating ( all types)</option>
+              <option value= "Chromate/alodine/anodized" >Chromate/alodine/anodized</option>
+              <option value="Painting (Powder/oil)">Painting (Powder/oil)</option>
+              <option value="No finish required (degrease)">No finish required (degrease)</option>
+              <option value="Nickel/tin plating">Nickel/tin plating</option>
+              <option value = "Silkscreen /printing">Silkscreen /printing</option>
+           </select>
+          </div>  <!--END OF FINISH TYPE SELECTION 2-->
+         
+
+          <div class="row">
+            <div class="input-field col s5">
+            <i class="material-icons prefix">change_history</i>   
+              <input id="bending" type="text"  class="validate">
+              <label for="bending"># Bendings</label>
+            </div>
+            <div class="input-field col s5">
+              <i class="material-icons prefix">date_range</i>    
+              <input id="EAU" type="text" class="validate">
+              <label for="EAU">EAU</label>
+            </div>
+          </div>
+
+<!-- ENTER NUMBER OF BENDINGS --> 
+<!--          EAU       --> 
+
+
+
+
+
+<!-- TOGGLE HARDWARE OPTION -->         
+        
+        <p>
+         <label for="hide">
+         <input type="checkbox" id='hide'/>
+         <span>This part includes hardware</span>
+        </label>
+    </p>
+<!-- CHECKBOX -->   
+         
+<!-- HARDWARE QTY AND COMPLEXITY-->
+
+   <div id="hdw" class="inline">   
+             <div class="row">
+                    <div class="input-field col s2">
+                      <input id="qtyHdw" type="text" class="validate" id="qtyHdw">
+                      <label for="qtyHdw">Quantity</label>
+                    </div>
+                
+        </div> 
+
+      
+<div class="container"> <!--CONTAINER-->   
+    <div class="left">
+        <div class="form-row" >    
+             <label for="complexity">Complexity</label>  
+             <select name="complexity" class="qtyAndType" id= "complexity" >
+             <option selected disabled >Select:</option>
+             <option value="Simple">Simple</option>
+             <option value="Medium">Medium</option>
+             <option value="Complex">Complex</option>
+           </select><br><br>
+        </div>       
+    </div>
+
+    
+    
+ <div class="right">   
+    <div id="infoMsg" ></div>
+</div>
+
+</div><!--CONTAINER-->       
+        
+    </div>        
+ 
+    
+   <button class="btn waves-effect waves-light" type="submit" id="submit">Estimate
+        <i class="material-icons right">attach_money</i>
+      </button> <br><br>
+    </form>        
+    
+
+</div>
+<!-----------------END MASTER LEFT-------------> 
+<!-----------------BEGIN MASTER RIGHT-------------> 
+
+<div class="masterRight">
+
+<h2>Mass upload</h2><br/>
+
+  <form >
+      <label for="myfile">Select a file:</label>
+    <input type="file" id="myfile" name="myfile"><br><br>
+    <div class="gif">
+      <p> - or -</p>
+    </div>  
+      <label for="sheetTemplate">Paste google sheet URL:</label>
+    <input type="text" id="sheetTemplate"><br><br>
+    <input type="submit" id="massUploadSubmit" class="btn btn-waves" >
+  </form>
+
+<div class="iframe">
+<iframe  id="ifr"></iframe>
+<!-- width="1024" height="768"  -->
+</div>
+        
+        
+  <div class="estimation1"> <br>  
+  </div>      
+     
+   
+</div>
+<!--END MASTER RIGHT--> 
+
+</main>      
+           
+   <script src="../js/sheetMetalSCRIPT.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+</html>

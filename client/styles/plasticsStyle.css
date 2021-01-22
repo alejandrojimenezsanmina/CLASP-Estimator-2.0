@@ -1,0 +1,15 @@
+
+.material{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: baseline;
+}
+
+.gravity{
+  width: 25%;
+}
+
+.form-row{
+  width: 60%;
+}

@@ -1,0 +1,49 @@
+
+
+* {
+  box-sizing: border-box;
+}
+
+
+  .title{
+    display: flex;
+    margin-top: 50px;
+    justify-content: center;
+  }
+  
+  .loading{
+      display: flex;
+      flex-direction: column;
+      margin-top: 50px;
+      justify-content: center;
+      align-items: center;
+  }
+  
+  #ifr{
+  width: 100%;
+  height: 768px;
+  
+ }
+ 
+ .wrapper{
+   display: flex;
+   flex-direction: row;
+ }
+ 
+ .iframe{
+   width: 80%;
+   padding: 25px;
+   
+ }
+ 
+ .buttons{
+   width : 20%;
+   height: 199px;
+   padding: 25px;
+   padding-top: 50px;
+ }
+ 
+ 
+#loader2{
+    margin: 0 25px;
+}
