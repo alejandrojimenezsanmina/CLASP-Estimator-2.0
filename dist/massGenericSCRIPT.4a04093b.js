@@ -117,95 +117,40 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"rc9d":[function(require,module,exports) {
-var restart = document.querySelector("#restart");
-restart.addEventListener("click", function () {
-  localStorage.clear();
-});
-$(document).ready(function () {
-  $(".dropdown-trigger").dropdown();
-  $('.modal').modal();
-  alert("Hello there");
-});
-var singleEstURL;
-var MassURL;
-var qims;
+})({"gCHb":[function(require,module,exports) {
+//Get XLS from input and listen for submit file
+var uploadFileForm = document.querySelector("#uploadFileForm");
+var massUploadSubmit = document.querySelector("#massUploadSubmit");
+var myfile = document.querySelector("#myfile"); // uploadFileForm.addEventListener('submit', e =>{
+//     e.preventDefault();
+//     e.stopPropagation();
+//     console.log(myfile.files); 
+//     const file = myfile.files[0];
+//     const fileReader = new FileReader();
+//     fileReader.onload = (e)=>{
+//         const obj = {
+//             filename: file.name,
+//             mimeType: file.type,
+//             bytes: [... new Int8Array(e.target.result)]
+//         };
+//         google.script.run.withSuccessHandler(e => console.log(e).saveFile(obj))
+//     };
+//     fileReader.readAsArrayBuffer(file)
+// })
 
-if (localStorage.getItem("url")) {
-  singleEstURL = localStorage.getItem("url");
-}
-
-if (localStorage.getItem("MassURL")) {
-  MassURL = localStorage.getItem("MassURL");
-}
-
-if (localStorage.getItem("projNum")) {
-  qims = localStorage.getItem("projNum");
-} else {
-  qims = "";
-} //Project Number DIV = Input Proj #
-
-
-var projectNumber = document.querySelector('.projectNumber');
-var brandLogo = document.querySelector('.brand-logo');
-var body = document.body;
-var loading = document.querySelector('.loading');
-loading.style.display = 'none'; // Hiding Loader
-
-var loader = document.querySelector('.loader'); //loader.style.display = 'none';
-//Hiding buttons in home
-
-var homeButtons = document.querySelector('.HomeButtons');
-homeButtons.style.display = 'none'; //hiding start button
-
-var startButton = document.querySelector('.startButton');
-startButton.style.display = 'none';
-body.style.background = '#EFEFEF'; //Project number in navbar
-
-var brandLogo = document.querySelector(".brand-logo");
-brandLogo.innerText = qims; //If Project # > 5 show Start button
-
-var project = document.querySelector('.project');
-project.addEventListener("input", function (e) {
-  if (e.target.value.length >= 5) {
-    startButton.style.display = 'block';
-    qims = e.target.value;
-  }
-}); //Project Number DIV = Input Proj #
-
-var projectNumber = document.querySelector('.projectNumber'); //Start Button clicked, show all buttons, replace for Actual proj # when clicked // Call start() in order to create a new Google Sheet to paste all the info
-
-startButton.addEventListener("click", function (e) {
+uploadFileForm.addEventListener('submit', function (e) {
   e.preventDefault();
   e.stopPropagation();
-  body.style.background = '#EFEFEF';
-  loading.style.display = 'block'; //homeButtons.style.display = 'block'; --Moved to function returnGSUrl. This will display until google sheet is loaded
-  //projectNumber.innerHTML = `<h5> Proj#: ${qims} </h5>`;
+  var file = myfile.files[0];
+  var fileReader = new FileReader();
+  var pNum = localStorage.getItem("projNum") || "test123";
 
-  localStorage.setItem("projNum", qims); //projectNumber.style.display = 'block';             
+  fileReader.onload = function () {
+    google.script.run.withSuccessHandler(function () {
+      console.log("done");
+    }).saveFile(fileReader.result, file.type, pNum + "mass upload");
+  };
 
-  google.script.run.withSuccessHandler(returnGSUrl).start(qims);
-}); // This funciton returns the URL of the Google Sheet where the estimations are put into.
-
-function returnGSUrl(url) {
-  var sheetUrl = url;
-  localStorage.setItem("url", sheetUrl);
-  loading.style.display = 'none';
-  homeButtons.style.display = 'block';
-  body.style.background = 'whitesmoke';
-  projectNumber.style.display = 'none';
-  brandLogo.innerText = qims;
-}
-
-if (singleEstURL || MassURL) {
-  projectNumber.style.display = "none";
-  startButton.style.display = "none";
-  body.style.background = '#EFEFEF'; //loading.style.display = 'block';
-  //homeButtons.style.display = 'block'; --Moved to function returnGSUrl. This will display until google sheet is loaded
-  //projectNumber.innerHTML = `<h5> Proj#: ${qims} </h5>`;
-
-  localStorage.setItem("projNum", qims);
-  homeButtons.style.display = 'block';
-  body.style.background = 'whitesmoke';
-}
-},{}]},{},["rc9d"], null)
+  fileReader.readAsText(file);
+});
+},{}]},{},["gCHb"], null)

@@ -127,12 +127,12 @@ $(document).ready(function () {
   $(".dropdown-trigger").dropdown();
   $('.modal').modal();
   $('.sidenav').sidenav();
-}); // Input File - Get file ready to submit
-
-var myfile = document.querySelector("#myfile");
-myfile.addEventListener("change", function (e) {
-  console.log(myfile.files);
-}); //Info Button turn off glow
+}); // // Input File - Get file ready to submit
+// var myfile = document.querySelector("#myfile")
+// myfile.addEventListener("change", function (e){
+//   console.log(myfile.files)
+// });
+//Info Button turn off glow
 
 var infoButton = document.querySelector("#infoButton");
 infoButton.addEventListener("click", function (e) {
