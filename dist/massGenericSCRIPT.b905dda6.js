@@ -121,36 +121,29 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 //Get XLS from input and listen for submit file
 var uploadFileForm = document.querySelector("#uploadFileForm");
 var massUploadSubmit = document.querySelector("#massUploadSubmit");
-var myfile = document.querySelector("#myfile"); // uploadFileForm.addEventListener('submit', e =>{
-//     e.preventDefault();
-//     e.stopPropagation();
-//     console.log(myfile.files); 
-//     const file = myfile.files[0];
-//     const fileReader = new FileReader();
-//     fileReader.onload = (e)=>{
-//         const obj = {
-//             filename: file.name,
-//             mimeType: file.type,
-//             bytes: [... new Int8Array(e.target.result)]
-//         };
-//         google.script.run.withSuccessHandler(e => console.log(e).saveFile(obj))
-//     };
-//     fileReader.readAsArrayBuffer(file)
-// })
-
+var myfile = document.querySelector("#myfile");
+var data;
 uploadFileForm.addEventListener('submit', function (e) {
   e.preventDefault();
   e.stopPropagation();
   var file = myfile.files[0];
-  var fileReader = new FileReader();
   var pNum = localStorage.getItem("projNum") || "test123";
+  var fileReader = new FileReader();
+  fileReader.readAsBinaryString(file);
 
-  fileReader.onload = function () {
+  fileReader.onload = function (e) {
+    var data = e.target.result;
+    var workbook = XLSX.read(data, {
+      type: "binary"
+    });
+    console.log(workbook);
+    var jsonData = workbook.SheetNames.map(function (sheet) {
+      return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
+    });
+    console.log(jsonData);
     google.script.run.withSuccessHandler(function () {
       console.log("done");
-    }).saveFile(fileReader.result, file.type, pNum + "mass upload");
+    }).saveFile(jsonData);
   };
-
-  fileReader.readAsText(file);
 });
 },{}]},{},["gCHb"], null)

@@ -11,16 +11,12 @@ $( document ).ready(function(){
 })
 
 
-  var singleEstURL;
-  var MassURL;
+
+  var sheetUrl;
   var qims;
-  
-  if (localStorage.getItem("url")){
-         singleEstURL = localStorage.getItem("url");
-      }
       
- if (localStorage.getItem("MassURL")){
-         MassURL = localStorage.getItem("MassURL");
+ if (localStorage.getItem("url")){
+        sheetUrl = localStorage.getItem("url");
       }
   
   if (localStorage.getItem("projNum")){
@@ -88,7 +84,7 @@ $( document ).ready(function(){
 // This funciton returns the URL of the Google Sheet where the estimations are put into.
 function returnGSUrl (url){
 
-    var sheetUrl = url;
+  sheetUrl = url;
     
    localStorage.setItem("url", sheetUrl);
    loading.style.display = 'none';
@@ -99,7 +95,7 @@ function returnGSUrl (url){
 }
   
 
-  if(singleEstURL || MassURL ){
+  if(sheetUrl ){
       projectNumber.style.display = "none";
       startButton.style.display = "none";
       body.style.background = '#EFEFEF';

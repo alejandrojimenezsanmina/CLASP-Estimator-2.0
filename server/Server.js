@@ -249,13 +249,13 @@ function toGS (arr,googleSheetURL){
 
 /*********************************************** START **************************************/
 //Create new Google Sheet for this Project Number
-function start (projNum){
+function start (qims){
   
-  var projNum =  projNum + ' Estimator Web App';
-  var newSheet = SpreadsheetApp.create(projNum);
+  var qims =  qims + ' Integrated Estimator';
+  var newSheet = SpreadsheetApp.create(qims);
   var sheetMetalSheet = newSheet.insertSheet('Sheet Metal');
   var PlasticsSheet = newSheet.insertSheet('Plastics');
-  var PCBSheet = newSheet.insertSheet('PCB');
+  var PCBSheet = newSheet.insertSheet('Machined');
   var Sheet1  = newSheet.getSheetByName('Sheet1');
   newSheet.deleteSheet(Sheet1);
   
@@ -266,8 +266,37 @@ function start (projNum){
   var fileCopiedUrl = fileCopied.getUrl();
   
   DriveApp.getFileById(id).setTrashed(true);
+
+  var sheetHeader = [
+      "Part Number",
+      "Units(mm/in)",
+      "Length","Width",
+      "Thickness",
+      "Material",
+      "Finish Type",
+      "Finish Type 2",
+      "Bendings(#)",
+      "EAU",
+      "Hardware qty",
+      "Hdw complexity",
+      "Material cost",
+      "Finish cost",
+      "Hardware cost",
+      "Labor cost",
+      "PRICE /each"]
+
   
-    Logger.log(fileCopiedUrl);
+      var ws = SpreadsheetApp.openByUrl(fileCopiedUrl);
+      var sheetMetalSheet = ws.getSheetByName("Sheet Metal");
+      sheetHeader.forEach(function(elem, index){
+        sheetMetalSheet.getRange(1,index + 1).setValue(elem)
+        if(index + 1 <= 12){
+          sheetMetalSheet.getRange(1,index + 1).setBackground("#333").setFontColor("#fff").setFontSize(11).setFontWeight(800)
+        }else{
+          sheetMetalSheet.getRange(1,index + 1).setBackground("orange").setFontColor("#fff").setFontSize(11).setFontWeight(800)
+        }
+      })
+
     return fileCopiedUrl;
 
 }//end of START

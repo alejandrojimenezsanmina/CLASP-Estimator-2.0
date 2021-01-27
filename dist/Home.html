@@ -327,7 +327,7 @@ h6{
 
 @-webkit-keyframes glow {
   from {
-    text-shadow: 0 0 0 #fff, 0 0 0.5px #fff,0 0 1px #f2f278,  0 0 1.5px #f2f278,  0 0 2px #f2f278, 0 0 3px #f2f278, 0 0 4px #f2f278, 0 0 5px #f2f278;
+    text-shadow: 0 0 0 #fff, 0 0 0.5px #fff,0 0 1px #f2f278,  0 0 1.5px #f2f278,  0 0 2px #f2f278, 0 0 3px #f2f278. 0 0 4px #f2f278, 0 0 5px #f2f278;
   }
   
   to {
@@ -666,16 +666,11 @@ $(document).ready(function () {
   $(".dropdown-trigger").dropdown();
   $('.modal').modal();
 });
-var singleEstURL;
-var MassURL;
+var sheetUrl;
 var qims;
 
 if (localStorage.getItem("url")) {
-  singleEstURL = localStorage.getItem("url");
-}
-
-if (localStorage.getItem("MassURL")) {
-  MassURL = localStorage.getItem("MassURL");
+  sheetUrl = localStorage.getItem("url");
 }
 
 if (localStorage.getItem("projNum")) {
@@ -727,7 +722,7 @@ startButton.addEventListener("click", function (e) {
 }); // This funciton returns the URL of the Google Sheet where the estimations are put into.
 
 function returnGSUrl(url) {
-  var sheetUrl = url;
+  sheetUrl = url;
   localStorage.setItem("url", sheetUrl);
   loading.style.display = 'none';
   homeButtons.style.display = 'block';
@@ -736,7 +731,7 @@ function returnGSUrl(url) {
   brandLogo.innerText = qims;
 }
 
-if (singleEstURL || MassURL) {
+if (sheetUrl) {
   projectNumber.style.display = "none";
   startButton.style.display = "none";
   body.style.background = '#EFEFEF'; //loading.style.display = 'block';
