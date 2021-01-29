@@ -123,6 +123,7 @@ var uploadFileForm = document.querySelector("#uploadFileForm");
 var massUploadSubmit = document.querySelector("#massUploadSubmit");
 var myfile = document.querySelector("#myfile");
 var data;
+var googleSheet = localStorage.getItem("url");
 uploadFileForm.addEventListener('submit', function (e) {
   e.preventDefault();
   e.stopPropagation();
@@ -135,8 +136,8 @@ uploadFileForm.addEventListener('submit', function (e) {
     var data = e.target.result;
     var workbook = XLSX.read(data, {
       type: "binary"
-    });
-    console.log(workbook);
+    }); //console.log(workbook);
+
     var jsonData = workbook.SheetNames.map(function (sheet) {
       return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
     });

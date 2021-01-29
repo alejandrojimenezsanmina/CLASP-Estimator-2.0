@@ -76,73 +76,73 @@ function estimateMassSheet (url){
 }
 
 
-function calculate(element){
+// function calculate(element){
 
-  var materialPriceSheet = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1kFtNEVhIQr3mMaFbXXP8hMTl_nhTr-7pHtprRf4zf5U/edit#gid=0");
-  var sheet = materialPriceSheet.getSheetByName('Sheet Metal');
-  var meassures = [element[2],element[3], element[4]];
+//   var materialPriceSheet = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1kFtNEVhIQr3mMaFbXXP8hMTl_nhTr-7pHtprRf4zf5U/edit#gid=0");
+//   var sheet = materialPriceSheet.getSheetByName('Sheet Metal');
+//   var meassures = [element[2],element[3], element[4]];
   
-  if(element[1] === "in"){
-    meassures = convertToMm(element[2],element[3], element[4])
-  }
+//   if(element[1] === "in"){
+//     meassures = convertToMm(element[2],element[3], element[4])
+//   }
   
-  var materialCosts = sheet.getRange(5, 1, 8, 5).getValues();
-  var finishCosts = sheet.getRange(16, 1, 6, 4).getValues();
-  var bendingCost = sheet.getRange(25, 2).getValue();
-  var costFactor = sheet.getRange(30, 1, 6, 3).getValues();
+//   var materialCosts = sheet.getRange(5, 1, 8, 5).getValues();
+//   var finishCosts = sheet.getRange(16, 1, 6, 4).getValues();
+//   var bendingCost = sheet.getRange(25, 2).getValue();
+//   var costFactor = sheet.getRange(30, 1, 6, 3).getValues();
   
-  var materialInfo;
-  var finishInfo;
-  var finishInfo2;
-  var costFactorValue;
+//   var materialInfo;
+//   var finishInfo;
+//   var finishInfo2;
+//   var costFactorValue;
   
-  costFactor.forEach(function (elem){
-    if(element[0] !== ""){
-      if ( element[9] >= elem[0] && element[9] <= elem[1] ){
-      costFactorValue = elem[2]
-      }
-    }
-  })
-  
-  
-  materialCosts.forEach(function (elem){
-    if(element[0] !== ""){
-      if (elem[0] === element[5]){
-      materialInfo = elem
-      }
-    }
-  })
-  
-  finishCosts.forEach(function (elem){
-    if(element[0] !== ""){
-      if (elem[0] === element[6]){
-      finishInfo = elem
-      }
-      if (elem[0] === element[7]){
-      finishInfo2 = elem
-      }
-    }
-  })
-  
-  // formula: Weight = L/1000 * W/1000 * Thickness * Density
-  var partWeight = (meassures[0]/1000) *  (meassures[1]/1000) *  meassures[2] * materialInfo[4];
-  var partSurfaceSqMt = (meassures[0]/1000) *  (meassures[1]/1000)
+//   costFactor.forEach(function (elem){
+//     if(element[0] !== ""){
+//       if ( element[9] >= elem[0] && element[9] <= elem[1] ){
+//       costFactorValue = elem[2]
+//       }
+//     }
+//   })
   
   
-    var itemMtlCost = partWeight * materialInfo[2];
-    var itemFinishCost = partSurfaceSqMt * finishInfo[2];
-    var itemFinishCost2 = partSurfaceSqMt * finishInfo2[2];
-    var itemBendingCost = element[8] * bendingCost;
+//   materialCosts.forEach(function (elem){
+//     if(element[0] !== ""){
+//       if (elem[0] === element[5]){
+//       materialInfo = elem
+//       }
+//     }
+//   })
+  
+//   finishCosts.forEach(function (elem){
+//     if(element[0] !== ""){
+//       if (elem[0] === element[6]){
+//       finishInfo = elem
+//       }
+//       if (elem[0] === element[7]){
+//       finishInfo2 = elem
+//       }
+//     }
+//   })
+  
+//   // formula: Weight = L/1000 * W/1000 * Thickness * Density
+//   var partWeight = (meassures[0]/1000) *  (meassures[1]/1000) *  meassures[2] * materialInfo[4];
+//   var partSurfaceSqMt = (meassures[0]/1000) *  (meassures[1]/1000)
+  
+  
+//     var itemMtlCost = partWeight * materialInfo[2];
+//     var itemFinishCost = partSurfaceSqMt * finishInfo[2];
+//     var itemFinishCost2 = partSurfaceSqMt * finishInfo2[2];
+//     var itemBendingCost = element[8] * bendingCost;
     
-    try {
-      var estimationPrice = (itemMtlCost + itemFinishCost + itemFinishCost2 + itemBendingCost )* costFactorValue;
-      return estimationPrice.toFixed(2);
-    }
-    catch(err) {
-      return "Something went wrong. Please review columns";
-    }
+//     try {
+//       var estimationPrice = (itemMtlCost + itemFinishCost + itemFinishCost2 + itemBendingCost )* costFactorValue;
+//       return estimationPrice.toFixed(2);
+//     }
+//     catch(err) {
+//       return "Something went wrong. Please review columns";
+//     }
   
-}
+// }
 
 
 function convertToMm(length, width, thickness){

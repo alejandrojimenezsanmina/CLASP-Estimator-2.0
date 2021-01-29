@@ -4,7 +4,7 @@ let uploadFileForm = document.querySelector("#uploadFileForm");
 let massUploadSubmit = document.querySelector("#massUploadSubmit");
 let myfile = document.querySelector("#myfile");
 let data;
-
+let googleSheet = localStorage.getItem("url")
 
 
 uploadFileForm.addEventListener('submit', e =>{
@@ -17,7 +17,7 @@ uploadFileForm.addEventListener('submit', e =>{
     fileReader.onload = (e)=>{
         let data = e.target.result;
         let workbook = XLSX.read(data, {type: "binary"})
-        console.log(workbook);
+        //console.log(workbook);
         const jsonData = workbook.SheetNames.map(sheet =>{
             return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet])
             

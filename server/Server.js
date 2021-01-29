@@ -4,22 +4,6 @@ Route.path = function (route,callback){
   
 }
 
-/*
-function imageURLs(){
-// Get images IDs and names return object containing this info  
-  var images = {};
-  var imageFolder = DriveApp.getFolderById('1GKqCuGeB3IMU6IwXDjz6y-YcRyd6vnsW');
-  var files = imageFolder.getFiles();
-    while (files.hasNext()) {
-      var file = files.next();
-      images[file.getName()] = file.getId(); 
-    }
-    Logger.log(images)
-    return images;
-   }
-  */    
-
-
 //LOAD WEB APP
 function doGet(e) {
 //DriveApp.getRootFolder();
@@ -53,7 +37,6 @@ function loadPlastics(){
    return HtmlService.createTemplateFromFile('plasticsHTML').evaluate();  
 }
 
-
 function loadSheetMetal(){
     
    return HtmlService.createTemplateFromFile('sheetMetalHTML').evaluate();    
@@ -64,118 +47,133 @@ function loadUploadFile(){
    return HtmlService.createTemplateFromFile('uploadFile').evaluate();    
 }
 
+//ESTIMATE FUNCTION triggered with click. Will estimate pricing based on the information input
+function estimate(data, googleSheet, sheet) {
 
-//GET MATERIAL COST FROM GSM COST SHEET
-  var ss = SpreadsheetApp.openById('1kFtNEVhIQr3mMaFbXXP8hMTl_nhTr-7pHtprRf4zf5U');
-  var sheet = ss.getSheetByName('Sheet Metal');
-  var materialType = sheet.getRange(5, 1,8, 5).getValues();
-  var finish = sheet.getRange(16, 1, 6, 4).getValues();
+  var ws = SpreadsheetApp.openByUrl(googleSheet);
+  var sheet = ws.getSheetByName(sheet);
+  
+  
+  //Set values 
+  data.forEach(function(row){
+    var lastRow = sheet.getLastRow();
+    var headerValues = sheet.getRange(1,1,1, 12).getValues();
+
+    function getKeyIndex (key){   
+      var keyIndex;
+      headerValues[0].forEach(function(elem,index){
+        if (elem === key){
+             keyIndex = index + 1;
+        }
+      }) 
+      return keyIndex;
+    }
+
+    Object.keys(row).forEach(function (key){
+      var column = getKeyIndex(key);
+      var value = row.key
+      sheet.getRange(lastRow + 1, column ).setValue(row[key]) 
+    })
+
+    var estimatedPrice = calculate(row)
+    estimatedPrice.forEach(function (element, index){
+      sheet.getRange(lastRow + 1, 13 + index).setValue(estimatedPrice[index])
+    })
+    
+  })
+     //return; 
+}
+
+// Load source sheet information
+var materialPriceSheet = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1kFtNEVhIQr3mMaFbXXP8hMTl_nhTr-7pHtprRf4zf5U/edit#gid=0");
+var sheet = materialPriceSheet.getSheetByName('Sheet Metal');
+
+////////////////////Calculate prices and costs////////////////////
+function calculate(row){
+
+  if( row["Units(mm/in)"] === "inches"){
+    row["Width"] =  convertToMm(row["Width"]);
+    row["Length"] =  convertToMm(row["Length"]);
+    row["Thickness"] =  convertToMm(row["Thickness"]);
+  }
+  
+  var materialCosts = sheet.getRange(5, 1, 8, 5).getValues();
+  var finishCosts = sheet.getRange(16, 1, 6, 4).getValues();
+  var bendingCost = sheet.getRange(25, 2).getValue();
   var costFactor = sheet.getRange(30, 1, 6, 3).getValues();
   var hardwareCost = sheet.getRange(39, 1, 3, 2).getValues();
-  var bendingCost = sheet.getRange(25, 1, 1, 2).getValues();  
+  
+  //Get cost factor
+  costFactor.forEach(function (elem){
+      if ( row["EAU"] >= elem[0] && row["EAU"] <= elem[1] ){
+      row["costFactorValue"] = elem[2]
+      }
+  })
 
+  //Material density
+  materialCosts.forEach(function (elem){
+    if (elem[0] === row["Material"]){
+    row["materialDensity"] = elem[4]
+    }
+})
+  
+  //Cost of material
+  materialCosts.forEach(function (elem){
+      if (elem[0] === row["Material"]){
+      row["materialCost"] = elem[2]
+      }
+  })
 
-//ESTIMATE FUNCTION triggered with click. Will estimate pricing based on the information input
-function estimate(userInfo) {
-//userinfo.strategy = 1 is agressive, 2 is intermediate, 3 is conservative
-      
-      userInfo.bendingCost = bendingCost[0][1];
-      
-      hardwareCost.forEach(function (element){
-          if(element[0] === userInfo.complexity){
-              userInfo.hardwareCost = element[1]
-          }
-      });
-      
-      costFactor.forEach(function (element){
-          if(userInfo.EAU > element[0] && userInfo.EAU <= element[1]){
-              userInfo.costFactor = element[2];
-            }
-        });
-      
-      materialType.forEach(function (element){
-        if (element[0] === userInfo.material){
-          userInfo.mtlPrice = element[userInfo.strategy];
-        }
-        if (element[0] === userInfo.material){
-          userInfo.density = element[4];
-        }
-      });
-      
-      finish.forEach(function (element){
-        if (element[0] === userInfo.finishOne){
-          userInfo.finish1Price = element[userInfo.strategy];
-        }
-        
-        if (element[0] === userInfo.finishTwo){
-          userInfo.finish2Price = element[userInfo.strategy];
-        }
-      });
-      
-      userInfo.weight = function (){
-          if (this.units === 'milimeters'){
-        userInfo.weight = (this.length * this.thickness  * this.width * this.density * 0.001)/1000;
-        }else{
-          userInfo.weight = (this.length * this.thickness * this.width * this.density * 0.001 * 16387.064) /1000; 
-        }
+  //Get finish costs
+  finishCosts.forEach(function (elem){
+      if (elem[0] === row["Finish Type"]){
+        row["finishPrice1"] = elem[2]
       }
-      
-      userInfo.weight();
-      
-      userInfo.MaterialCost = function (){
-          userInfo.MaterialCost = this.weight * this.mtlPrice;
+      if (elem[0] === row["Finish Type 2"]){
+        row["finishPrice2"] = elem[2]
+      } 
+  })
+
+  //Get cost factor
+  costFactor.forEach(function (elem){
+      if ( row["EAU"] >= elem[0] && row["EAU"] <= elem[1] ){
+      row["costFactorValue"] = elem[2]
       }
-      
-      userInfo.MaterialCost();
-      
-      userInfo.estimation = function (){
-          if (userInfo.hide){
-          userInfo.totalHdwCost = this.qtyHdw * this.hardwareCost;
-          userInfo.estimation = Math.round((this.MaterialCost + (this.bendingCost * this.bending) + this.totalHdwCost  )*100)/100;
-          }else{
-            userInfo.estimation = Math.round((this.MaterialCost + (this.bendingCost * this.bending)) * 100)/100;
-          }
-      }
-      
-      userInfo.estimation();
-      
-      userInfo.surfaceArea = function (){
-          
-          if (this.units === 'inches'){
-          //Convert mm to meters
-          userInfo.surfaceArea = ((this.length/39.37) * (this.width /39.37));
-          }else{
-            userInfo.surfaceArea = this.length * this.width * 0.000001 ;
-          }
-        }
-      
-      userInfo.surfaceArea();
-      
-      userInfo.totalFinishPrice1 = function (){
-          userInfo.totalFinishPrice1 = this.surfaceArea * this.finish1Price ;
-          userInfo.estimation += userInfo.totalFinishPrice1;
-      }
-      
-      userInfo.totalFinishPrice1();
-      
-      if(userInfo.finish2Price !== undefined){
-        userInfo.totalFinishPrice2 = function (){
-          userInfo.totalFinishPrice2 = this.surfaceArea * this.finish2Price ;
-          userInfo.estimation += userInfo.totalFinishPrice2
-          }
-        userInfo.totalFinishPrice2();  
-      }
-      
-      
-      
-     return userInfo; 
-     
+  })
+
+  //Get hardware price
+  hardwareCost.forEach(function (elem){
+    if (elem[0] === row["Hdw complexity"]){
+    row["hardwareCost"] = elem[2]
+    }
+  })
+  
+  // formula: Weight = L/1000 * W/1000 * Thickness * Density
+  var partWeight = (row["Length"]/1000) *  (row["Width"]/1000) *  row["Thickness"] * row["materialDensity"];
+  var partSurfaceSqMt = (row["Length"]/1000) *  (row["Width"]/1000);
+
+    row["Material cost"] = (partWeight * row["materialCost"]).toFixed(4);
+    row["Finish cost"] = ((partSurfaceSqMt * row["finishPrice1"] *2 ) + (partSurfaceSqMt * row["finishPrice2"] * 2)).toFixed(4);
+    row["Labor cost"] = row["Bendings(#)"] * bendingCost;
+    if(row["Hardware qty"]){
+      row["Hardware cost"]= row["hardwareCost"] * row["Hardware qty"];
+    }else{
+      row["Hardware cost"] = 0;
+    }
+    row["PRICE /each"] = Number(row["Material cost"]) + Number(row["Finish cost"]) + Number(row["Labor cost"]) + Number(row["Hardware cost"]) + Number(row["costFactorValue"])
+  // formula: Weight = L/1000 * W/1000 * Thickness * Density  
+  
+  return [ row["Material cost"], row["Finish cost"],row["Hardware cost"],row["Labor cost"], row["PRICE /each"] ]
+}
+
+//Convert inches to mm
+function convertToMm(input){
+  return (input * 25.4).toFixed(4)
 }
 
 
 
 // Parse JSON strings to objects and push to newArr. Create new Google sheet and set all objects in the sheet.
-
 function toGS (arr,googleSheetURL){
     Logger.log(googleSheetURL);
     
@@ -188,21 +186,6 @@ function toGS (arr,googleSheetURL){
    var j = 1;
    var initRange = sheet.getRange(lastRow, 1);
    var row = 3;
-   
-   //var ind = 1;
-   /*
-     // Check if the title -Sheet Metal- already exists in the sheet
-   var columnA = sheet.getRange(1, 1, lastRow,1);
-   var columnAValues = columnA.getValues();
-     columnAValues.forEach(function (element){
-       if (element[0]=== 'Sheet Metal' ){
-           Logger.log(element[0]);
-           Logger.log(ind);
-         }
-         ind++;
-     });
-   */
- 
     
     var newArr = [];
     

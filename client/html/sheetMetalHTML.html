@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    
     <base target="_top">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script
@@ -16,7 +15,6 @@
     <link rel="stylesheet" href="../styles/sheetSTYLE.css">  
     <script src="https://kit.fontawesome.com/6365c07014.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
-    
   </head>
   <body>
   
@@ -114,30 +112,9 @@
  
     <h2> Sheet Metal </h2><br/>
     
-                         <!--   
-                         <div class="fixed-action-btn direction-bottom">
-                              <a class="btn-floating btn-large" title="Open Menu"><i class="large material-icons">menu</i></a>
-                                <ul>                             
-                                <li class="tooltip">
-                                  <span class="tooltiptext">Add PCB</span>
-                                  <a  class="btn-floating"><i class="material-icons">shopping_cart</i></a>
-                                  </li>
-                                <li class="tooltip">
-                                  <span class="tooltiptext">Add plastic</span>
-                                  <a class="btn-floating "><i class="material-icons">shopping_cart</i></a>
-                                  </li>
-                                <li class="tooltip">
-                                  <span class="tooltiptext">Copy G-Sheets link</span>
-                                  <a class="btn-floating" id= "copyLink"><i class="material-icons">link</i></a>
-                                  </li>
-                                <li class="tooltip">
-                                  <span class="tooltiptext">Open in G-Sheets</span>
-                                  <a class="btn-floating" id="openGS" ><i class="material-icons">open_in_new</i></a>
-                                  </li>
-                              </ul>
-                          </div>
-                          -->                       
-    
+    <div class="loader preloader-wrapper big active">
+    </div>
+  
     
     <form id="myForm">
           <div class="row">
@@ -334,13 +311,7 @@
       <label for="sheetTemplate">Paste google sheet URL:</label>
     <input type="text" id="sheetTemplate"><br><br>
     <input type="submit" id="massUploadSubmit" class="btn btn-waves" >
-  </form>
-
-<div class="iframe">
-<iframe  id="ifr"></iframe>
-<!-- width="1024" height="768"  -->
-</div>
-        
+  </form>        
         
   <div class="estimation1"> <br>  
   </div>      
@@ -350,7 +321,7 @@
 <!--END MASTER RIGHT--> 
 
 </main>      
-           
+  <script src="../js/navBar.js"></script>        
    <script src="../js/sheetMetalSCRIPT.js"></script>
    <script src="../js/massGenericSCRIPT.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>

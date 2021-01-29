@@ -9,10 +9,13 @@ main{
   
 }
 
-
 .masterLeft{
   padding-left:25px;
   padding-right:25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 
