@@ -138,10 +138,12 @@ function printEstimate (){
   openGSheets.href = googleSheetURL;
   openGSheets.target = "_blank";
   console.log(googleSheetURL);
-  let indexof = googleSheetURL.indexOf("edit#")
-  let substr = googleSheetURL.slice(1, indexof);
+  let indexof = googleSheetURL.indexOf("edit?")
+  let substr = googleSheetURL.slice(0, indexof);
+  console.log(substr);
   let downloadRoute = substr + "export?format=xlsx";
   downloadXls.href = downloadRoute;
+  console.log(downloadRoute);
 
   }
 

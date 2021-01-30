@@ -488,7 +488,7 @@ main{
         <br>
       </div></li>
       <li><a id="openGSheets"><i class="material-icons">cloud</i>Open in google sheets</a></li>
-      <li><a id="downloadXls" download=""><i class="material-icons">download</i>Download excel</a></li>
+      <li><a id="downloadXls" download="" target="_blank"><i class="material-icons">download</i>Download excel</a></li>
       <li><a id="sendEmail"><i class="material-icons">email</i> Send me via email </a></li>
       <br>
       <li><div class="divider"></div></li>
@@ -1105,7 +1105,11 @@ function printEstimate() {
   myForm.reset();
   openGSheets.href = googleSheetURL;
   openGSheets.target = "_blank";
-  downloadXls.href = googleSheetURL;
+  console.log(googleSheetURL);
+  var indexof = googleSheetURL.indexOf("edit#");
+  var substr = googleSheetURL.slice(0, indexof);
+  var downloadRoute = substr + "export?format=xlsx";
+  downloadXls.href = downloadRoute;
 }
 
 function onFailure() {
