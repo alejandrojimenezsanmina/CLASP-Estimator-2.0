@@ -27,11 +27,8 @@ $( document ).ready(function(){
       
  //Project Number DIV = Input Proj #
   var projectNumber = document.querySelector('.projectNumber');
-  
   var brandLogo = document.querySelector('.brand-logo');
-   
   var body = document.body;
-  
   var loading = document.querySelector('.loading');
   loading.style.display = 'none';
   
@@ -85,7 +82,6 @@ $( document ).ready(function(){
 function returnGSUrl (url){
 
   sheetUrl = url;
-    
    localStorage.setItem("url", sheetUrl);
    loading.style.display = 'none';
    homeButtons.style.display = 'block';

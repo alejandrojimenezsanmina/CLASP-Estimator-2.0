@@ -6,17 +6,10 @@
             {direction: 'bottom', hoverEnabled: false },
             );
   });
-
+var downloadXls = document.getElementById('downloadXls');
+var openGSheets = document.getElementById("openGSheets");
 var googleSheetURL = localStorage.getItem("url");
-
 let copyLink = document.querySelector('#copyLink');
-/*
-copyLink.addEventListener('click', function(){ 
-  let link = $('<input>').val(googleSheetURL).appendTo('body').css('display', 'none').select();
-    document.execCommand('copy');
-    alert('Google sheet link copied to clipboard!');
-});
-*/
 
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
@@ -91,11 +84,8 @@ var sheet = "Sheet Metal"
 
 function estimate(e){
 
- singleEstHeaders=  ["partNumber", "strategy", "units", "length", "width", "thickness", "material", "finishOne", "finishTwo", "bending", "EAU", "hide", "hdw", "qtyHdw", "complexity", "infoMsg", "submit"];
-
  myForm.style.display = 'none';
  loader.style.display = 'block';
-
 
    e.preventDefault();
      var ids = Array.from(myForm.querySelectorAll('*[id]'))
@@ -139,14 +129,24 @@ function estimate(e){
    }
    
 
-function printEstimate (googleSheetURL){
-  // ?? what is this: google.script.run.toGS(arr,googleSheetURL);   
+function printEstimate (){
+  let dollar = document.querySelector('#slideCeption');
+  dollar.classList.add('glowGreen')
   loader.style.display = 'none';
   myForm.style.display = 'block';
   myForm.reset();
-      
+  openGSheets.href = googleSheetURL;
+  openGSheets.target = "_blank";
+  console.log(googleSheetURL);
+  let indexof = googleSheetURL.indexOf("edit#")
+  let substr = googleSheetURL.slice(1, indexof);
+  let downloadRoute = substr + "export?format=xlsx";
+  downloadXls.href = downloadRoute;
+
   }
 
 function onFailure(){
-  console.log("failure handler");
+  alert("Please review your input data")
+  loader.style.display = 'none';
+  myForm.style.display = 'block';
 }

@@ -74,7 +74,7 @@
     <div><a href="#!" class="brand-logo"></a> </div>
     <ul class=" hide-on-med-and-down">
       <!-- Dropdown Trigger -->
-      <li><a href="#" data-target="slide-out" id="slideCeption" class="sidenav-trigger"><i class="fas fa-dollar-sign"></i></a></li>
+      <li><a href="#" data-target="slide-out" id="slideCeption" class="sidenav-trigger"><i class="fas fa-dollar-sign "></i></a></li>
       <li><a class="modal-trigger" href="#modalInfo" id="infoButton"><i class="material-icons md-light glow">info</i></a></li>
       <li><a class="" href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=home"><i class="material-icons">home</i></a></li>
       <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Menu<i class="material-icons right">arrow_drop_down</i></a></li>
@@ -94,16 +94,22 @@
   <ul id="slide-out" class="sidenav">
       <li><div class="user-view">
         <div class="background">
+          <img src="https://drive.google.com/uc?export=download&id=1X2E0RU1woNs7_zmDJq4ylMfblZjrndTd" alt="estimations">
         </div>
-        <a href="#user"><img class="circle" alt="someting"></a>
-        <a href="#name"><span class="white-text name">John Doe</span></a>
-        <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+        <br/><br/><br/>
+        <div class="projNumSideBar"><h6>Project Number</h6></div>
+        
+        <h5> Estimated prices </h5>
+        <br/>
       </div></li>
-      <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-      <li><a href="#!">Second Link</a></li>
+      <li><a id="openGSheets"><i class="material-icons">cloud</i>Open in google sheets</a></li>
+      <li><a id="downloadXls" download target="_blank"><i class="material-icons">download</i>Download excel</a></li>
+      <li><a id="sendEmail"><i class="material-icons">email</i> Send me via email </a></li>
+      <br>
       <li><div class="divider"></div></li>
-      <li><a class="subheader">Subheader</a></li>
-      <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+      <li><a class="subheader">Latest Estimations</a></li>
+      <li>Part Number</li>
+      <!-- <li><a class="waves-effect" href="#!">Third Link With Waves</a></li> -->
   </ul>
    
 <main>   
@@ -120,7 +126,7 @@
           <div class="row">
             <div class="input-field col s6">
             <i class="material-icons prefix">format_list_numbered</i>   
-              <input id="partNumber" type="text"  class="validate">
+              <input id="partNumber" type="text"  class="validate" required>
               <label for="partNumber">Part Number</label>
             </div>
           </div>
@@ -160,17 +166,17 @@
               <div class="row">
                 <div class="input-field col s3">
                 <i class="material-icons prefix">trending_flat</i>   
-                  <input id="length" type="text"  class="validate">
+                  <input id="length" type="text"  class="validate" required>
                   <label for="length">Length</label>
                 </div>
                 <div class="input-field col s3">
                  <i class="material-icons prefix">swap_horiz</i>    
-                  <input id="width" type="text" class="validate">
+                  <input id="width" type="text" class="validate" required>
                   <label for="width">Width</label>
                 </div>
                 <div class="input-field col s3">
                     <i class="material-icons prefix">vertical_align_center</i>  
-                        <input id="thickness" type="text" class="validate">
+                        <input id="thickness" type="text" class="validate" required>
                         <label for="thickness">Thickness</label>
                 </div>
               </div> <!--END OF UNITS SELECTION-->
@@ -179,8 +185,8 @@
        <div class="form-row">
         <i class="material-icons prefix">gradient</i>         
         <label for="material" class="labels"> Material</label>
-           <select name="material" id= "material">
-           <option  disabled selected>Select</option>
+           <select name="material" id= "material" required>
+           <option  disabled selected></option>
            <option value="Alu alloy 5052">Alu alloy 5052</option>
            <option value="CRS/SPCC">CRS/SPCC</option>
            <option value="Zinc pre-plating/SECC">Zinc pre-plating/SECC</option>
@@ -196,8 +202,8 @@
          <div class="form-row">  
           <i class="material-icons prefix">texture</i>
            <label for="finishOne" class="labels">Finish type 1 </label>
-           <select id="finishOne">
-              <option  disabled selected>Select</option>
+           <select id="finishOne" required>
+              <option  disabled selected></option>
               <option value = "Zinc plating ( all types)">Zinc plating ( all types)</option>
               <option value= "Chromate/alodine/anodized" >Chromate/alodine/anodized</option>
               <option value="Painting (Powder/oil)">Painting (Powder/oil)</option>
@@ -301,6 +307,9 @@
 <div class="masterRight">
 
 <h2>Mass upload</h2><br/>
+
+    <div class="loaderRight preloader-wrapper big active">
+    </div>
 
   <form id="uploadFileForm">
       <label for="myfile">Select a file:</label>

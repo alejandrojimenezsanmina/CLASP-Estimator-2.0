@@ -92,10 +92,11 @@ var sheet = materialPriceSheet.getSheetByName('Sheet Metal');
 function calculate(row){
 
   if( row["Units(mm/in)"] === "inches"){
-    row["Width"] =  convertToMm(row["Width"]);
-    row["Length"] =  convertToMm(row["Length"]);
-    row["Thickness"] =  convertToMm(row["Thickness"]);
+    row["Width"] =  row["Width"] * 25.4;
+    row["Length"] =  row["Length"] * 25.4 ;
+    row["Thickness"] =  row["Thickness"] * 25.4 ;
   }
+  
   
   var materialCosts = sheet.getRange(5, 1, 8, 5).getValues();
   var finishCosts = sheet.getRange(16, 1, 6, 4).getValues();
@@ -144,7 +145,7 @@ function calculate(row){
   //Get hardware price
   hardwareCost.forEach(function (elem){
     if (elem[0] === row["Hdw complexity"]){
-    row["hardwareCost"] = elem[2]
+    row["hardwareCost"] = elem[1]
     }
   })
   
@@ -164,11 +165,6 @@ function calculate(row){
   // formula: Weight = L/1000 * W/1000 * Thickness * Density  
   
   return [ row["Material cost"], row["Finish cost"],row["Hardware cost"],row["Labor cost"], row["PRICE /each"] ]
-}
-
-//Convert inches to mm
-function convertToMm(input){
-  return (input * 25.4).toFixed(4)
 }
 
 
@@ -247,7 +243,7 @@ function start (qims){
   var folder = DriveApp.getFolderById('1xKkZ7H4J8S6aKEBsSYffxp6pIzHsMV0V');
   var fileCopied = origin.makeCopy(folder);
   var fileCopiedUrl = fileCopied.getUrl();
-  
+
   DriveApp.getFileById(id).setTrashed(true);
 
   var sheetHeader = [
@@ -280,9 +276,10 @@ function start (qims){
         }
       })
 
-    return fileCopiedUrl;
+    return (fileCopiedUrl);
 
-}//end of START
+}
+//end of START
 
  
  //LOAD GSM - Material cost SHEET TO GET COST SOURCES
@@ -303,11 +300,6 @@ function start (qims){
    
    
  }
-
-
-
-
-
 
 function include(filename){
   return HtmlService.createHtmlOutputFromFile(filename).getContent();

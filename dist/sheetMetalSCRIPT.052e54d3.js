@@ -126,16 +126,10 @@ document.addEventListener('DOMContentLoaded', function () {
     hoverEnabled: false
   });
 });
+var downloadXls = document.getElementById('downloadXls');
+var openGSheets = document.getElementById("openGSheets");
 var googleSheetURL = localStorage.getItem("url");
 var copyLink = document.querySelector('#copyLink');
-/*
-copyLink.addEventListener('click', function(){ 
-  let link = $('<input>').val(googleSheetURL).appendTo('body').css('display', 'none').select();
-    document.execCommand('copy');
-    alert('Google sheet link copied to clipboard!');
-});
-*/
-
 document.addEventListener('DOMContentLoaded', function () {
   var elems = document.querySelectorAll('select');
   var instances = M.FormSelect.init(elems);
@@ -183,7 +177,6 @@ var sheet = "Sheet Metal";
 var sheetHeader = ["Part Number", "Units(mm/in)", "Length", "Width", "Thickness", "Material", "Finish Type", "Finish Type 2", "Bendings(#)", "EAU", "Hardware qty", "Hdw complexity", "Material cost", "Finish cost", "Hardware cost", "Labor cost", "PRICE /each"];
 
 function estimate(e) {
-  singleEstHeaders = ["partNumber", "strategy", "units", "length", "width", "thickness", "material", "finishOne", "finishTwo", "bending", "EAU", "hide", "hdw", "qtyHdw", "complexity", "infoMsg", "submit"];
   myForm.style.display = 'none';
   loader.style.display = 'block';
   e.preventDefault();
@@ -236,14 +229,20 @@ function estimate(e) {
   google.script.run.withSuccessHandler(printEstimate).withFailureHandler(onFailure).estimate([singleEstData], googleSheetURL, sheet);
 }
 
-function printEstimate(googleSheetURL) {
-  // ?? what is this: google.script.run.toGS(arr,googleSheetURL);   
+function printEstimate() {
+  var dollar = document.querySelector('#slideCeption');
+  dollar.classList.add('glowGreen');
   loader.style.display = 'none';
   myForm.style.display = 'block';
   myForm.reset();
+  openGSheets.href = googleSheetURL;
+  openGSheets.target = "_blank";
+  downloadXls.href = googleSheetURL;
 }
 
 function onFailure() {
-  console.log("failure handler");
+  alert("Please review your input data");
+  loader.style.display = 'none';
+  myForm.style.display = 'block';
 }
 },{}]},{},["yHiL"], null)

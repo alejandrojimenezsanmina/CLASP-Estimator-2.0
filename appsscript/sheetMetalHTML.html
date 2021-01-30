@@ -337,6 +337,26 @@ h6{
   }
 }
 
+.glowGreen{
+  -webkit-animation: glowGreen 1s ease-in-out infinite alternate;
+  -moz-animation: glowGreen 1s ease-in-out infinite alternate;
+  animation: glowGreen 0.5s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glowGreen {
+  from {
+    text-shadow: 0 0 0.5px #fff, 0 0 1px #fff, 0 0 1.5px greenyellow, 0 0 2px greenyellow, 0 0 2.5px greenyellow, 0 0 3px greenyellow, 0 0 3.5px greenyellow;
+  }
+  to {
+    text-shadow: 0 0 5px #fff, 0 0 5px #deff65, 0 0 7.5px #deff65, 0 0 10x #deff65, 0 0 12.5px #deff65, 0 0 15px #deff65, 0 0 17.5px #deff65;
+  }
+}
+
+#slideCeption{
+  display: block;
+}
+
+
 .gif{
   display:flex;
   justify-content: center;
@@ -352,9 +372,6 @@ h6{
   line-height: 64px;
 }
 
-#slideCeption{
-  display: block;
-}
 </style>  
     <style>
 *{
@@ -442,7 +459,7 @@ main{
     <div><a href="#!" class="brand-logo"></a> </div>
     <ul class=" hide-on-med-and-down">
       <!-- Dropdown Trigger -->
-      <li><a href="#" data-target="slide-out" id="slideCeption" class="sidenav-trigger"><i class="fas fa-dollar-sign"></i></a></li>
+      <li><a href="#" data-target="slide-out" id="slideCeption" class="sidenav-trigger"><i class="fas fa-dollar-sign "></i></a></li>
       <li><a class="modal-trigger" href="#modalInfo" id="infoButton"><i class="material-icons md-light glow">info</i></a></li>
       <li><a class="" href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=home"><i class="material-icons">home</i></a></li>
       <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Menu<i class="material-icons right">arrow_drop_down</i></a></li>
@@ -462,16 +479,22 @@ main{
   <ul id="slide-out" class="sidenav">
       <li><div class="user-view">
         <div class="background">
+          <img src="https://drive.google.com/uc?export=download&id=1X2E0RU1woNs7_zmDJq4ylMfblZjrndTd" alt="estimations">
         </div>
-        <a href="#user"><img class="circle" alt="someting"></a>
-        <a href="#name"><span class="white-text name">John Doe</span></a>
-        <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+        <br><br><br>
+        <div class="projNumSideBar"><h6>Project Number</h6></div>
+        
+        <h5> Estimated prices </h5>
+        <br>
       </div></li>
-      <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-      <li><a href="#!">Second Link</a></li>
+      <li><a id="openGSheets"><i class="material-icons">cloud</i>Open in google sheets</a></li>
+      <li><a id="downloadXls" download=""><i class="material-icons">download</i>Download excel</a></li>
+      <li><a id="sendEmail"><i class="material-icons">email</i> Send me via email </a></li>
+      <br>
       <li><div class="divider"></div></li>
-      <li><a class="subheader">Subheader</a></li>
-      <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+      <li><a class="subheader">Latest Estimations</a></li>
+      <li>Part Number</li>
+      <!-- <li><a class="waves-effect" href="#!">Third Link With Waves</a></li> -->
   </ul>
    
 <main>   
@@ -488,7 +511,7 @@ main{
           <div class="row">
             <div class="input-field col s6">
             <i class="material-icons prefix">format_list_numbered</i>   
-              <input id="partNumber" type="text" class="validate">
+              <input id="partNumber" type="text" class="validate" required="">
               <label for="partNumber">Part Number</label>
             </div>
           </div>
@@ -528,17 +551,17 @@ main{
               <div class="row">
                 <div class="input-field col s3">
                 <i class="material-icons prefix">trending_flat</i>   
-                  <input id="length" type="text" class="validate">
+                  <input id="length" type="text" class="validate" required="">
                   <label for="length">Length</label>
                 </div>
                 <div class="input-field col s3">
                  <i class="material-icons prefix">swap_horiz</i>    
-                  <input id="width" type="text" class="validate">
+                  <input id="width" type="text" class="validate" required="">
                   <label for="width">Width</label>
                 </div>
                 <div class="input-field col s3">
                     <i class="material-icons prefix">vertical_align_center</i>  
-                        <input id="thickness" type="text" class="validate">
+                        <input id="thickness" type="text" class="validate" required="">
                         <label for="thickness">Thickness</label>
                 </div>
               </div> <!--END OF UNITS SELECTION-->
@@ -547,8 +570,8 @@ main{
        <div class="form-row">
         <i class="material-icons prefix">gradient</i>         
         <label for="material" class="labels"> Material</label>
-           <select name="material" id="material">
-           <option disabled="" selected="">Select</option>
+           <select name="material" id="material" required="">
+           <option disabled="" selected=""></option>
            <option value="Alu alloy 5052">Alu alloy 5052</option>
            <option value="CRS/SPCC">CRS/SPCC</option>
            <option value="Zinc pre-plating/SECC">Zinc pre-plating/SECC</option>
@@ -564,8 +587,8 @@ main{
          <div class="form-row">  
           <i class="material-icons prefix">texture</i>
            <label for="finishOne" class="labels">Finish type 1 </label>
-           <select id="finishOne">
-              <option disabled="" selected="">Select</option>
+           <select id="finishOne" required="">
+              <option disabled="" selected=""></option>
               <option value="Zinc plating ( all types)">Zinc plating ( all types)</option>
               <option value="Chromate/alodine/anodized">Chromate/alodine/anodized</option>
               <option value="Painting (Powder/oil)">Painting (Powder/oil)</option>
@@ -669,6 +692,9 @@ main{
 <div class="masterRight">
 
 <h2>Mass upload</h2><br>
+
+    <div class="loaderRight preloader-wrapper big active">
+    </div>
 
   <form id="uploadFileForm">
       <label for="myfile">Select a file:</label>
@@ -823,6 +849,12 @@ $(document).ready(function () {
   infoButton.addEventListener("click", function (e) {
     e.target.classList.remove("glow");
   });
+  var dollarSign = document.querySelector('#slideCeption');
+  dollarSign.addEventListener("click", function (e) {
+    if (dollarSign.classList.contains('glowGreen')) {
+      dollarSign.classList.remove("glowGreen");
+    }
+  });
   var qims;
 
   if (localStorage.getItem("projNum")) {
@@ -962,16 +994,10 @@ document.addEventListener('DOMContentLoaded', function () {
     hoverEnabled: false
   });
 });
+var downloadXls = document.getElementById('downloadXls');
+var openGSheets = document.getElementById("openGSheets");
 var googleSheetURL = localStorage.getItem("url");
 var copyLink = document.querySelector('#copyLink');
-/*
-copyLink.addEventListener('click', function(){ 
-  let link = $('<input>').val(googleSheetURL).appendTo('body').css('display', 'none').select();
-    document.execCommand('copy');
-    alert('Google sheet link copied to clipboard!');
-});
-*/
-
 document.addEventListener('DOMContentLoaded', function () {
   var elems = document.querySelectorAll('select');
   var instances = M.FormSelect.init(elems);
@@ -1019,7 +1045,6 @@ var sheet = "Sheet Metal";
 var sheetHeader = ["Part Number", "Units(mm/in)", "Length", "Width", "Thickness", "Material", "Finish Type", "Finish Type 2", "Bendings(#)", "EAU", "Hardware qty", "Hdw complexity", "Material cost", "Finish cost", "Hardware cost", "Labor cost", "PRICE /each"];
 
 function estimate(e) {
-  singleEstHeaders = ["partNumber", "strategy", "units", "length", "width", "thickness", "material", "finishOne", "finishTwo", "bending", "EAU", "hide", "hdw", "qtyHdw", "complexity", "infoMsg", "submit"];
   myForm.style.display = 'none';
   loader.style.display = 'block';
   e.preventDefault();
@@ -1072,15 +1097,21 @@ function estimate(e) {
   google.script.run.withSuccessHandler(printEstimate).withFailureHandler(onFailure).estimate([singleEstData], googleSheetURL, sheet);
 }
 
-function printEstimate(googleSheetURL) {
-  // ?? what is this: google.script.run.toGS(arr,googleSheetURL);   
+function printEstimate() {
+  var dollar = document.querySelector('#slideCeption');
+  dollar.classList.add('glowGreen');
   loader.style.display = 'none';
   myForm.style.display = 'block';
   myForm.reset();
+  openGSheets.href = googleSheetURL;
+  openGSheets.target = "_blank";
+  downloadXls.href = googleSheetURL;
 }
 
 function onFailure() {
-  console.log("failure handler");
+  alert("Please review your input data");
+  loader.style.display = 'none';
+  myForm.style.display = 'block';
 }
 },{}]},{},["yHiL"], null)</script>
    <script>// modules are defined as an array
@@ -1209,9 +1240,13 @@ var massUploadSubmit = document.querySelector("#massUploadSubmit");
 var myfile = document.querySelector("#myfile");
 var data;
 var googleSheet = localStorage.getItem("url");
+var loaderRight = document.querySelector('.loaderRight');
+var slideCeption = document.querySelector('#slideCeption');
 uploadFileForm.addEventListener('submit', function (e) {
   e.preventDefault();
   e.stopPropagation();
+  loaderRight.style.display = 'block';
+  uploadFileForm.style.display = 'none';
   var file = myfile.files[0];
   var pNum = localStorage.getItem("projNum") || "test123";
   var fileReader = new FileReader();
@@ -1225,13 +1260,24 @@ uploadFileForm.addEventListener('submit', function (e) {
 
     var jsonData = workbook.SheetNames.map(function (sheet) {
       return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
-    });
-    console.log(jsonData);
-    google.script.run.withSuccessHandler(function () {
-      console.log("done");
-    }).saveFile(jsonData);
+    }); // jsonData[0] = sheet metal jsonData[1] = plastics .. etc
+
+    console.log(jsonData[0], googleSheet);
+    google.script.run.withSuccessHandler(unhideSegmet).withFailureHandler(FailedToLoad).estimate(jsonData[0], googleSheet, "Sheet Metal");
   };
 });
+
+function unhideSegmet() {
+  slideCeption.classList.add('glowGreen');
+  uploadFileForm.style.display = 'block';
+  loaderRight.style.display = 'none';
+}
+
+function FailedToLoad() {
+  alert("Please review your input data");
+  uploadFileForm.style.display = 'block';
+  loaderRight.style.display = 'none';
+}
 },{}]},{},["gCHb"], null)</script>
    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>

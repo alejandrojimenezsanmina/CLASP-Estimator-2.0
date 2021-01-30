@@ -124,9 +124,12 @@ var massUploadSubmit = document.querySelector("#massUploadSubmit");
 var myfile = document.querySelector("#myfile");
 var data;
 var googleSheet = localStorage.getItem("url");
+var loaderRight = document.querySelector('.loaderRight');
 uploadFileForm.addEventListener('submit', function (e) {
   e.preventDefault();
   e.stopPropagation();
+  loaderRight.style.display = 'block';
+  uploadFileForm.style.display = 'none';
   var file = myfile.files[0];
   var pNum = localStorage.getItem("projNum") || "test123";
   var fileReader = new FileReader();
@@ -140,11 +143,21 @@ uploadFileForm.addEventListener('submit', function (e) {
 
     var jsonData = workbook.SheetNames.map(function (sheet) {
       return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
-    });
-    console.log(jsonData);
-    google.script.run.withSuccessHandler(function () {
-      console.log("done");
-    }).saveFile(jsonData);
+    }); // jsonData[0] = sheet metal jsonData[1] = plastics .. etc
+
+    console.log(jsonData[0], googleSheet);
+    google.script.run.withSuccessHandler(unhideSegmet).withFailureHandler(FailedToLoad).estimate(jsonData[0], googleSheet, "Sheet Metal");
   };
 });
+
+function unhideSegmet() {
+  uploadFileForm.style.display = 'block';
+  loaderRight.style.display = 'none';
+}
+
+function FailedToLoad() {
+  alert("Please review your input data");
+  uploadFileForm.style.display = 'block';
+  loaderRight.style.display = 'none';
+}
 },{}]},{},["gCHb"], null)

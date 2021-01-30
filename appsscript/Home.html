@@ -335,6 +335,26 @@ h6{
   }
 }
 
+.glowGreen{
+  -webkit-animation: glowGreen 1s ease-in-out infinite alternate;
+  -moz-animation: glowGreen 1s ease-in-out infinite alternate;
+  animation: glowGreen 0.5s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glowGreen {
+  from {
+    text-shadow: 0 0 0.5px #fff, 0 0 1px #fff, 0 0 1.5px greenyellow, 0 0 2px greenyellow, 0 0 2.5px greenyellow, 0 0 3px greenyellow, 0 0 3.5px greenyellow;
+  }
+  to {
+    text-shadow: 0 0 5px #fff, 0 0 5px #deff65, 0 0 7.5px #deff65, 0 0 10x #deff65, 0 0 12.5px #deff65, 0 0 15px #deff65, 0 0 17.5px #deff65;
+  }
+}
+
+#slideCeption{
+  display: block;
+}
+
+
 .gif{
   display:flex;
   justify-content: center;
@@ -350,9 +370,6 @@ h6{
   line-height: 64px;
 }
 
-#slideCeption{
-  display: block;
-}
 </style>
     
   </head>

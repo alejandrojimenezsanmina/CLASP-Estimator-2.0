@@ -14,6 +14,13 @@ $( document ).ready(function(){
     var infoButton = document.querySelector("#infoButton");
     infoButton.addEventListener("click", function (e){ e.target.classList.remove("glow")})
 
+    var dollarSign = document.querySelector('#slideCeption');
+    dollarSign.addEventListener("click", function (e) { 
+      if(dollarSign.classList.contains('glowGreen')){
+        dollarSign.classList.remove("glowGreen")
+      }
+    })
+
     var qims;
     if (localStorage.getItem("projNum")){
     qims = localStorage.getItem("projNum");
