@@ -10,11 +10,16 @@ var downloadXls = document.getElementById('downloadXls');
 var openGSheets = document.getElementById("openGSheets");
 var googleSheetURL = localStorage.getItem("url");
 let copyLink = document.querySelector('#copyLink');
+let projNumHeader = document.querySelector('#projNumHeader');
+let projNum = localStorage.getItem('projNum')
+projNumHeader.innerText = projNum
 
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
 });
+
+import{uploadFileForm, progress} from './massGenericSCRIPT';
 
 var arr = [];
 var myForm = document.querySelector('#myForm');
@@ -130,6 +135,9 @@ function estimate(e){
    
 
 function printEstimate (){
+
+  uploadFileForm.style.display = 'block';
+  progress.style.display = 'none';
   let dollar = document.querySelector('#slideCeption');
   dollar.classList.add('glowGreen')
   loader.style.display = 'none';
@@ -137,13 +145,10 @@ function printEstimate (){
   myForm.reset();
   openGSheets.href = googleSheetURL;
   openGSheets.target = "_blank";
-  console.log(googleSheetURL);
   let indexof = googleSheetURL.indexOf("edit?")
   let substr = googleSheetURL.slice(0, indexof);
-  console.log(substr);
   let downloadRoute = substr + "export?format=xlsx";
   downloadXls.href = downloadRoute;
-  console.log(downloadRoute);
 
   }
 
@@ -152,3 +157,5 @@ function onFailure(){
   loader.style.display = 'none';
   myForm.style.display = 'block';
 }
+
+export default printEstimate;

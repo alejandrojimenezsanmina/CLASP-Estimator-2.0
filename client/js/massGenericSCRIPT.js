@@ -5,14 +5,20 @@ let massUploadSubmit = document.querySelector("#massUploadSubmit");
 let myfile = document.querySelector("#myfile");
 let data;
 let googleSheet = localStorage.getItem("url")
-let loaderRight = document.querySelector('.loaderRight');
+let progress = document.querySelector('.progress');
 let slideCeption = document.querySelector('#slideCeption')
+
+export {uploadFileForm, progress};
+
+progress.style.display= 'none'
+
+import printEstimate from './sheetMetalSCRIPT'
 
 uploadFileForm.addEventListener('submit', e =>{
     e.preventDefault();
     e.stopPropagation();
     
-    loaderRight.style.display = 'block';
+    progress.style.display = 'block';
     uploadFileForm.style.display = 'none'
 
     const file = myfile.files[0]
@@ -29,7 +35,7 @@ uploadFileForm.addEventListener('submit', e =>{
         // jsonData[0] = sheet metal jsonData[1] = plastics .. etc
         console.log(jsonData[0], googleSheet);
         google.script.run
-        .withSuccessHandler(unhideSegmet)
+        .withSuccessHandler(printEstimate)
         .withFailureHandler(FailedToLoad)
         .estimate(jsonData[0], googleSheet, "Sheet Metal");   
     };
@@ -39,12 +45,12 @@ uploadFileForm.addEventListener('submit', e =>{
 function unhideSegmet (){
     slideCeption.classList.add('glowGreen')
     uploadFileForm.style.display = 'block'
-    loaderRight.style.display = 'none';
+    progress.style.display = 'none';
 
 }
 
 function FailedToLoad(){
     alert("Please review your input data");
     uploadFileForm.style.display = 'block'
-    loaderRight.style.display = 'none';
+    progress.style.display = 'none';
 }

@@ -482,7 +482,7 @@ main{
           <img src="https://drive.google.com/uc?export=download&id=1X2E0RU1woNs7_zmDJq4ylMfblZjrndTd" alt="estimations">
         </div>
         <br><br><br>
-        <div class="projNumSideBar"><h6>Project Number</h6></div>
+        <div class="projNumSideBar"><h6 id="projNumHeader"></h6></div>
         
         <h5> Estimated prices </h5>
         <br>
@@ -693,8 +693,9 @@ main{
 
 <h2>Mass upload</h2><br>
 
-    <div class="loaderRight preloader-wrapper big active">
-    </div>
+  <div class="progress">
+    <div class="indeterminate"></div>
+  </div>
 
   <form id="uploadFileForm">
       <label for="myfile">Select a file:</label>
@@ -985,7 +986,75 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"yHiL":[function(require,module,exports) {
+})({"gCHb":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.progress = exports.uploadFileForm = void 0;
+
+var _sheetMetalSCRIPT = _interopRequireDefault(require("./sheetMetalSCRIPT"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//Get XLS from input and listen for submit file
+var uploadFileForm = document.querySelector("#uploadFileForm");
+exports.uploadFileForm = uploadFileForm;
+var massUploadSubmit = document.querySelector("#massUploadSubmit");
+var myfile = document.querySelector("#myfile");
+var data;
+var googleSheet = localStorage.getItem("url");
+var progress = document.querySelector('.progress');
+exports.progress = progress;
+var slideCeption = document.querySelector('#slideCeption');
+progress.style.display = 'none';
+uploadFileForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  e.stopPropagation();
+  progress.style.display = 'block';
+  uploadFileForm.style.display = 'none';
+  var file = myfile.files[0];
+  var pNum = localStorage.getItem("projNum") || "test123";
+  var fileReader = new FileReader();
+  fileReader.readAsBinaryString(file);
+
+  fileReader.onload = function (e) {
+    var data = e.target.result;
+    var workbook = XLSX.read(data, {
+      type: "binary"
+    }); //console.log(workbook);
+
+    var jsonData = workbook.SheetNames.map(function (sheet) {
+      return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
+    }); // jsonData[0] = sheet metal jsonData[1] = plastics .. etc
+
+    console.log(jsonData[0], googleSheet);
+    google.script.run.withSuccessHandler(_sheetMetalSCRIPT.default).withFailureHandler(FailedToLoad).estimate(jsonData[0], googleSheet, "Sheet Metal");
+  };
+});
+
+function unhideSegmet() {
+  slideCeption.classList.add('glowGreen');
+  uploadFileForm.style.display = 'block';
+  progress.style.display = 'none';
+}
+
+function FailedToLoad() {
+  alert("Please review your input data");
+  uploadFileForm.style.display = 'block';
+  progress.style.display = 'none';
+}
+},{"./sheetMetalSCRIPT":"yHiL"}],"yHiL":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _massGenericSCRIPT = require("./massGenericSCRIPT");
+
 //Initialize floating Action Button    
 document.addEventListener('DOMContentLoaded', function () {
   var elems = document.querySelectorAll('.fixed-action-btn');
@@ -998,6 +1067,9 @@ var downloadXls = document.getElementById('downloadXls');
 var openGSheets = document.getElementById("openGSheets");
 var googleSheetURL = localStorage.getItem("url");
 var copyLink = document.querySelector('#copyLink');
+var projNumHeader = document.querySelector('#projNumHeader');
+var projNum = localStorage.getItem('projNum');
+projNumHeader.innerText = projNum;
 document.addEventListener('DOMContentLoaded', function () {
   var elems = document.querySelectorAll('select');
   var instances = M.FormSelect.init(elems);
@@ -1098,6 +1170,8 @@ function estimate(e) {
 }
 
 function printEstimate() {
+  _massGenericSCRIPT.uploadFileForm.style.display = 'block';
+  _massGenericSCRIPT.progress.style.display = 'none';
   var dollar = document.querySelector('#slideCeption');
   dollar.classList.add('glowGreen');
   loader.style.display = 'none';
@@ -1105,8 +1179,7 @@ function printEstimate() {
   myForm.reset();
   openGSheets.href = googleSheetURL;
   openGSheets.target = "_blank";
-  console.log(googleSheetURL);
-  var indexof = googleSheetURL.indexOf("edit#");
+  var indexof = googleSheetURL.indexOf("edit?");
   var substr = googleSheetURL.slice(0, indexof);
   var downloadRoute = substr + "export?format=xlsx";
   downloadXls.href = downloadRoute;
@@ -1117,7 +1190,10 @@ function onFailure() {
   loader.style.display = 'none';
   myForm.style.display = 'block';
 }
-},{}]},{},["yHiL"], null)</script>
+
+var _default = printEstimate;
+exports.default = _default;
+},{"./massGenericSCRIPT":"gCHb"}]},{},["yHiL"], null)</script>
    <script>// modules are defined as an array
 // [ module function, map of requires ]
 //
@@ -1237,19 +1313,181 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"gCHb":[function(require,module,exports) {
+})({"yHiL":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _massGenericSCRIPT = require("./massGenericSCRIPT");
+
+//Initialize floating Action Button    
+document.addEventListener('DOMContentLoaded', function () {
+  var elems = document.querySelectorAll('.fixed-action-btn');
+  var instances = M.FloatingActionButton.init(elems, {
+    direction: 'bottom',
+    hoverEnabled: false
+  });
+});
+var downloadXls = document.getElementById('downloadXls');
+var openGSheets = document.getElementById("openGSheets");
+var googleSheetURL = localStorage.getItem("url");
+var copyLink = document.querySelector('#copyLink');
+var projNumHeader = document.querySelector('#projNumHeader');
+var projNum = localStorage.getItem('projNum');
+projNumHeader.innerText = projNum;
+document.addEventListener('DOMContentLoaded', function () {
+  var elems = document.querySelectorAll('select');
+  var instances = M.FormSelect.init(elems);
+});
+var arr = [];
+var myForm = document.querySelector('#myForm');
+var hdw = document.getElementById("hdw");
+hdw.style.display = "none";
+var loader = document.querySelector('.loader');
+loader.style.display = 'none';
+document.getElementById("infoMsg").style.display = "block";
+document.getElementById("infoMsg").style.display = "none";
+var hide = document.querySelector('#hide');
+hide.addEventListener("click", toggle);
+
+function toggle() {
+  if (hdw.style.display === 'block') {
+    hdw.style.display = 'none';
+  } else {
+    hdw.style.display = 'block';
+  }
+} //Show Information square
+
+
+document.getElementById('complexity').addEventListener("change", toggleInfoSqr);
+
+function toggleInfoSqr() {
+  var value = document.getElementById('complexity').value;
+
+  if (value === 'Simple') {
+    document.getElementById("infoMsg").innerHTML = "ⓘ   Simple to install items such as screws.";
+    document.getElementById("infoMsg").style.display = "inline-block";
+  } else if (value === 'Medium') {
+    document.getElementById("infoMsg").innerHTML = "ⓘ    Medium complexity items, rivetting.";
+    document.getElementById("infoMsg").style.display = "inline-block";
+  } else if (value === 'Complex') {
+    document.getElementById("infoMsg").innerHTML = "ⓘ Complex items including soldering.";
+    document.getElementById("infoMsg").style.display = "inline-block";
+  }
+} //     ESTIMATE BUTTON , SUBMIT OBJECT WITH VALUE TO SERVER
+
+
+document.getElementById('submit').addEventListener("click", estimate);
+var sheet = "Sheet Metal";
+var sheetHeader = ["Part Number", "Units(mm/in)", "Length", "Width", "Thickness", "Material", "Finish Type", "Finish Type 2", "Bendings(#)", "EAU", "Hardware qty", "Hdw complexity", "Material cost", "Finish cost", "Hardware cost", "Labor cost", "PRICE /each"];
+
+function estimate(e) {
+  myForm.style.display = 'none';
+  loader.style.display = 'block';
+  e.preventDefault();
+  var ids = Array.from(myForm.querySelectorAll('*[id]'));
+  var singleEstData = {};
+  ids.map(function (element) {
+    //singleEstHeaders.find(elemId => element.id === elemId)
+    switch (element.id) {
+      case "partNumber":
+        return singleEstData["Part Number"] = element.value;
+
+      case "units":
+        return singleEstData["Units(mm/in)"] = element.value;
+
+      case "length":
+        return singleEstData["Length"] = element.value;
+
+      case "width":
+        return singleEstData["Width"] = element.value;
+
+      case "thickness":
+        return singleEstData["Thickness"] = element.value;
+
+      case "material":
+        return singleEstData["Material"] = element.value;
+
+      case "finishOne":
+        return singleEstData["Finish Type"] = element.value;
+
+      case "finishTwo":
+        return singleEstData["Finish Type 2"] = element.value;
+
+      case "bending":
+        return singleEstData["Bendings(#)"] = element.value;
+
+      case "EAU":
+        return singleEstData["EAU"] = element.value;
+
+      case "qtyHdw":
+        return singleEstData["Hardware qty"] = element.value;
+
+      case "complexity":
+        return singleEstData["Hdw complexity"] = element.value;
+
+      default:
+        return {};
+    }
+  });
+  console.log([singleEstData]);
+  google.script.run.withSuccessHandler(printEstimate).withFailureHandler(onFailure).estimate([singleEstData], googleSheetURL, sheet);
+}
+
+function printEstimate() {
+  _massGenericSCRIPT.uploadFileForm.style.display = 'block';
+  _massGenericSCRIPT.progress.style.display = 'none';
+  var dollar = document.querySelector('#slideCeption');
+  dollar.classList.add('glowGreen');
+  loader.style.display = 'none';
+  myForm.style.display = 'block';
+  myForm.reset();
+  openGSheets.href = googleSheetURL;
+  openGSheets.target = "_blank";
+  var indexof = googleSheetURL.indexOf("edit?");
+  var substr = googleSheetURL.slice(0, indexof);
+  var downloadRoute = substr + "export?format=xlsx";
+  downloadXls.href = downloadRoute;
+}
+
+function onFailure() {
+  alert("Please review your input data");
+  loader.style.display = 'none';
+  myForm.style.display = 'block';
+}
+
+var _default = printEstimate;
+exports.default = _default;
+},{"./massGenericSCRIPT":"gCHb"}],"gCHb":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.progress = exports.uploadFileForm = void 0;
+
+var _sheetMetalSCRIPT = _interopRequireDefault(require("./sheetMetalSCRIPT"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 //Get XLS from input and listen for submit file
 var uploadFileForm = document.querySelector("#uploadFileForm");
+exports.uploadFileForm = uploadFileForm;
 var massUploadSubmit = document.querySelector("#massUploadSubmit");
 var myfile = document.querySelector("#myfile");
 var data;
 var googleSheet = localStorage.getItem("url");
-var loaderRight = document.querySelector('.loaderRight');
+var progress = document.querySelector('.progress');
+exports.progress = progress;
 var slideCeption = document.querySelector('#slideCeption');
+progress.style.display = 'none';
 uploadFileForm.addEventListener('submit', function (e) {
   e.preventDefault();
   e.stopPropagation();
-  loaderRight.style.display = 'block';
+  progress.style.display = 'block';
   uploadFileForm.style.display = 'none';
   var file = myfile.files[0];
   var pNum = localStorage.getItem("projNum") || "test123";
@@ -1267,22 +1505,22 @@ uploadFileForm.addEventListener('submit', function (e) {
     }); // jsonData[0] = sheet metal jsonData[1] = plastics .. etc
 
     console.log(jsonData[0], googleSheet);
-    google.script.run.withSuccessHandler(unhideSegmet).withFailureHandler(FailedToLoad).estimate(jsonData[0], googleSheet, "Sheet Metal");
+    google.script.run.withSuccessHandler(_sheetMetalSCRIPT.default).withFailureHandler(FailedToLoad).estimate(jsonData[0], googleSheet, "Sheet Metal");
   };
 });
 
 function unhideSegmet() {
   slideCeption.classList.add('glowGreen');
   uploadFileForm.style.display = 'block';
-  loaderRight.style.display = 'none';
+  progress.style.display = 'none';
 }
 
 function FailedToLoad() {
   alert("Please review your input data");
   uploadFileForm.style.display = 'block';
-  loaderRight.style.display = 'none';
+  progress.style.display = 'none';
 }
-},{}]},{},["gCHb"], null)</script>
+},{"./sheetMetalSCRIPT":"yHiL"}]},{},["gCHb"], null)</script>
    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

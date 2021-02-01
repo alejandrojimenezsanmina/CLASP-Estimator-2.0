@@ -117,7 +117,75 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"yHiL":[function(require,module,exports) {
+})({"gCHb":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.progress = exports.uploadFileForm = void 0;
+
+var _sheetMetalSCRIPT = _interopRequireDefault(require("./sheetMetalSCRIPT"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//Get XLS from input and listen for submit file
+var uploadFileForm = document.querySelector("#uploadFileForm");
+exports.uploadFileForm = uploadFileForm;
+var massUploadSubmit = document.querySelector("#massUploadSubmit");
+var myfile = document.querySelector("#myfile");
+var data;
+var googleSheet = localStorage.getItem("url");
+var progress = document.querySelector('.progress');
+exports.progress = progress;
+var slideCeption = document.querySelector('#slideCeption');
+progress.style.display = 'none';
+uploadFileForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  e.stopPropagation();
+  progress.style.display = 'block';
+  uploadFileForm.style.display = 'none';
+  var file = myfile.files[0];
+  var pNum = localStorage.getItem("projNum") || "test123";
+  var fileReader = new FileReader();
+  fileReader.readAsBinaryString(file);
+
+  fileReader.onload = function (e) {
+    var data = e.target.result;
+    var workbook = XLSX.read(data, {
+      type: "binary"
+    }); //console.log(workbook);
+
+    var jsonData = workbook.SheetNames.map(function (sheet) {
+      return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
+    }); // jsonData[0] = sheet metal jsonData[1] = plastics .. etc
+
+    console.log(jsonData[0], googleSheet);
+    google.script.run.withSuccessHandler(_sheetMetalSCRIPT.default).withFailureHandler(FailedToLoad).estimate(jsonData[0], googleSheet, "Sheet Metal");
+  };
+});
+
+function unhideSegmet() {
+  slideCeption.classList.add('glowGreen');
+  uploadFileForm.style.display = 'block';
+  progress.style.display = 'none';
+}
+
+function FailedToLoad() {
+  alert("Please review your input data");
+  uploadFileForm.style.display = 'block';
+  progress.style.display = 'none';
+}
+},{"./sheetMetalSCRIPT":"yHiL"}],"yHiL":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _massGenericSCRIPT = require("./massGenericSCRIPT");
+
 //Initialize floating Action Button    
 document.addEventListener('DOMContentLoaded', function () {
   var elems = document.querySelectorAll('.fixed-action-btn');
@@ -130,6 +198,9 @@ var downloadXls = document.getElementById('downloadXls');
 var openGSheets = document.getElementById("openGSheets");
 var googleSheetURL = localStorage.getItem("url");
 var copyLink = document.querySelector('#copyLink');
+var projNumHeader = document.querySelector('#projNumHeader');
+var projNum = localStorage.getItem('projNum');
+projNumHeader.innerText = projNum;
 document.addEventListener('DOMContentLoaded', function () {
   var elems = document.querySelectorAll('select');
   var instances = M.FormSelect.init(elems);
@@ -229,14 +300,20 @@ function estimate(e) {
   google.script.run.withSuccessHandler(printEstimate).withFailureHandler(onFailure).estimate([singleEstData], googleSheetURL, sheet);
 }
 
-function printEstimate(googleSheetURL) {
+function printEstimate() {
+  _massGenericSCRIPT.uploadFileForm.style.display = 'block';
+  _massGenericSCRIPT.progress.style.display = 'none';
   var dollar = document.querySelector('#slideCeption');
   dollar.classList.add('glowGreen');
   loader.style.display = 'none';
   myForm.style.display = 'block';
   myForm.reset();
   openGSheets.href = googleSheetURL;
-  downloadXls.href = googleSheetURL;
+  openGSheets.target = "_blank";
+  var indexof = googleSheetURL.indexOf("edit?");
+  var substr = googleSheetURL.slice(0, indexof);
+  var downloadRoute = substr + "export?format=xlsx";
+  downloadXls.href = downloadRoute;
 }
 
 function onFailure() {
@@ -244,4 +321,7 @@ function onFailure() {
   loader.style.display = 'none';
   myForm.style.display = 'block';
 }
-},{}]},{},["yHiL"], null)
+
+var _default = printEstimate;
+exports.default = _default;
+},{"./massGenericSCRIPT":"gCHb"}]},{},["yHiL"], null)
