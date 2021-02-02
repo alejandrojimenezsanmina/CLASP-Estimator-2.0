@@ -4,6 +4,9 @@ $( document ).ready(function(){
     $(".dropdown-trigger").dropdown();
     $('.modal').modal();
     $('.sidenav').sidenav();
+
+    let queryString = window.location.search;
+    console.log(queryString);
     
     var restart = document.querySelector("#restart")
     restart.addEventListener("click", function (){
@@ -14,12 +17,16 @@ $( document ).ready(function(){
     var infoButton = document.querySelector("#infoButton");
     infoButton.addEventListener("click", function (e){ e.target.classList.remove("glow")})
 
-    var dollarSign = document.querySelector('#slideCeption');
-    dollarSign.addEventListener("click", function (e) { 
-      if(dollarSign.classList.contains('glowGreen')){
-        dollarSign.classList.remove("glowGreen")
-      }
-    })
+    if (document.querySelector('#slideCeption')){
+      
+      var dollarSign = document.querySelector('#slideCeption');
+      dollarSign.addEventListener("click", function (e) { 
+        if(dollarSign.classList.contains('glowGreen')){
+          dollarSign.classList.remove("glowGreen")
+        }
+      })
+
+    }
 
     var qims;
     if (localStorage.getItem("projNum")){
