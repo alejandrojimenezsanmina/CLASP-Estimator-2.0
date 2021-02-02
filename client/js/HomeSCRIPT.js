@@ -49,6 +49,25 @@ $( document ).ready(function(){
   //Project number in navbar
   var brandLogo = document.querySelector(".brand-logo");
   brandLogo.innerText = qims
+
+  let projNumHeader = document.querySelector('#projNumHeader');
+  let openGSheets = document.querySelector('#openGSheets');
+  let downloadXls = document.querySelector('#downloadXls');
+  let sendEmail = document.querySelector('#sendEmail');
+
+  if(sheetUrl){
+    openGSheets.href = sheetUrl;
+    openGSheets.target = "_blank";
+    let indexof = sheetUrl.indexOf("edit?")
+    let substr = sheetUrl.slice(0, indexof);
+    let downloadRoute = substr + "export?format=xlsx";
+    downloadXls.href = downloadRoute;
+  }
+
+  if(qims){
+    projNumHeader.innerText= qims;
+  }
+  
   
   //If Project # > 5 show Start button
   var project = document.querySelector('.project');

@@ -860,6 +860,8 @@ $(document).ready(function () {
 
   if (localStorage.getItem("projNum")) {
     qims = localStorage.getItem("projNum");
+  } else {
+    qims = "New Project";
   } //Project number in navbar
 
 
@@ -1055,14 +1057,6 @@ exports.default = void 0;
 
 var _massGenericSCRIPT = require("./massGenericSCRIPT");
 
-//Initialize floating Action Button    
-document.addEventListener('DOMContentLoaded', function () {
-  var elems = document.querySelectorAll('.fixed-action-btn');
-  var instances = M.FloatingActionButton.init(elems, {
-    direction: 'bottom',
-    hoverEnabled: false
-  });
-});
 var downloadXls = document.getElementById('downloadXls');
 var openGSheets = document.getElementById("openGSheets");
 var googleSheetURL = localStorage.getItem("url");
@@ -1070,6 +1064,12 @@ var copyLink = document.querySelector('#copyLink');
 var projNumHeader = document.querySelector('#projNumHeader');
 var projNum = localStorage.getItem('projNum');
 projNumHeader.innerText = projNum;
+openGSheets.href = googleSheetURL;
+openGSheets.target = "_blank";
+var indexof = googleSheetURL.indexOf("edit?");
+var substr = googleSheetURL.slice(0, indexof);
+var downloadRoute = substr + "export?format=xlsx";
+downloadXls.href = downloadRoute;
 document.addEventListener('DOMContentLoaded', function () {
   var elems = document.querySelectorAll('select');
   var instances = M.FormSelect.init(elems);
@@ -1177,12 +1177,6 @@ function printEstimate() {
   loader.style.display = 'none';
   myForm.style.display = 'block';
   myForm.reset();
-  openGSheets.href = googleSheetURL;
-  openGSheets.target = "_blank";
-  var indexof = googleSheetURL.indexOf("edit?");
-  var substr = googleSheetURL.slice(0, indexof);
-  var downloadRoute = substr + "export?format=xlsx";
-  downloadXls.href = downloadRoute;
 }
 
 function onFailure() {
@@ -1323,14 +1317,6 @@ exports.default = void 0;
 
 var _massGenericSCRIPT = require("./massGenericSCRIPT");
 
-//Initialize floating Action Button    
-document.addEventListener('DOMContentLoaded', function () {
-  var elems = document.querySelectorAll('.fixed-action-btn');
-  var instances = M.FloatingActionButton.init(elems, {
-    direction: 'bottom',
-    hoverEnabled: false
-  });
-});
 var downloadXls = document.getElementById('downloadXls');
 var openGSheets = document.getElementById("openGSheets");
 var googleSheetURL = localStorage.getItem("url");
@@ -1338,6 +1324,12 @@ var copyLink = document.querySelector('#copyLink');
 var projNumHeader = document.querySelector('#projNumHeader');
 var projNum = localStorage.getItem('projNum');
 projNumHeader.innerText = projNum;
+openGSheets.href = googleSheetURL;
+openGSheets.target = "_blank";
+var indexof = googleSheetURL.indexOf("edit?");
+var substr = googleSheetURL.slice(0, indexof);
+var downloadRoute = substr + "export?format=xlsx";
+downloadXls.href = downloadRoute;
 document.addEventListener('DOMContentLoaded', function () {
   var elems = document.querySelectorAll('select');
   var instances = M.FormSelect.init(elems);
@@ -1445,12 +1437,6 @@ function printEstimate() {
   loader.style.display = 'none';
   myForm.style.display = 'block';
   myForm.reset();
-  openGSheets.href = googleSheetURL;
-  openGSheets.target = "_blank";
-  var indexof = googleSheetURL.indexOf("edit?");
-  var substr = googleSheetURL.slice(0, indexof);
-  var downloadRoute = substr + "export?format=xlsx";
-  downloadXls.href = downloadRoute;
 }
 
 function onFailure() {

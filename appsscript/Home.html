@@ -371,51 +371,99 @@ h6{
 }
 
 </style>
+    <script src="https://kit.fontawesome.com/6365c07014.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     
   </head>
   
   <body>
   
-  <!-- Modal Project RESTART -->
-  <div id="modalRestart" class="modal">
-    <div class="modal-content">
-      <div style="font-size:3rem;text-align:right"> <i class="material-icons right">warning</i> </div> 
-      <h4>Atention!</h4>
-      <p>This will reset your project. Do you wish to continue?</p>
-    </div>
-    <div class="modal-footer">
-      <a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=home" class="modal-close btn waves-effect btn-flat deep-orange text-darken-1" id="restart">Yes, restart</a>
-      <a class="modal-close btn waves-effect btn-flat green text-darken-1">Cancel</a>
-    </div>
+ <!-- Modal Project RESTART -->
+ <div id="modalRestart" class="modal">
+  <div class="modal-content">
+    <div style="font-size:3rem;text-align:right"> <i class="material-icons right">warning</i> </div> 
+    <h4>Atention!</h4>
+    <p>This will reset your project. Do you wish to continue?</p>
   </div>
-  
-  <!-- Dropdown Structure -->
+  <div class="modal-footer">
+    <a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=home" class="modal-close btn waves-effect btn-flat deep-orange text-darken-1" id="restart">Yes, restart</a>
+    <a class="modal-close btn waves-effect btn-flat green text-darken-1">Cancel</a>
+  </div>
+</div>
+
+<!-- Modal INFO -->
+<div id="modalInfo" class="modal">
+  <div class="modal-content">
+    <div style="font-size:3rem ;text-align:center"> <i class="material-icons md-48 right">info</i> </div> 
+    <h5>How to use: Sheet metal estimator</h5><br>
+        <h6>Single item estimation</h6>
+        <p>This is a good opotion if you wish to get a quick estimation on one or a couple of parts.</p>
+        <p>You can estimate your items one part at a time by filling the required parameters on the left.</p>
+          <div class="gif"><img src="https://drive.google.com/uc?export=download&id=1RFbl53qjlzBxMMsp52g4Ogz98cyyGs1a"> </div>
+        <br>
+        <h6>Mass upload</h6>
+        <p>You have a list of parts that would take you long enough to estimate one by one?</p>
+        <p>Put the required paramenters in the excel template (or google sheet) and you will get your estimatios in seconds.</p>
+        <p>Requirements <i class="fas fa-exclamation"></i></p>
+        <p>We will need a specific template. You can download or (open in google sheets) this template in the menu bar.</p>
+          <div class="gif"><img src="https://drive.google.com/uc?export=download&id=1bEaVh5mlnecFrbPhnehLfDO5I3X1btcU"> </div>
+        <p>There are certain rules in the template you need to adhere to, such as picking material, finish type, etc, from the dropwdown menu. Make sure you are selecting valid options.</p>
+          <div class="gif"><img src="https://drive.google.com/uc?export=download&id=1kffwJJO-J0LhfSQWdiAVo6L3D0hAFd7N"> </div>
+  </div>
+  <div class="modal-footer">
+    <a class="modal-close btn waves-effect btn-flat green text-darken-1">Got it!</a>
+  </div>
+</div>
+
+<!-- Dropdown Structure -->
 <ul id="dropdown1" class="dropdown-content">
-  <li><a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=sheet">Sheet metal - single</a></li>
-    <li class="divider"></li>
-  <li><a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=uploadFile">Sheet metal - mass upload</a></li>
-    <li class="divider"></li>
-  <li><a href="#!">Plastics - single</a></li>
-    <li class="divider"></li>
-  <li><a href="#!">Plastics - mass upload</a></li>
-    <li class="divider"></li>
-  <li><a href="#!"><i class="material-icons right">work_off</i>Machined - single</a></li>
-    <li class="divider"></li>
-  <li><a href="#!"><i class="material-icons right">work_off</i> Machined - mass upload</a></li>
-    <li class="divider"></li> 
-  <li><a href="#!"><i class="material-icons right">work_off</i>Part catalogue</a></li>
+<li><a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=sheet">Sheet metal</a></li>
+<li><a href="#!">Plastics</a></li>
+<li><a href="#!"><i class="material-icons right">work_off</i>Machined </a></li>
+<li><a href="#!"><i class="material-icons right">work_off</i>Part catalogue</a></li>
+  <li class="divider"></li> 
+<li><a href="https://drive.google.com/file/d/1DOxVZKSSY67L40yavwRMVv_D7lK7t2vn/view?usp=sharing" id="downloadTemplate" target="_blank" download="">
+       Mass upload<i class="far fa-file-excel">
+</i></a></li>
 </ul>
+<div class="navbar-fixed">
 <nav>
-  <div class="nav-wrapper">
-    <div><a href="#!" class="brand-logo"></a> </div>
-    <ul class=" hide-on-med-and-down">
-      <!-- Dropdown Trigger -->
-      <li><a class="" href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=home"><i class="material-icons right">home</i></a></li>
-      <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Menu<i class="material-icons right">arrow_drop_down</i></a></li>
-      <li><a class="modal-trigger" href="#modalRestart"><i class="material-icons" id="powerIcon">power_settings_new</i></a></li>
-    </ul>
-  </div>
+<div class="nav-wrapper">
+  <div><a href="#!" class="brand-logo"></a> </div>
+  <ul class=" hide-on-med-and-down">
+    <!-- Dropdown Trigger -->
+    <li><a href="#" data-target="slide-out" id="slideCeption" class="sidenav-trigger"><i class="fas fa-dollar-sign "></i></a></li>
+    <li><a class="modal-trigger" href="#modalInfo" id="infoButton"><i class="material-icons md-light glow">info</i></a></li>
+    <li><a class="" href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=home"><i class="material-icons">home</i></a></li>
+    <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Menu<i class="material-icons right">arrow_drop_down</i></a></li>
+    <li><a class="modal-trigger" href="#modalRestart"><i class="material-icons" id="powerIcon">power_settings_new</i></a></li>
+  </ul>
+</div>
 </nav>
+</div>
+  
+
+<!-- SIDE NAV -->
+<ul id="slide-out" class="sidenav">
+    <li><div class="user-view">
+      <div class="background">
+        <img src="https://drive.google.com/uc?export=download&id=1X2E0RU1woNs7_zmDJq4ylMfblZjrndTd" alt="estimations">
+      </div>
+      <br><br><br>
+      <div class="projNumSideBar"><h6 id="projNumHeader"></h6></div>
+      
+      <h5> Estimated prices </h5>
+      <br>
+    </div></li>
+    <li><a id="openGSheets"><i class="material-icons">cloud</i>Open in google sheets</a></li>
+    <li><a id="downloadXls" download="" target="_blank"><i class="material-icons">download</i>Download excel</a></li>
+    <li><a id="sendEmail"><i class="material-icons">email</i> Send me via email </a></li>
+    <br>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">Latest Estimations</a></li>
+    <li>Part Number</li>
+    <!-- <li><a class="waves-effect" href="#!">Third Link With Waves</a></li> -->
+</ul>
       
     <div class="pageContainer"> 
       
@@ -467,18 +515,6 @@ h6{
            </div>
          </div>
          
-         
-         <div class="bigButton">
-           <div>
-             <a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=uploadFile">
-               <img src="https://drive.google.com/uc?export=download&id=1I4pAze2s7ksAqw73gRHWXCIPYLNIQaNy" id="sheetMassImgfix">
-             </a>
-           </div>
-           <div class="buttonText">
-             Mass upload
-           </div>
-         </div>
-         
          <div class="bigButton">
            <div>
              <a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=sheet?v=plastics">
@@ -493,17 +529,6 @@ h6{
          <div class="bigButton">
            <div>
              <a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=plastics">
-               <img src="https://drive.google.com/uc?export=download&id=1IS26MIJfK2SqeOhKz_DzqQxjNK6R5y3Q">
-             </a>
-           </div>
-           <div class="buttonText">
-             Mass upload
-           </div>
-         </div>
-         
-         <div class="bigButton">
-           <div>
-             <a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=plastics">
                <img src="https://drive.google.com/uc?export=download&id=1oJThIj1uFwWu0jED733C4Ees0bk9MSB4">
              </a>
            </div>
@@ -511,18 +536,7 @@ h6{
              Machined
            </div>
          </div>
-         
-         <div class="bigButton">
-           <div>
-             <a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=plastics">
-               <img src="https://drive.google.com/uc?export=download&id=1ejhMgju3IHo6tt_7RbwoYb7iyvpvv92h">
-             </a>
-           </div>
-           <div class="buttonText">
-             Mass upload
-           </div>
-         </div>
-         
+             
          <div class="bigButton">
            <div>
              <a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=plastics">
@@ -555,6 +569,159 @@ h6{
 </footer>
    <!--Footer  ends-->         
   
+   <script>// modules are defined as an array
+// [ module function, map of requires ]
+//
+// map of requires is short require name -> numeric require
+//
+// anything defined in a previous bundle is accessed via the
+// orig method which is the require for previous bundles
+parcelRequire = (function (modules, cache, entry, globalName) {
+  // Save the require from previous bundle to this closure if any
+  var previousRequire = typeof parcelRequire === 'function' && parcelRequire;
+  var nodeRequire = typeof require === 'function' && require;
+
+  function newRequire(name, jumped) {
+    if (!cache[name]) {
+      if (!modules[name]) {
+        // if we cannot find the module within our internal map or
+        // cache jump to the current global require ie. the last bundle
+        // that was added to the page.
+        var currentRequire = typeof parcelRequire === 'function' && parcelRequire;
+        if (!jumped && currentRequire) {
+          return currentRequire(name, true);
+        }
+
+        // If there are other bundles on this page the require from the
+        // previous one is saved to 'previousRequire'. Repeat this as
+        // many times as there are bundles until the module is found or
+        // we exhaust the require chain.
+        if (previousRequire) {
+          return previousRequire(name, true);
+        }
+
+        // Try the node require function if it exists.
+        if (nodeRequire && typeof name === 'string') {
+          return nodeRequire(name);
+        }
+
+        var err = new Error('Cannot find module \'' + name + '\'');
+        err.code = 'MODULE_NOT_FOUND';
+        throw err;
+      }
+
+      localRequire.resolve = resolve;
+      localRequire.cache = {};
+
+      var module = cache[name] = new newRequire.Module(name);
+
+      modules[name][0].call(module.exports, localRequire, module, module.exports, this);
+    }
+
+    return cache[name].exports;
+
+    function localRequire(x){
+      return newRequire(localRequire.resolve(x));
+    }
+
+    function resolve(x){
+      return modules[name][1][x] || x;
+    }
+  }
+
+  function Module(moduleName) {
+    this.id = moduleName;
+    this.bundle = newRequire;
+    this.exports = {};
+  }
+
+  newRequire.isParcelRequire = true;
+  newRequire.Module = Module;
+  newRequire.modules = modules;
+  newRequire.cache = cache;
+  newRequire.parent = previousRequire;
+  newRequire.register = function (id, exports) {
+    modules[id] = [function (require, module) {
+      module.exports = exports;
+    }, {}];
+  };
+
+  var error;
+  for (var i = 0; i < entry.length; i++) {
+    try {
+      newRequire(entry[i]);
+    } catch (e) {
+      // Save first error but execute all entries
+      if (!error) {
+        error = e;
+      }
+    }
+  }
+
+  if (entry.length) {
+    // Expose entry point to Node, AMD or browser globals
+    // Based on https://github.com/ForbesLindesay/umd/blob/master/template.js
+    var mainExports = newRequire(entry[entry.length - 1]);
+
+    // CommonJS
+    if (typeof exports === "object" && typeof module !== "undefined") {
+      module.exports = mainExports;
+
+    // RequireJS
+    } else if (typeof define === "function" && define.amd) {
+     define(function () {
+       return mainExports;
+     });
+
+    // <script>
+    } else if (globalName) {
+      this[globalName] = mainExports;
+    }
+  }
+
+  // Override the current require with this new one
+  parcelRequire = newRequire;
+
+  if (error) {
+    // throw error from earlier, _after updating parcelRequire_
+    throw error;
+  }
+
+  return newRequire;
+})({"MypH":[function(require,module,exports) {
+//Load navbar drowpdown menu
+$(document).ready(function () {
+  $(".dropdown-trigger").dropdown();
+  $('.modal').modal();
+  $('.sidenav').sidenav();
+  var restart = document.querySelector("#restart");
+  restart.addEventListener("click", function () {
+    localStorage.clear();
+  }); //Info Button turn off glow
+
+  var infoButton = document.querySelector("#infoButton");
+  infoButton.addEventListener("click", function (e) {
+    e.target.classList.remove("glow");
+  });
+  var dollarSign = document.querySelector('#slideCeption');
+  dollarSign.addEventListener("click", function (e) {
+    if (dollarSign.classList.contains('glowGreen')) {
+      dollarSign.classList.remove("glowGreen");
+    }
+  });
+  var qims;
+
+  if (localStorage.getItem("projNum")) {
+    qims = localStorage.getItem("projNum");
+  } else {
+    qims = "New Project";
+  } //Project number in navbar
+
+
+  var brandLogo = document.querySelector(".brand-logo");
+  brandLogo.innerText = qims;
+});
+},{}]},{},["MypH"], null)</script>        
    <script>// modules are defined as an array
 // [ module function, map of requires ]
 //
@@ -714,7 +881,25 @@ startButton.style.display = 'none';
 body.style.background = '#EFEFEF'; //Project number in navbar
 
 var brandLogo = document.querySelector(".brand-logo");
-brandLogo.innerText = qims; //If Project # > 5 show Start button
+brandLogo.innerText = qims;
+var projNumHeader = document.querySelector('#projNumHeader');
+var openGSheets = document.querySelector('#openGSheets');
+var downloadXls = document.querySelector('#downloadXls');
+var sendEmail = document.querySelector('#sendEmail');
+
+if (sheetUrl) {
+  openGSheets.href = sheetUrl;
+  openGSheets.target = "_blank";
+  var indexof = sheetUrl.indexOf("edit?");
+  var substr = sheetUrl.slice(0, indexof);
+  var downloadRoute = substr + "export?format=xlsx";
+  downloadXls.href = downloadRoute;
+}
+
+if (qims) {
+  projNumHeader.innerText = qims;
+} //If Project # > 5 show Start button
+
 
 var project = document.querySelector('.project');
 project.addEventListener("input", function (e) {

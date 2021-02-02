@@ -24,6 +24,8 @@ $( document ).ready(function(){
     var qims;
     if (localStorage.getItem("projNum")){
     qims = localStorage.getItem("projNum");
+    }else{
+      qims = "New Project"
     }
 
     //Project number in navbar

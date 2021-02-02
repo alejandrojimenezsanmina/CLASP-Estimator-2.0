@@ -1,11 +1,5 @@
 
-//Initialize floating Action Button    
- document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.fixed-action-btn');
-    var instances = M.FloatingActionButton.init(elems, 
-            {direction: 'bottom', hoverEnabled: false },
-            );
-  });
+
 var downloadXls = document.getElementById('downloadXls');
 var openGSheets = document.getElementById("openGSheets");
 var googleSheetURL = localStorage.getItem("url");
@@ -13,6 +7,14 @@ let copyLink = document.querySelector('#copyLink');
 let projNumHeader = document.querySelector('#projNumHeader');
 let projNum = localStorage.getItem('projNum')
 projNumHeader.innerText = projNum
+
+
+openGSheets.href = googleSheetURL;
+  openGSheets.target = "_blank";
+  let indexof = googleSheetURL.indexOf("edit?")
+  let substr = googleSheetURL.slice(0, indexof);
+  let downloadRoute = substr + "export?format=xlsx";
+  downloadXls.href = downloadRoute;
 
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
@@ -143,14 +145,8 @@ function printEstimate (){
   loader.style.display = 'none';
   myForm.style.display = 'block';
   myForm.reset();
-  openGSheets.href = googleSheetURL;
-  openGSheets.target = "_blank";
-  let indexof = googleSheetURL.indexOf("edit?")
-  let substr = googleSheetURL.slice(0, indexof);
-  let downloadRoute = substr + "export?format=xlsx";
-  downloadXls.href = downloadRoute;
-
   }
+
 
 function onFailure(){
   alert("Please review your input data")
