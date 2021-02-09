@@ -9,7 +9,7 @@ let projNum = localStorage.getItem('projNum')
 projNumHeader.innerText = projNum
 
 
-openGSheets.href = googleSheetURL;
+  openGSheets.href = googleSheetURL;
   openGSheets.target = "_blank";
   let indexof = googleSheetURL.indexOf("edit?")
   let substr = googleSheetURL.slice(0, indexof);

@@ -5,8 +5,17 @@ $( document ).ready(function(){
     $('.modal').modal();
     $('.sidenav').sidenav();
 
-    let queryString = window.location.search;
-    console.log(queryString);
+    let projectURL;
+
+    if(localStorage.getItem('url')){
+      projectURL = localStorage.getItem('url')
+    }
+
+    if(!projectURL){
+      if(document.querySelector('#dropDownMenu')){
+        document.querySelector('#dropDownMenu').style.display = 'none';
+      }
+    }
     
     var restart = document.querySelector("#restart")
     restart.addEventListener("click", function (){
@@ -14,10 +23,10 @@ $( document ).ready(function(){
       })
 
         //Info Button turn off glow
-    var infoButton = document.querySelector("#infoButton");
-    infoButton.addEventListener("click", function (e){ e.target.classList.remove("glow")})
-
-    if (document.querySelector('#slideCeption')){
+    if(document.querySelector("#infoButton")){
+      var infoButton = document.querySelector("#infoButton");
+      infoButton.addEventListener("click", function (e){ e.target.classList.remove("glow")})
+    }
       
       var dollarSign = document.querySelector('#slideCeption');
       dollarSign.addEventListener("click", function (e) { 
@@ -26,7 +35,7 @@ $( document ).ready(function(){
         }
       })
 
-    }
+    
 
     var qims;
     if (localStorage.getItem("projNum")){

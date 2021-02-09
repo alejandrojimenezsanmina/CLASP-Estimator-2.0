@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+HK:500&display=swap');
     *{
@@ -372,7 +371,15 @@ h6{
   line-height: 64px;
 }
 
-</style>  
+ body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }</style>  
     <style>
 *{
   box-sizing: border-box;
@@ -435,7 +442,9 @@ main{
           <p>We will need a specific template. You can download or (open in google sheets) this template in the menu bar.</p>
             <div class="gif"><img src="https://drive.google.com/uc?export=download&id=1bEaVh5mlnecFrbPhnehLfDO5I3X1btcU"> </div>
           <p>There are certain rules in the template you need to adhere to, such as picking material, finish type, etc, from the dropwdown menu. Make sure you are selecting valid options.</p>
-            <div class="gif"><img src="https://drive.google.com/uc?export=download&id=1kffwJJO-J0LhfSQWdiAVo6L3D0hAFd7N"> </div>
+            <div class="gif"><img src="https://drive.google.com/uc?export=download&id=1kffwJJO-J0LhfSQWdiAVo6L3D0hAFd7N"> </div><br>
+            <p>Once you click on submit and the estimation is ready the dollar sign in the nav bar will start glowing. Click on it to export, open in Google Sheets or send via email</p>
+            <div class="gif"><img src="https://drive.google.com/uc?export=download&id=1EQ2cMTuk0aHc2d7RFTl5hWCzhoTM9WpX"> </div><br>
     </div>
     <div class="modal-footer">
       <a class="modal-close btn waves-effect btn-flat green text-darken-1">Got it!</a>
@@ -714,8 +723,17 @@ main{
    
 </div>
 <!--END MASTER RIGHT--> 
-
 </main>      
+<footer class="page-footer transparent">
+  <div class="footer-copyright">
+    <div class="container grey-text text-darken-2">
+    2020 Global Quote Team
+    </div>
+    <div class="container grey-text text-darken-2">
+      Integrated Estimator v 2.0
+    </div>
+  </div>
+</footer>
   <script>// modules are defined as an array
 // [ module function, map of requires ]
 //
@@ -841,27 +859,36 @@ $(document).ready(function () {
   $(".dropdown-trigger").dropdown();
   $('.modal').modal();
   $('.sidenav').sidenav();
-  var queryString = window.location.search;
-  console.log(queryString);
+  var projectURL;
+
+  if (localStorage.getItem('url')) {
+    projectURL = localStorage.getItem('url');
+  }
+
+  if (!projectURL) {
+    if (document.querySelector('#dropDownMenu')) {
+      document.querySelector('#dropDownMenu').style.display = 'none';
+    }
+  }
+
   var restart = document.querySelector("#restart");
   restart.addEventListener("click", function () {
     localStorage.clear();
   }); //Info Button turn off glow
 
-  var infoButton = document.querySelector("#infoButton");
-  infoButton.addEventListener("click", function (e) {
-    e.target.classList.remove("glow");
-  });
-
-  if (document.querySelector('#slideCeption')) {
-    var dollarSign = document.querySelector('#slideCeption');
-    dollarSign.addEventListener("click", function (e) {
-      if (dollarSign.classList.contains('glowGreen')) {
-        dollarSign.classList.remove("glowGreen");
-      }
+  if (document.querySelector("#infoButton")) {
+    var infoButton = document.querySelector("#infoButton");
+    infoButton.addEventListener("click", function (e) {
+      e.target.classList.remove("glow");
     });
   }
 
+  var dollarSign = document.querySelector('#slideCeption');
+  dollarSign.addEventListener("click", function (e) {
+    if (dollarSign.classList.contains('glowGreen')) {
+      dollarSign.classList.remove("glowGreen");
+    }
+  });
   var qims;
 
   if (localStorage.getItem("projNum")) {
@@ -1514,7 +1541,6 @@ function FailedToLoad() {
 }
 },{"./sheetMetalSCRIPT":"yHiL"}]},{},["gCHb"], null)</script>
    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

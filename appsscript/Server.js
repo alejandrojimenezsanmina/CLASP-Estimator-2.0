@@ -1,4 +1,5 @@
 var Route = {};
+
 Route.path = function (route,callback){
   Route[route] = callback;
   
