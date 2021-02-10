@@ -2,11 +2,16 @@
 
 var downloadXls = document.getElementById('downloadXls');
 var openGSheets = document.getElementById("openGSheets");
-var googleSheetURL = localStorage.getItem("url");
-let copyLink = document.querySelector('#copyLink');
-let projNumHeader = document.querySelector('#projNumHeader');
-let projNum = localStorage.getItem('projNum')
-projNumHeader.innerText = projNum
+var googleSheetURL;
+if(localStorage.getItem("url")){
+ googleSheetURL =  localStorage.getItem("url");
+} 
+
+if (googleSheetURL ){
+  let copyLink = document.querySelector('#copyLink');
+  let projNumHeader = document.querySelector('#projNumHeader');
+  let projNum = localStorage.getItem('projNum')
+  projNumHeader.innerText = projNum
 
 
   openGSheets.href = googleSheetURL;
@@ -16,12 +21,14 @@ projNumHeader.innerText = projNum
   let downloadRoute = substr + "export?format=xlsx";
   downloadXls.href = downloadRoute;
 
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
 });
 
-import{uploadFileForm, progress} from './massGenericSCRIPT';
+//import{uploadFileForm, progress} from './massGenericSCRIPT';
 
 var arr = [];
 var myForm = document.querySelector('#myForm');
@@ -154,4 +161,53 @@ function onFailure(){
   myForm.style.display = 'block';
 }
 
-export default printEstimate;
+//export default printEstimate;
+
+/******************************************* mess *******************************/
+//massGenericScript
+
+        //Get XLS from input and listen for submit file
+    let uploadFileForm = document.querySelector("#uploadFileForm");
+    let massUploadSubmit = document.querySelector("#massUploadSubmit");
+    let myfile = document.querySelector("#myfile");
+    let data;
+    let googleSheet = localStorage.getItem("url")
+    let progress = document.querySelector('.progress');
+    let slideCeption = document.querySelector('#slideCeption')
+
+    progress.style.display= 'none'
+
+
+    uploadFileForm.addEventListener('submit', e =>{
+        e.preventDefault();
+        e.stopPropagation();
+        
+        progress.style.display = 'block';
+        uploadFileForm.style.display = 'none'
+
+        const file = myfile.files[0]
+        const pNum = localStorage.getItem("projNum") || "test123";
+        const fileReader = new FileReader();
+        fileReader.readAsBinaryString(file)
+        fileReader.onload = (e)=>{
+            let data = e.target.result;
+            let workbook = XLSX.read(data, {type: "binary"})
+            //console.log(workbook);
+            const jsonData = workbook.SheetNames.map(sheet =>{
+                return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet])
+            })
+            // jsonData[0] = sheet metal jsonData[1] = plastics .. etc
+            console.log(jsonData[0], googleSheet);
+            google.script.run
+            .withSuccessHandler(printEstimate)
+            .withFailureHandler(FailedToLoad)
+            .estimate(jsonData[0], googleSheet, "Sheet Metal");   
+        };
+
+        })
+
+    function FailedToLoad(){
+        alert("Please review your input data");
+        uploadFileForm.style.display = 'block'
+        progress.style.display = 'none';
+    }
