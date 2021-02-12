@@ -9,33 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <style>
-.material{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: baseline;
-}
-
-.gravity{
-  width: 20%;
-  font-size: .5rem;
-}
-
-.gravity label{
-  width: 20%;
-  font-size: .8rem;
-}
-
-.form-row{
-  width: 60%;
-}
-
-.units{
-  text-align: left;
-}
-
-</style>
-    <style>
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+HK:500&display=swap');
     *{
       box-sizing: border-box;
@@ -408,6 +381,46 @@ h6{
   main {
     flex: 1 0 auto;
   }</style>
+    <style>
+.material{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: baseline;
+}
+
+.gravity{
+  width: 20%;
+  font-size: .5rem;
+}
+
+.gravity label{
+  width: 20%;
+  font-size: .8rem;
+}
+
+.form-row{
+  width: 60%;
+}
+
+.units{
+  text-align: left;
+}
+
+.resultcell tr{
+  display: flex;
+  justify-content: center;
+}
+
+.resultcell tr td{
+  width: 30%;
+}
+
+.resultcell tr td input{
+  text-align: center;
+}
+
+</style>
     <script src="https://kit.fontawesome.com/6365c07014.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -461,7 +474,7 @@ h6{
   <li><a href="#!"><i class="material-icons right">work_off</i>Machined </a></li>
   <li><a href="#!"><i class="material-icons right">work_off</i>Part catalogue</a></li>
     <li class="divider"></li> 
-  <li><a href="https://drive.google.com/file/d/1DOxVZKSSY67L40yavwRMVv_D7lK7t2vn/view?usp=sharing" id="downloadTemplate" target="_blank" download="">
+  <li><a href="https://docs.google.com/spreadsheets/d/1ueBSTWRHtVQD10h0QmZYZBNtvV7jgVF5o1l1IoD06Wc/export?format=xlsx" id="downloadTemplate" target="_blank" download="">
          Mass upload<i class="far fa-file-excel">
   </i></a></li>
 </ul>
@@ -512,333 +525,354 @@ h6{
   </header>
 
 
-  <div class="masterLeft">
+  <main>
+    <div class="masterLeft">
+      <form name="costform">
+        <input type="hidden" name="filled" value="">
+    
+    
+          <div id="calccontainer">
+            <table cellspacing="0" cellpadding="0" width="100%">
+              <tr>
+              </tr>
+              <tr>
+                <td class="lgtext" colspan="2" style="padding-top:5px;">
+                  <h2>Injection Molding</h2>
+                  <br><br>
+                </td>
+              </tr>
+            </table>
+    
+    
+    
+            <table width="100%" cellspacing="0" cellpadding="2">
+    
+              <tr>
+                <td><b>Select Units:</b></td>
+                <td>
+                  <p>
+                    <label>
+                      <input type="radio" id="inchRadio" name="unittype" checked="">
+                      <span>Inches</span>
+                    </label>
+                  </p>
+                  <p>
+                    <label>
+                      <input type="radio" id="mmRadio" name="unittype">
+                      <span>Milimeters</span>
+                    </label>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td><b>Material Selected:</b></td>
+                <td colspan="3">
+                  <div class="input-field col s12">
+                    <select name="material" class="textbox" id="materialSelected">
+                      <option value="">Select Material</option>
+                      <option value="1@1.56">Petra 130</option>
+                      <option value="1@1.55">Petra 130 BK112</option>
+                      <option value="1@1.68">Petra 130 FR</option>
+                      <option value="1@1.68">Petra 130 FR BK112</option>
+                      <option value="1@1.70">Petra 140</option>
+                      <option value="1@1.61">Petra 230 BK112</option>
+                      <option value="1@1.67">Petra 330 FR</option>
+                      <option value="1@1.67">Petra 330 FR BK112</option>
+                      <option value="1@1.44">Petra 7010 BK5830</option>
+                      <option value="0@1.30">Ultradur B 2550</option>
+                      <option value="1@1.37">Ultradur B 4300 G2 High Speed Unc.</option>
+                      <option value="1@1.45">Ultradur B 4300 G4 High Speed Unc.</option>
+                      <option value="0@1.23">Ultrason S 6010</option>
+                    </select>
+                  </div>
+    
+                </td>
+              </tr>
+            </table>
+            <p>
+    
+    
+            </p><div class="calctable">
+    
+              <!-- Start Left Calc Cell -->
+              <div class="calccell" style="text-align:center;">
 
-    <form name="costform">
-      <input type="hidden" name="filled" value="">
-  
-      
-        <div id="calccontainer">
-          <table border="0" cellspacing="0" cellpadding="0" width="100%">
-            <tr>
-            </tr>
-            <tr>
-              <td align="center" class="lgtext" colspan="2" style="padding-top:5px;">
-                <h2>Injection Molding</h2>
-              </td>
-            </tr>
-          </table>
-  
-          <hr class="bluehr">
-  
-          <table border="0" width="100%" cellspacing="0" cellpadding="2">
-            <tr>
-         
-              <td><b>Select Units:</b></td>
-              <td>
-                <p>
-                  <label>
-                    <input type="radio" id="inchRadio" name="unittype" checked="">
-                    <span>Inches</span>
-                  </label>
-                </p>
-                <p>
-                  <label>
-                    <input type="radio" id="mmRadio" name="unittype">
-                    <span>Milimeters</span>
-                  </label>
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td align="right"><b>Material Selected:</b></td>
-              <td colspan="3">
-                <div class="input-field col s12">
-                  <select name="material" class="textbox" id="materialSelected">
-                    <option value="">Select Material</option>
-                    <option value="1@1.56">Petra 130</option>
-                    <option value="1@1.55">Petra 130 BK112</option>
-                    <option value="1@1.68">Petra 130 FR</option>
-                    <option value="1@1.68">Petra 130 FR BK112</option>
-                    <option value="1@1.70">Petra 140</option>
-                    <option value="1@1.61">Petra 230 BK112</option>
-                    <option value="1@1.67">Petra 330 FR</option>
-                    <option value="1@1.67">Petra 330 FR BK112</option>
-                    <option value="1@1.44">Petra 7010 BK5830</option>
-                    <option value="0@1.30">Ultradur B 2550</option>
-                    <option value="1@1.37">Ultradur B 4300 G2 High Speed Unc.</option>
-                    <option value="1@1.45">Ultradur B 4300 G4 High Speed Unc.</option>
-                    <option value="0@1.23">Ultrason S 6010</option>
+                <div class="hideMe">
+                  <select name="calctype" id="selectMe" class="narrow">
+                    <option value="newmat" selected="">Change existing part to new material</option>
+                    <option value="newpart">Design new part</option>
                   </select>
                 </div>
-                
-              </td>
-            </tr>
-          </table>
-          <p>
-  
-  
-          </p><div class="calctable">
-  
-            <!-- Start Left Calc Cell -->
-            <div class="calccell" style="text-align:center;">
-              <select name="calctype" id="selectMe" class="narrow">
-                <option value="newmat" selected="">Change existing part to new material</option>
-                <option value="newpart">Design new part</option>
-              
-              </select>
-              <p>
-  
-              </p><div id="newmat">
-                <table border="0" cellspacing="0" cellpadding="2" width="220"></table>
+                <p>
+    
+                </p><div id="newmat">
+                  <table cellspacing="0" cellpadding="2" width="220"></table>
+                    <tr>
+                      <td>Present Weight <span id="wgtlabel">(lbs)</span></td>
+                      <td><input type="text" name="a1" size="7" class="inputbox"></td>
+                    </tr>
+                    <tr>
+                      <td>Specific Gravity of New<br>Material</td>
+                      <td><input type="text" name="b1" size="7" class="resultbox" onfocus="this.blur()"></td>
+                    </tr>
+                    <tr>
+                      <td>Specific Gravity of Present<br>Material</td>
+                      <td><input type="text" name="c1" size="7" class="inputbox"></td>
+                    </tr>
+                    <tr>
+                      <td><b>Weight in New Material <span id="newweight1">(lbs)</span></b></td>
+                      <td><input type="text" name="d1" size="7" class="resultbox" onfocus="this.blur()"></td>
+                    </tr>
+                    <tr>
+                      <td>Cost of New Material <span id="costlabel1">($/lb)</span></td>
+                      <td><input type="text" name="e1" size="7" class="inputbox"></td>
+                    </tr>
+                    <tr>
+                      <td><b>Estimated Material Cost<br>per part is</b></td>
+                      <td><input type="text" name="f1" size="7" class="resultbox" onfocus="this.blur()"></td>
+                    </tr>
+                  
+                </div>
+                <div id="newpart" style="display:none;">
+                  <table cellspacing="0" cellpadding="2" width="220">
+                    <tr>
+                      <td>Specific Gravity of New<br>Material</td>
+                      <td><input type="text" name="a2" size="7" class="resultbox" onfocus="this.blur()"></td>
+                    </tr>
+                    <tr>
+                      <td>Volume of Material in<br>New Part <span id="vollabel">(in&#179;)</span></td>
+                      <td><input type="text" name="b2" size="7" class="inputbox"></td>
+                    </tr>
+                    <tr>
+                      <td><b>Weight in New Material <span id="newweight2">(lbs)</span></b></td>
+                      <td><input type="text" name="d2" size="7" class="resultbox" onfocus="this.blur()"></td>
+                    </tr>
+                    <tr>
+                      <td>Cost of New Material <span id="costlabel2">($/lb)</span></td>
+                      <td><input type="text" name="e2" size="7" class="inputbox"></td>
+                    </tr>
+                    <tr>
+                      <td><b>Estimated Material Cost<br>per part is</b></td>
+                      <td><input type="text" name="f2" size="7" class="resultbox" onfocus="this.blur()"></td>
+                    </tr>
+                  </table>
+                </div>
+              <p></p></div>
+              <!-- End Left Calc Cell -->
+    
+              <!-- Start Middle Calc Cell -->
+              <div class="calccell" style="margin-left:10px;">
+                <table cellspacing="0" cellpadding="2" width="100%">
                   <tr>
-                    <td align="right">Present Weight <span id="wgtlabel">(lbs)</span></td>
-                    <td><input type="text" name="a1" size="7" class="inputbox"></td>
+                    <td>1. Annual Number of Parts*</td>
+                    <td><input type="text" name="j" class="inputbox"></td>
                   </tr>
                   <tr>
-                    <td align="right">Specific Gravity of New<br>Material</td>
-                    <td><input type="text" name="b1" size="7" class="resultbox" onfocus="this.blur()"></td>
+                    <td>2. Wall Thickness <span id="wtlabel">(inches)</span></td>
+                    <td><input type="text" name="thick" class="inputbox"></td>
                   </tr>
                   <tr>
-                    <td align="right">Specific Gravity of Present<br>Material</td>
-                    <td><input type="text" name="c1" size="7" class="inputbox"></td>
+                    <td>3. Projected Area of Part <span id="arealabel">(in&#178;)</span></td>
+                    <td><input type="text" name="h" class="inputbox"></td>
                   </tr>
                   <tr>
-                    <td align="right"><b>Weight in New Material <span id="newweight1">(lbs)</span></b></td>
-                    <td><input type="text" name="d1" size="7" class="resultbox" onfocus="this.blur()"></td>
+                    <td colspan="2">4. Enter the press size w/ operator<br>
+                      <table>
+                        <tr>
+                          <td>
+                            <p>
+                              <label>
+                                <input class="with-gap" type="radio" name="press">
+                                <span>Yes ($/hr)</span>
+                              </label>
+                            </p>
+                            <input type="text" name="pressnum" id="yesHr" class="inputbox"><br>
+                          </td>
+                          <td>
+                            <p>
+                              <label>
+                                <input class="with-gap" type="radio" id="forMe" name="press">
+                                <span>Calculate for me</span>
+                              </label> <br>
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
                   </tr>
                   <tr>
-                    <td align="right">Cost of New Material <span id="costlabel1">($/lb)</span></td>
-                    <td><input type="text" name="e1" size="7" class="inputbox"></td>
+                    <td colspan="2">5. Enter the number of cavities<br>
+                      <table>
+                        <tr>
+                          <td>
+                            <p>
+                              <label>
+                                <input type="radio" name="cav">
+                                <span>Yes</span>
+                              </label>
+                            </p>
+                            <select name="cavnum" class="textbox" id="numberOfCavities" onChange="ClickCav(this.form);">
+                              <option value=""></option>
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="4">4</option>
+                              <option value="8">8</option>
+                              <option value="12">12</option>
+                              <option value="16">16</option>
+                              <option value="32">32</option>
+                              <option value="64">64</option>
+                            </select>
+                          </td>
+                          <br>
+                          <td>
+                            <label>
+                              <input type="radio" id="fromAnnual" name="cav">
+                              <span>Calculate from annual volume</span>
+                            </label>
+                          </td>
+    
+                          <br>
+                        </tr>
+                      </table>
+                    </td>
                   </tr>
                   <tr>
-                    <td align="right"><b>Estimated Material Cost<br>per part is</b></td>
-                    <td><input type="text" name="f1" size="7" class="resultbox" onfocus="this.blur()"></td>
-                  </tr>
-                
-              </div>
-              <div id="newpart" style="display:none;">
-                <table border="0" cellspacing="0" cellpadding="2" width="220">
-                  <tr>
-                    <td align="right">Specific Gravity of New<br>Material</td>
-                    <td><input type="text" name="a2" size="7" class="resultbox" onfocus="this.blur()"></td>
-                  </tr>
-                  <tr>
-                    <td align="right">Volume of Material in<br>New Part <span id="vollabel">(in&#179;)</span></td>
-                    <td><input type="text" name="b2" size="7" class="inputbox"></td>
-                  </tr>
-                  <tr>
-                    <td align="right"><b>Weight in New Material <span id="newweight2">(lbs)</span></b></td>
-                    <td><input type="text" name="d2" size="7" class="resultbox" onfocus="this.blur()"></td>
-                  </tr>
-                  <tr>
-                    <td align="right">Cost of New Material <span id="costlabel2">($/lb)</span></td>
-                    <td><input type="text" name="e2" size="7" class="inputbox"></td>
-                  </tr>
-                  <tr>
-                    <td align="right"><b>Estimated Material Cost<br>per part is</b></td>
-                    <td><input type="text" name="f2" size="7" class="resultbox" onfocus="this.blur()"></td>
+                    <td>6. Overhead Contingencies (%):</td>
+                    <td>
+                      <select name="w" class="textbox">
+                        <option value="10">10
+                        </option><option value="20" selected="">20
+                        </option><option value="30">30
+                        </option><option value="40">40
+                        </option><option value="50">50
+                      </option></select>
+                    </td>
                   </tr>
                 </table>
               </div>
-            <p></p></div>
-            <!-- End Left Calc Cell -->
-  
-            <!-- Start Middle Calc Cell -->
-            <div class="calccell" style="margin-left:10px;">
-              <table border="0" cellspacing="0" cellpadding="2" width="100%">
+              <!-- End Middle Calc Cell -->
+    
+              <!-- Start Right Calc Cell -->
+              <br><br>
+              <div class="calccell" style="margin-left:10px;">
+                <h4>Cycle time</h4>
+                <table cellspacing="0" cellpadding="2" width="100%">
                 <tr>
-                  <td>1. Annual Number of Parts*</td>
-                  <td><input type="text" name="j" class="inputbox"></td>
-                </tr>
-                <tr>
-                  <td>2. Wall Thickness <span id="wtlabel">(inches)</span></td>
-                  <td><input type="text" name="thick" class="inputbox"></td>
-                </tr>
-                <tr>
-                  <td>3. Projected Area of Part <span id="arealabel">(in&#178;)</span></td>
-                  <td><input type="text" name="h" class="inputbox"></td>
-                </tr>
-                <tr>
-                  <td colspan="2">4. Enter the press size w/ operator<br>
-  
-                    <p>
-                      <label>
-                        <input class="with-gap" type="radio" name="press">
-                        <span>Yes ($/hr)</span>
-                      </label>
-                    </p>
-  
-                    <input type="text" name="pressnum" id="yesHr" class="inputbox"><br>
-  
-                    <p>
-                      <label>
-                        <input class="with-gap" type="radio" id="forMe" name="press">
-                        <span>Calculate for me</span>
-                      </label> <br>
-                    </p>
-  
-                  
-  
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2">5. Enter the number of cavities<br>
-                    <p>
-                      <label>
-                        <input type="radio" name="cav">
-                        <span>Yes</span>
-                      </label>
-                    </p>
-                    <select name="cavnum" class="textbox" id="numberOfCavities" onChange="ClickCav(this.form);">
-                      <option value=""></option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="4">4</option>
-                      <option value="8">8</option>
-                      <option value="12">12</option>
-                      <option value="16">16</option>
-                      <option value="32">32</option>
-                      <option value="64">64</option>
-                    </select>
-                    <br>
-                    <label>
-                      <input type="radio" id="fromAnnual" name="cav"> 
-                      <span>No, calculate from annual volume</span>
-                    </label>
-                    
-                    <br>
-                  </td>
-                </tr>
-                <tr>
-                  <td>6. Overhead Contingencies (%):</td>
-                  <td>
-                    <select name="w" class="textbox">
-                      <option value="10">10
-                      </option><option value="20" selected="">20
-                      </option><option value="30">30
-                      </option><option value="40">40
-                      </option><option value="50">50
-                    </option></select>
-                  </td>
-                </tr>
-              </table>
-            </div>
-            <!-- End Middle Calc Cell -->
-  
-            <!-- Start Right Calc Cell -->
-            <div class="calccell" style="margin-left:10px;">
-              <h4>Cycle time</h4>
-              <table border="0" cellspacing="0" cellpadding="2" width="100%">
-                <tr>
-                  <td colspan="3">Select One:</td>
-                </tr>
-
-                <tr valign="top">
-                  <td width="25" align="right">
-                    <p>
-                      <label>
-                        <input type="radio" name="docycletime" value="no" checked="" onclick=" this.form.ctestimate.value='';">
-                        <span></span>
-                      </label>
-                    </p>
-                  </td>
-                  <td>Cycle Time (sec)<br><i>(Recommended)</i></td>
-                  <td>
-                    <input type="text" name="cycletime" class="inputbox" onfocus="this.form.docycletime[0].checked=true;">
-                  </td>
-                </tr>
-
-                <tr>
-                  <td colspan="3" height="10"></td>
-                </tr>
-                <tr valign="top">
-                  <td width="25" align="right">
-                    <p>
-                      <label>
-                        <input type="radio" name="docycletime" value="yes" onclick="this.form.cycletime.value=''">
-                        <span></span>
-                      </label>
-                    </p>
-                  </td>
-                  <td>Estimated<br><i>Based on Wall Thickness<br>(Quick)</i></td>
-                  <td><input type="text" name="ctestimate" class="resultbox" onfocus="this.blur()" disabled=""></td>
-                </tr>
-              </table>
-  
-            </div>
-            <!-- End Right Calc Cell -->
-
-            
-  
-            <div style="clear: both;"></div>
-          </div>
-  
-          <hr class="bluehr">
-  
-          <div class="resulttable">
-  
-            <div class="resultcell">
-              <table border="0" cellspacing="0" cellpadding="2">
-                <tr>
-                  <td align="right">Number of Cavities</td>
-                  <td><input type="text" name="k" class="resultbox" onfocus="this.blur()"></td>
-                </tr>
-                <tr>
-                  <td align="right">Cycle Time (seconds)</td>
-                  <td><input type="text" name="g" class="resultbox" onfocus="this.blur()"></td>
-                </tr>
-                <tr>
-                  <td align="right">Press size per Cavity</td>
-                  <td><input type="text" name="i" class="resultbox" onfocus="this.blur()"></td>
-                </tr>
-                <tr>
-                  <td align="right">Parts per Hour</td>
-                  <td><input type="text" name="m" class="resultbox" onfocus="this.blur()"></td>
-                </tr>
-                <tr>
-                  <td align="right">Press Cost ($/hour)</td>
-                  <td><input type="text" name="n" class="resultbox" onfocus="this.blur()"></td>
-                </tr>
-                <tr>
-                  <td align="right"><b>Processing Cost Per Part</b></td>
-                  <td><input type="text" name="o" class="resultbox" onfocus="this.blur()"></td>
-                </tr>
-                <tr>
-                  <td align="right"><b>Contingencies/Overhead Costs</b></td>
-                  <td><input type="text" name="p" class="resultbox" onfocus="this.blur()"></td>
-                </tr>
-              </table>
-            </div>
-  
-            <div class="resultarea">
-              <input type="submit" id="calculatePart" value="Calculate Part">
-              <p class="mdtext"><b>Total Estimated Cost per Part:</b>
-                <input style="text-align: center;" type="text" name="totval" value="" class="resultbox" onfocus="this.blur()">
-              </p>
-              <p class="disclaim">
-
-              </p>
-              <div style="text-align:right;"><input type="reset" id="resetThisFo" value="Reset Form" name="resetme">
+                      <td width="25">
+                        <p>
+                          <label>
+                            <input type="radio" name="docycletime" value="no" checked="" onclick=" this.form.ctestimate.value='';">
+                            <span></span>
+                          </label>
+                        </p>
+                      </td>
+                      <td>Cycle Time (sec)<br><i>(Recommended)</i></td>
+                      <br>
+                      <td>
+                        <input type="text" name="cycletime" class="inputbox" onfocus="this.form.docycletime[0].checked=true;">
+                      </td>
+    
+                      <td width="25">
+                        <p>
+                          <label>
+                            <input type="radio" name="docycletime" value="yes" onclick="this.form.cycletime.value=''">
+                            <span></span>
+                          </label>
+                        </p>
+                      </td>
+                      <td>Estimated<br><i>Based on Wall Thickness<br>(Quick)</i></td>
+    
+              </tr>    <td><input type="text" name="ctestimate" class="resultbox" onfocus="this.blur()" disabled="">
+    
+                </td></table>
+    
               </div>
+              <!-- End Right Calc Cell -->
             </div>
-  
-            <div style="clear: both;"></div>
+    
+            <hr class="bluehr">
+    <br>
+            <div class="resulttable">
+              <h4>Result calculations</h4>
+              <div class="resultcell">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>
+                      <label for="k">Number of Cavities</label>
+                      <input disabled="" type="text" name="k" class="resultbox" onfocus="this.blur()">
+    
+                    </td>
+                    <td>
+                      <label for="g">Cycle Time (seconds)</label>
+                      <input disabled="" type="text" name="g" class="resultbox" onfocus="this.blur()">
+                    </td>
+                    <td>
+                      <label>Press size per Cavity</label>
+                      <input disabled="" type="text" name="i" class="resultbox" onfocus="this.blur()">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label>Parts per Hour</label>
+                      <input disabled="" type="text" name="m" class="resultbox" onfocus="this.blur()">
+                    </td>
+                    <td>
+                      <label>Press Cost ($/hour)</label>
+                      <input disabled="" type="text" name="n" class="resultbox" onfocus="this.blur()">
+                    </td>
+                    <td>
+                      <label><b>Processing Cost Per Part</b></label>
+                      <input disabled="" type="text" name="o" class="resultbox" onfocus="this.blur()">
+                    </td>
+                  </tr>
+    
+                  <tr>
+                    <td>
+                      <label><b>Contingencies/Overhead Costs</b></label>
+                      <input disabled="" type="text" name="p" class="resultbox" onfocus="this.blur()">
+                    </td>
+                  </tr>
+                </table>
+              </div>
+    
+              <div class="resultarea">
+                <input type="submit" id="calculatePart" value="Calculate Part" class="btn">
+                <p class="mdtext"><b>Total Estimated Cost per Part:</b>
+                  <input style="text-align: center;" type="text" name="totval" value="" class="resultbox" onfocus="this.blur()">
+                </p>
+                <p class="disclaim">
+                </p>
+                <div style="text-align:right;"><input class="btn red darken-1" style="width: 100px;" type="reset" id="resetThisFo" value="Reset" name="resetme">
+                </div>
+              </div>
+    
+              <div style="clear: both;"></div>
+            </div>
+    
+            <br><br>
+          <p></p></div>
+      </form>
+    </div>
+    <div class="masterRight">
+      <h2>Mass upload</h2><br>
+        <div class="progress">
+          <div class="indeterminate"></div>
+        </div>
+        <form id="uploadFileForm">
+            <label for="myfile">Select a file:</label>
+            <input type="file" id="myfile" name="myfile" accept=".xls, .xlsx"><br><br>
+          <div class="gif">
+            <p> - or -</p>
           </div>
-  
-          <hr class="bluehr">
-  
-          <div class="narrow">
-            * Changes to Annual Number of Parts do not necessarily change the Total Estimated Cost per Part
-            <p>
-              
-          </p></div>
-  
-        <p></p></div>
-      
-  
-    </form>
-  </div>
+            <label for="sheetTemplate">Paste google sheet URL:</label>
+          <input type="text" id="sheetTemplate"><br><br>
+          <input type="submit" id="massUploadSubmit" class="btn btn-waves">
+        </form>
+    
+        <div class="estimation1"> <br>
+        </div>
+    </div>
+  </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script>// modules are defined as an array
@@ -1118,6 +1152,8 @@ function SelectType(typebox) {
   for (var i = 0; i < typebox.options.length; i++) {
     getElement(typebox.options[i].value).style.display = typebox.options[i].value == typeval ? "" : "none";
   }
+
+  document.querySelector('.hideMe').style.display = 'none';
 }
 
 function ClearCalcs(form) {

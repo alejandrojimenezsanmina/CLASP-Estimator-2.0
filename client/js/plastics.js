@@ -1,7 +1,7 @@
 $(document).ready(function(){
   $('select').formSelect();
   $('.sidenav').sidenav();
-
+ 
  
 });
 
@@ -85,6 +85,8 @@ function initForm (form)
   //SelectType(form.calctype);
   form.unittype[0].checked = true;
   SelectUnits(form, 0);
+  
+  
 }
 
 function InToCm (inches) { return inches * 2.54; }
@@ -114,6 +116,7 @@ function SelectType (typebox)
   {
     getElement(typebox.options[i].value).style.display = (typebox.options[i].value==typeval) ? "" : "none";
   }
+  document.querySelector('.hideMe').style.display= 'none';
 }
 
 function ClearCalcs (form)
@@ -395,5 +398,7 @@ selectMe.addEventListener('change', e => SelectType(e.target))
 
 document.getElementById('selectMe').getElementsByTagName('option')[1].selected = 'selected'
 SelectType(selectMe)
+
+
 
 
