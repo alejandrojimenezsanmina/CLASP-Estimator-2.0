@@ -275,6 +275,8 @@ function SelectType(typebox) {
   for (var i = 0; i < typebox.options.length; i++) {
     getElement(typebox.options[i].value).style.display = typebox.options[i].value == typeval ? "" : "none";
   }
+
+  document.querySelector('.hideMe').style.display = 'none';
 }
 
 function ClearCalcs(form) {
@@ -574,7 +576,38 @@ function doCalc(form) {
 
   var total = f + o + p;
   total = Math.round(total * 100) / 100;
-  form.totval.value = "$" + total;
+  form.totval.value = "$" + total; //////////GET ELEMENT VALUES FROM FORM TO SEND TO APPS SCRIPT ////////////////////////
+
+  var inputValues = {
+    "Part Number": costForm.querySelector("#partNumber").value,
+    "Units": costForm.querySelector("#inchRadio").checked ? "in" : "mm",
+    "Material": costForm.querySelector("#materialSelected").value,
+    "Material Gravity": costForm.querySelector("#materalGravity").value,
+    "Material volume (cm3 / in3)": costForm.b2.value,
+    "Cost of Material": costForm.e2.value,
+    "Part Weight": costForm.d2.value,
+    "Estimated cost per part": costForm.f2.value,
+    "EAU": costForm.j.value,
+    "Wall thickness (in3 / cm2)": costForm.thick.value,
+    "Projected area of part (in 2 / cm 2)": costForm.h.value,
+    "Press size": costForm.press.checked ? "On hand ($/hr)" : "Calculate for me",
+    "Press size cost ($/hr)": costForm.pressnum.value,
+    "Cavities": costForm.cav.checked ? "No Of Cavities on hand" : "Calculate for me",
+    "Number of cavities": costForm.cavnum.value,
+    "Overhead contingencies": costForm.w.value,
+    "Cycle time": costForm.docycletime.checked ? "Cycle time in seconds on hand" : "Estimated base on wall thickness",
+    "Seconds per cycle": costForm.cycletime.value,
+    "Cycle Time (Seconds)": costForm.g.value,
+    "Press size per Cavity": costForm.i.value,
+    "Parts per Hour": costForm.m.value,
+    "Press Cost ($/hour)": costForm.n.value,
+    "Processing Cost Per Part": costForm.o.value,
+    "Contingencies/Overhead Costs": costForm.p.value,
+    "Total Estimated Cost per Part:": costForm.totval.value,
+    "Calculated Number of cavities": costForm.k.value
+  };
+  console.log(inputValues);
+  google.script.run.withSuccessHandler(printEstimate).withFailureHandler(onFailure).estimate([inputValues], localStorage.getItem('url'), 'Plastics');
   return false;
 }
 
@@ -621,5 +654,62 @@ selectMe.addEventListener('change', function (e) {
   return SelectType(e.target);
 });
 document.getElementById('selectMe').getElementsByTagName('option')[1].selected = 'selected';
-SelectType(selectMe);
+SelectType(selectMe); //////////////////////////// MASS UPLOAD MESS //////////////////////////
+//Get XLS from input and listen for submit file
+
+var uploadFileForm = document.querySelector("#uploadFileForm");
+var massUploadSubmit = document.querySelector("#massUploadSubmit");
+var myfile = document.querySelector("#myfile");
+var data;
+var googleSheet = localStorage.getItem("url");
+var progress = document.querySelector('.progress');
+var slideCeption = document.querySelector('#slideCeption');
+progress.style.display = 'none';
+uploadFileForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  e.stopPropagation();
+  progress.style.display = 'block';
+  uploadFileForm.style.display = 'none';
+  var file = myfile.files[0];
+  var pNum = localStorage.getItem("projNum") || "test123";
+  var fileReader = new FileReader();
+  fileReader.readAsBinaryString(file);
+
+  fileReader.onload = function (e) {
+    var data = e.target.result;
+    var workbook = XLSX.read(data, {
+      type: "binary"
+    }); //console.log(workbook);
+
+    var jsonData = workbook.SheetNames.map(function (sheet) {
+      return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
+    }); // jsonData[0] = sheet metal jsonData[1] = plastics .. etc
+
+    console.log(jsonData[1], googleSheet);
+    google.script.run.withSuccessHandler(printEstimate).withFailureHandler(FailedToLoad).estimate(jsonData[1], googleSheet, "Sheet Metal");
+  };
+});
+
+function printEstimate() {
+  uploadFileForm.style.display = 'block';
+  progress.style.display = 'none';
+  var dollar = document.querySelector('#slideCeption');
+  dollar.classList.add('glowGreen');
+  loader.style.display = 'none';
+  myForm.style.display = 'block';
+  myForm.reset();
+  console.log('estimated printed!');
+}
+
+function FailedToLoad() {
+  alert("Please review your input data");
+  uploadFileForm.style.display = 'block';
+  progress.style.display = 'none';
+}
+
+function onFailure() {
+  alert("Please review your input data");
+  loader.style.display = 'none';
+  myForm.style.display = 'block';
+}
 },{}]},{},["nHFl"], null)

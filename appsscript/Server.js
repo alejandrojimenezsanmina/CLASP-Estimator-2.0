@@ -49,16 +49,16 @@ function loadUploadFile(){
 }
 
 //ESTIMATE FUNCTION triggered with click. Will estimate pricing based on the information input
-function estimate(data, googleSheet, sheet) {
+function estimate(data, googleSheet, sheetName) {
 
   var ws = SpreadsheetApp.openByUrl(googleSheet);
-  var sheet = ws.getSheetByName(sheet);
+  var sheet = ws.getSheetByName(sheetName);
   
   
   //Set values 
   data.forEach(function(row){
     var lastRow = sheet.getLastRow();
-    var headerValues = sheet.getRange(1,1,1, 12).getValues();
+    var headerValues = sheetName === "Sheet Metal" ? sheet.getRange(1,1,1, 12).getValues() : sheet.getRange(1, 1, 1, 27).getValues();
 
     function getKeyIndex (key){   
       var keyIndex;
@@ -76,9 +76,28 @@ function estimate(data, googleSheet, sheet) {
       sheet.getRange(lastRow + 1, column ).setValue(row[key]) 
     })
 
-    var estimatedPrice = calculate(row)
+    var estimatedPrice
+
+    if (sheetName === 'Sheet Metal'){
+      estimatedPrice= calculate(row)
+    }else if (sheetName === 'Plastics'){
+      Logger.log(row)
+      estimatedPrice = [
+        row["Calculated Number of cavities"],
+        row["Cycle Time (Seconds)"],
+        row["Press size per Cavity"],
+        row["Parts per Hour"],
+        row["Press Cost ($/hour)"],
+        row["Processing Cost Per Part"],
+        row["Contingencies/Overhead Costs"],
+        row["Total Estimated Cost per Part:"]
+      ];
+    }
+    
+    var initCol = sheetName === "Sheet Metal" ? 13 : 20
+
     estimatedPrice.forEach(function (element, index){
-      sheet.getRange(lastRow + 1, 13 + index).setValue(estimatedPrice[index])
+      sheet.getRange(lastRow + 1, initCol + index).setValue(estimatedPrice[index])
     })
     
   })
@@ -89,7 +108,7 @@ function estimate(data, googleSheet, sheet) {
 var materialPriceSheet = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1kFtNEVhIQr3mMaFbXXP8hMTl_nhTr-7pHtprRf4zf5U/edit#gid=0");
 var sheet = materialPriceSheet.getSheetByName('Sheet Metal');
 
-////////////////////Calculate prices and costs////////////////////
+////////////////////Calculate prices and costs for SHEET METAL ////////////////////
 function calculate(row){
 
   if( row["Units(mm/in)"] === "inches"){
@@ -103,7 +122,7 @@ function calculate(row){
   var finishCosts = sheet.getRange(16, 1, 6, 4).getValues();
   var bendingCost = sheet.getRange(25, 2).getValue();
   var costFactor = sheet.getRange(30, 1, 6, 3).getValues();
-  var hardwareCost = sheet.getRange(39, 1, 3, 2).getValues();
+  var hardwareCost = sheet.getRange(39, 1, 13, 2).getValues();
   
   //Get cost factor
   costFactor.forEach(function (elem){
@@ -170,61 +189,15 @@ function calculate(row){
 
 
 
-// Parse JSON strings to objects and push to newArr. Create new Google sheet and set all objects in the sheet.
-function toGS (arr,googleSheetURL){
-    Logger.log(googleSheetURL);
-    
-   //OPEN GOOGLE SHEET BY URL
-   var ss = SpreadsheetApp.openByUrl(googleSheetURL);
-   var sheet = ss.getSheetByName('Sheet Metal');
-   sheet.getRange(1, 1).setValue('Sheet Metal').setFontSize(14);
-   var lastRow = sheet.getLastRow() + 1;
-   var i = 2; 
-   var j = 1;
-   var initRange = sheet.getRange(lastRow, 1);
-   var row = 3;
-    
-    var newArr = [];
-    
-    //ARRAY CONTAINING HEADER IN GOOGLE SHEETS FOR SHEET METAL ESTIMATIONS
-    var index = [
-    ["Part Number","Strategy","Units","Material","Length","Width","Thickness","Weight","Area","Part density","Cost of material","Finish type 1","Finish 1 cost","Finish type 2","Finish 2 cost","Number of bendindgs","Cost per bending","EAU","Hardware qty","Hardware complexity","Cost per hardware unit","Total hardware cost","Part estimatation in USD"]
-    
-        ];
-    // OBJECT CONTAINING KEYS TO BE MATCHED AGAINST HEADER BY INDEX NUMBER     
-    var indexObj = { partNumber:1,strategy:2, units:3,	material:4,	length:5, width:6, thickness:7,	weight:8, surfaceArea:9, density:10, mtlPrice:11, finishOne:12,	totalFinishPrice1:13, finishTwo:14,	totalFinishPrice2:15, bending:16, bendingCost:17, EAU:18, qtyHdw:19, complexity:20,	hardwareCost:21, totalHdwCost:22, estimation:23
-    };
-    
-    arr.forEach(function (element){
-        newArr.push(JSON.parse(element));
-    });
-    
- 
-   
-   index[0].forEach(function (element){
-       sheet.getRange(2,j).setValue(element)
-       j++;
-   });
-   
-   //Loop through each Object's keys and find its index vs indexObj, assign that index as the column number.
-   newArr.forEach(function(obj){ 
-     Object.keys(obj).forEach(function (elem){
-          Object.keys(indexObj).forEach(function (indxObjKey){
-              if (indxObjKey === elem){
-                     var column = indexObj[indxObjKey] ;
-                     sheet.getRange(row, column).setValue(obj[elem]);
-                   }
-              });         
-         });
-         
-    row++;
-   });
- 
- 
- 
-   // return address;
- 
+/////////////////// PLASTIC INJECTION INSERT INTO GOOGLE SHEETS ///////////////
+
+function plasitcPriceToGoogleSheet(data, googleSheet, sheet){
+  
 }
+
+
+
+
 
 
 /*********************************************** START **************************************/
@@ -265,6 +238,36 @@ function start (qims){
       "Labor cost",
       "PRICE /each"]
 
+  var plasticHeader =[
+    "Part Number",
+    "Units",
+    "Material",
+    "Material Gravity",
+    "Material volume (cm3 / in3)",
+    "Part Weight",
+    "Cost of Material",
+    "Estimated cost per part",
+    "EAU",
+    "Wall thickness (in / mm)",
+    "Projected area of part (in 2 / cm 2)",
+    "Press size",
+    "Press size cost ($/hr)",
+    "Cavities",
+    "Number of cavities",
+    "Overhead contingencies",
+    "Cycle time",
+    "Seconds per cycle",
+    "Number of cavities",
+    "Calculated Number of cavities",
+    "Cycle Time (Seconds)",
+    "Press size per Cavity",
+    "Parts per Hour",
+    "Press Cost ($/hour)",
+    "Processing Cost Per Part",
+    "Contingencies/Overhead Costs",
+    "Total Estimated Cost per Part:"
+  ]
+
   
       var ws = SpreadsheetApp.openByUrl(fileCopiedUrl);
       var sheetMetalSheet = ws.getSheetByName("Sheet Metal");
@@ -275,6 +278,17 @@ function start (qims){
         }else{
           sheetMetalSheet.getRange(1,index + 1).setBackground("orange").setFontColor("#fff").setFontSize(11).setFontWeight(800)
         }
+      })
+
+      var plasticSheet = ws.getSheetByName("Plastics");
+      plasticHeader.forEach(function(elem, index){
+        plasticSheet.getRange(1,index + 1).setValue(elem)
+        if(index + 1 <= 19){
+          plasticSheet.getRange(1,index + 1).setBackground("#333").setFontColor("#fff").setFontSize(11).setFontWeight(800)
+        }else{
+          plasticSheet.getRange(1,index + 1).setBackground("orange").setFontColor("#fff").setFontSize(11).setFontWeight(800)
+        }
+
       })
 
     return (fileCopiedUrl);

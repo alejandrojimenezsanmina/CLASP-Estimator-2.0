@@ -133,6 +133,11 @@
                 <td  class="lgtext" colspan="2" style="padding-top:5px;">
                   <h2>Injection Molding</h2>
                   <br><br>
+
+                  <div class="loader preloader-wrapper big active">
+                  </div>
+               
+
                 </td>
               </tr>
             </table>
@@ -140,7 +145,10 @@
     
     
             <table  width="100%" cellspacing="0" cellpadding="2">
-    
+              <tr>
+                <td > <b> Part Number </b> <span > (CPN):</span></td>
+                <td><input type="text" id="partNumber" name="CPN" class="inputbox"></td>
+              </tr>
               <tr>
                 <td><b>Select Units:</b></td>
                 <td>
@@ -164,19 +172,13 @@
                   <div class="input-field col s12">
                     <select name="material" class="textbox" id="materialSelected" >
                       <option value="">Select Material</option>
-                      <option value="1@1.56">Petra 130</option>
-                      <option value="1@1.55">Petra 130 BK112</option>
-                      <option value="1@1.68">Petra 130 FR</option>
-                      <option value="1@1.68">Petra 130 FR BK112</option>
-                      <option value="1@1.70">Petra 140</option>
-                      <option value="1@1.61">Petra 230 BK112</option>
-                      <option value="1@1.67">Petra 330 FR</option>
-                      <option value="1@1.67">Petra 330 FR BK112</option>
-                      <option value="1@1.44">Petra 7010 BK5830</option>
-                      <option value="0@1.30">Ultradur B 2550</option>
-                      <option value="1@1.37">Ultradur B 4300 G2 High Speed Unc.</option>
-                      <option value="1@1.45">Ultradur B 4300 G4 High Speed Unc.</option>
-                      <option value="0@1.23">Ultrason S 6010</option>
+                      <option value="1@1.05" id="ABS">ABS</option>
+                      <option value="1@1.12" id="PC+ABS">PC+ABS</option>
+                      <option value="1@1.19" id="PC">PC</option>
+                      <option value="1@1.15" id="Nylon">Nylon</option>
+                      <option value="1@1.05" id="PS">PS</option>
+                      <option value="1@1.05" id="PPO">PPO</option>
+                      <option value="1@1.42" id="POM(Acetal)">POM(Acetal)</option>
                     </select>
                   </div>
     
@@ -207,7 +209,7 @@
                     </tr>
                     <tr>
                       <td >Specific Gravity of New<br>Material</td>
-                      <td><input type="text" name="b1" size="7" class="resultbox" onfocus="this.blur()"></td>
+                      <td><input type="text" name="b1"  size="7" class="resultbox" onfocus="this.blur()"></td>
                     </tr>
                     <tr>
                       <td >Specific Gravity of Present<br>Material</td>
@@ -231,7 +233,7 @@
                   <table  cellspacing="0" cellpadding="2" width="220">
                     <tr>
                       <td >Specific Gravity of New<br>Material</td>
-                      <td><input type="text" name="a2" size="7" class="resultbox" onfocus="this.blur()"></td>
+                      <td><input type="text" name="a2" size="7" id="materalGravity" class="resultbox" onfocus="this.blur()"></td>
                     </tr>
                     <tr>
                       <td >Volume of Material in<br>New Part <span id="vollabel">(in&#179;)</span></td>

@@ -4,6 +4,8 @@ $(document).ready(function(){
  
  
 });
+let loader = document.querySelector('.loader');
+loader.style.display = 'none';
 
 let sheetNewUrl;
 
@@ -354,6 +356,45 @@ function doCalc (form)
   total = Math.round(total*100)/100;
   form.totval.value = "$" + total;
 
+  //////////GET ELEMENT VALUES FROM FORM TO SEND TO APPS SCRIPT ////////////////////////
+  
+  let inputValues = 
+    {
+      "Part Number": costForm.querySelector("#partNumber").value,
+      "Units" : costForm.querySelector("#inchRadio").checked ? "in" : "mm",
+      "Material" : costForm.querySelector("#materialSelected").value,
+      "Material Gravity" : costForm.querySelector("#materalGravity").value,
+      "Material volume (cm3 / in3)" : costForm.b2.value,
+      "Cost of Material" : costForm.e2.value,
+      "Part Weight" : costForm.d2.value,
+      "Estimated cost per part" : costForm.f2.value,
+      "EAU" : costForm.j.value,
+      "Wall thickness (in / mm)" : costForm.thick.value,
+      "Projected area of part (in 2 / cm 2)" : costForm.h.value,
+      "Press size" :  costForm.press.checked ? "On hand ($/hr)" : "Calculate for me",
+      "Press size cost ($/hr)" : costForm.pressnum.value,
+      "Cavities" : costForm.cav.checked ? "No Of Cavities on hand" : "Calculate for me",
+      "Number of cavities" : costForm.cavnum.value,
+      "Overhead contingencies" : costForm.w.value,
+      "Cycle time" : costForm.docycletime.checked ? "Cycle time in seconds on hand" : "Estimated base on wall thickness",
+      "Seconds per cycle" : costForm.cycletime.value,
+      "Cycle Time (Seconds)" : costForm.g.value,
+      "Press size per Cavity" : costForm.i.value,
+      "Parts per Hour" : costForm.m.value, 
+      "Press Cost ($/hour)" : costForm.n.value,
+      "Processing Cost Per Part" : costForm.o.value,
+      "Contingencies/Overhead Costs" : costForm.p.value,
+      "Total Estimated Cost per Part:" : costForm.totval.value,
+      "Calculated Number of cavities" : costForm.k.value
+    }
+  
+    console.log(inputValues);
+    loader.style.display = 'block';
+    google.script.run
+    .withSuccessHandler(printEstimate)
+    .withFailureHandler(onFailure)
+    .estimate([inputValues], localStorage.getItem('url'), 'Plastics');   
+
   return false;
 }
 
@@ -399,6 +440,182 @@ selectMe.addEventListener('change', e => SelectType(e.target))
 document.getElementById('selectMe').getElementsByTagName('option')[1].selected = 'selected'
 SelectType(selectMe)
 
+
+//////////////////////////// MASS UPLOAD MESS //////////////////////////
+
+   //Get XLS from input and listen for submit file
+   let uploadFileForm = document.querySelector("#uploadFileForm");
+   let massUploadSubmit = document.querySelector("#massUploadSubmit");
+   let myfile = document.querySelector("#myfile");
+   let data;
+   let googleSheet = localStorage.getItem("url")
+   let progress = document.querySelector('.progress');
+   let slideCeption = document.querySelector('#slideCeption')
+
+   progress.style.display= 'none'
+
+
+   uploadFileForm.addEventListener('submit', e =>{
+       e.preventDefault();
+       e.stopPropagation();
+       
+       progress.style.display = 'block';
+       uploadFileForm.style.display = 'none'
+
+       const file = myfile.files[0]
+       const pNum = localStorage.getItem("projNum") || "test123";
+       const fileReader = new FileReader();
+       fileReader.readAsBinaryString(file)
+       fileReader.onload = (e)=>{
+           let data = e.target.result;
+           let workbook = XLSX.read(data, {type: "binary"})
+           //console.log(workbook);
+           const jsonData = workbook.SheetNames.map(sheet =>{
+               return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet])
+           })
+           // jsonData[0] = sheet metal jsonData[1] = plastics .. etc
+           console.log("jsonData is ", jsonData[1], googleSheet);
+
+           jsonData[1].forEach(row =>{
+              row["Material Gravity"] = getMaterialGravity(row["Material"])
+              doCalcObject(row);
+           
+           })
+         
+           google.script.run
+              .withSuccessHandler(printEstimate)
+              .withFailureHandler(FailedToLoad)
+              .estimate(jsonData[1], localStorage.getItem('url'), 'Plastics');     
+         
+       };
+       
+       })
+
+      
+
+  function getMaterialGravity (text){
+    switch(text){
+      case "ABS":
+        return 1.05;
+      case "PC+ABS":
+        return 1.12;
+      case "PC":
+        return 1.19;
+      case "Nylon":
+        return 1.15;
+      case "PS" :
+        return 1.05;
+      case "PPO":
+        return 1.06;
+      case "POM(Acetal)":
+        return 1.42;
+      default: return 1.15;
+    }
+  }
+       
+
+  function printEstimate (){
+      uploadFileForm.style.display = 'block';
+      progress.style.display = 'none';
+      let dollar = document.querySelector('#slideCeption');
+      dollar.classList.add('glowGreen')
+      loader.style.display = 'none';
+      console.log('estimated printed!');
+    }
+
+   function FailedToLoad(){
+       alert("Please review your input data");
+       uploadFileForm.style.display = 'block'
+       progress.style.display = 'none';
+   }
+
+   function onFailure(){
+    alert("Please review your input data")
+    loader.style.display = 'none';
+  }
+
+/*****************************************************DO CALC ***********************************/
+function doCalcObject (obj)
+{
+  
+  //if (!ValidFieldsForObject(form)) { return false; }
+
+  var thick = obj["Wall thickness (in / mm)"];
+  var projectedArea = obj["Projected area of part (in 2 / cm 2)"]
+  var mtlVolume = obj["Material volume (cm3 / in3)"];
+  var materialCost = obj["Cost of Material"];
+  var sgfactor = 27.7;   // Specific Gravity factor (cubic inches per lb.)
+
+  if (obj["Units"] === "mm")
+  {
+    thick = CmToIn(thick/10);
+    projectedArea = Cm2ToIn2(projectedArea);
+    mtlVolume = Cm3ToIn3(mtlVolume);
+    materialCost = LbsToKg(materialCost);
+  }
+
+
+    var d = (obj["Material Gravity"] * mtlVolume) / sgfactor;
+    if (obj["Units"] === "mm") { obj["Part Weight"] = Math.round(LbsToKg(d)*100)/100; }
+    else { obj["Part Weight"] = Math.round(d*100)/100; }
+    var f = materialCost * d;
+    obj["Estimated cost per part"] = Math.round(f*100)/100;
+  
+ 
+
+  //var g = CycleTime(thick);
+  //var g = (form.docycletime[0].checked) ? CycleTime(thick) : form.cycletime.value;
+  if (obj["Cycle time"] ==="Estimated base on wall thickness")
+  {
+    var g = CycleTime(thick);
+    obj["Cycle Time (Seconds)"] = g;
+  }
+  else
+  {
+    var g = obj["Seconds per cycle"];
+  }
+
+  obj["Cycle Time (Seconds)"] = Math.round(g*100)/100;
+
+  if (obj["Material Gravity"]) { var i = projectedArea * 5; }
+  else { var i = projectedArea * 4; }
+  obj["Press size per Cavity"] = Math.round(i*100)/100;
+
+
+  if (obj["Number of cavities"]) { var k = obj["Number of cavities"]; }
+  else { var k = Math.ceil((obj["EAU"] * g)/Math.pow(10,7)); }
+  obj["Calculated Number of cavities"] = Math.round(k*100)/100;
+
+  var m = (k/g) * 3600;
+  obj["Parts per Hour"] = Math.round(m*100)/100;
+
+  //here
+  if (obj["Press size"] === "On hand ($/hr)") { var n = obj["Press size cost ($/hr)"]; }
+  else { var n = PressCost(i); }
+  //form.n.value = Math.round(n*100)/100;
+  // Mulitply by the number of cavities - 1/23/2009
+  //form.n.value = Math.round(n*100)/100 * k;
+  //form.n.value = Math.round(n*k*100)/100;
+  // Don't multiply by the number of cavities - 3/16/2018
+  obj["Press Cost ($/hour)"] = Math.round(n*100)/100;
+
+  var o = n/m;
+  obj["Processing Cost Per Part"] = Math.round(o*100)/100;
+
+  //var p = (form.w.value/100) * o;
+  //var p = (o + f) * (form.w.value/100);
+  var p = (o + f) * (obj["Overhead contingencies"]/100);
+  obj["Contingencies/Overhead Costs"] = Math.round(p*100)/100;
+
+  var w = obj["Overhead contingencies"];
+  
+  var total = f + o + p;
+  total = Math.round(total*100)/100;
+  obj["Total Estimated Cost per Part:"]= "$" + total;
+
+  
+}
+/**************************************************DO CALC************************************* */  
 
 
 
