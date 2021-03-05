@@ -104,9 +104,13 @@ function estimate(data, googleSheet, sheetName) {
      //return; 
 }
 
-// Load source sheet information
+
+// Load source sheet information --GLOBAL
 var materialPriceSheet = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1kFtNEVhIQr3mMaFbXXP8hMTl_nhTr-7pHtprRf4zf5U/edit#gid=0");
 var sheet = materialPriceSheet.getSheetByName('Sheet Metal');
+var ratesSheet = materialPriceSheet.getSheetByName('Production Costs')
+var ratesArr = ratesSheet.getRange(1, 1, 9, 2).getValues();
+
 
 ////////////////////Calculate prices and costs for SHEET METAL ////////////////////
 function calculate(row){
@@ -117,13 +121,12 @@ function calculate(row){
     row["Thickness"] =  row["Thickness"] * 25.4 ;
   }
   
-  
   var materialCosts = sheet.getRange(5, 1, 8, 5).getValues();
   var finishCosts = sheet.getRange(16, 1, 6, 4).getValues();
   var bendingCost = sheet.getRange(25, 2).getValue();
   var costFactor = sheet.getRange(30, 1, 6, 3).getValues();
   var hardwareCost = sheet.getRange(39, 1, 13, 2).getValues();
-  
+
   //Get cost factor
   costFactor.forEach(function (elem){
       if ( row["EAU"] >= elem[0] && row["EAU"] <= elem[1] ){
@@ -173,9 +176,25 @@ function calculate(row){
   var partWeight = (row["Length"]/1000) *  (row["Width"]/1000) *  row["Thickness"] * row["materialDensity"];
   var partSurfaceSqMt = (row["Length"]/1000) *  (row["Width"]/1000);
 
+  row["Time Factor"] = function(){
+    if (row["Length"] >= 1000 || row["Width"]){
+      return 1.5
+    }else{
+      return 1
+    }
+  }
+
+  //Calculate cost for each operation and put into an Array
+  var operationCosts = row.operations.map(function (element){
+    var operation = Object.keys(element)[0]
+    var rate = findRate(operation)
+    var timeFactor = timeFactor(operation)
+    return row[operation.split(" ")[0] + ' cost' ] = Number(timeFactor * rate * row["Time Factor"])
+  })
+
     row["Material cost"] = (partWeight * row["materialCost"]).toFixed(4);
     row["Finish cost"] = ((partSurfaceSqMt * row["finishPrice1"] *2 ) + (partSurfaceSqMt * row["finishPrice2"] * 2)).toFixed(4);
-    row["Labor cost"] = row["Bendings(#)"] * bendingCost;
+    row["Labor cost"] = 'Pending'
     if(row["Hardware qty"]){
       row["Hardware cost"]= row["hardwareCost"] * row["Hardware qty"];
     }else{
@@ -188,6 +207,21 @@ function calculate(row){
 }
 
 
+function findRate(operation){
+  ratesArr.forEach(function(elem){
+    if(String(elem[0]).includes(operation)){
+      return elem[1]
+    }
+  })
+}
+
+function timeFactor(operation){
+  ratesArr.forEach(function(elem){
+    if(String(elem[0]).includes(operation)){
+      return elem[2]
+    }
+  })
+}
 
 /////////////////// PLASTIC INJECTION INSERT INTO GOOGLE SHEETS ///////////////
 

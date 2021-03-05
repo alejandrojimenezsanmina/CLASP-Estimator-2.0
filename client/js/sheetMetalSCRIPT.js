@@ -39,11 +39,104 @@ hdw.style.display = "none";
 var loader = document.querySelector('.loader');
 loader.style.display = 'none'
 
+let operation = document.querySelector('.operation');
+let operationInput = document.getElementById('operationInput')
+let addedOperations = document.querySelector('.addedOperations')
 
 document.getElementById("infoMsg").style.display = "block";
 document.getElementById("infoMsg").style.display = "none";
 
 var hide = document.querySelector('#hide');
+
+operation.addEventListener('click', e =>{
+    e.preventDefault()
+    if(e.target.nodeName === 'BUTTON'){
+      addOperation(operationInput.value)
+    }
+})
+
+
+const addOperation = operation => { 
+  if(operation ==='Select'){return false} 
+  switch(operation){
+    case "Weld" :
+        return createWithRange(operation)
+    case "Paint" :
+        return createWithRange(operation)
+    case "Bend" :
+        return createWithInput(operation)
+    case "Punch":
+        return createElem(operation)
+    case "Stamp":
+        return createElem(operation)
+    case "Assembly":
+        return createWithInput(operation)
+      
+    default: return console.log('what?');
+  }
+}
+
+const createElem = operation =>{
+  let tag = document.createElement('div')
+  tag.id = operation
+  let newDiv = document.createElement('div')
+  newDiv.classList.add('percentages')
+  let innerText = tag.innerText = "✔️" + String(operation) + ' operation has been added to the item.'
+  newDiv.appendChild(tag)
+  addedOperations.appendChild(newDiv)
+}
+
+const createWithRange = (operation) =>{
+  let tag = document.createElement('div')
+  let newDiv = document.createElement('div')
+  newDiv.classList.add('percentages')
+  let innerText = tag.innerText = "✔️" + String(operation)
+  newDiv.appendChild(tag)
+  let addedinner = newDiv.innerHTML +=(`
+  <form action="#">
+  <p class="range-field"  >
+      <label for=\"${operation}\">Percentage of part affected by this process:</label>
+      <input type="range" id=\"${operation}\" min="5" max="80" />
+      <div class="rangePercentage">
+        <div>5%</div>
+        <div>15%</div>
+        <div>30%</div>
+        <div>40%</div>
+        <div>50%</div>
+        <div>60%</div>
+        <div>70%</div>
+        <div>80%</div>
+      </div>
+    </p>
+  </form>
+  `)
+  addedOperations.appendChild(newDiv)
+  addListeners()
+}
+
+const createWithInput = (operation) =>{
+  let tag = document.createElement('div')
+  let newDiv = document.createElement('div')
+  newDiv.classList.add('percentages')
+  let innerText = tag.innerText = "✔️" + String(operation)
+  newDiv.appendChild(tag)
+  let addedinner = newDiv.innerHTML +=(`
+      <div class="col s12">
+          <div class="input-field col s2">
+            <input id=\"${operation}\" type="number" class="validate s-2">
+            <label for=\"${operation}\">N° of operations</label>
+          </div>
+      </div>
+  `)
+  addedOperations.appendChild(newDiv)
+  addListeners()
+}
+
+const addListeners = ()=>{
+  addedOperations.addEventListener('change', e=>{
+    console.log(e.target.value)
+  })
+}
 
 hide.addEventListener("click",toggle);
        
@@ -103,7 +196,7 @@ function estimate(e){
 
    e.preventDefault();
      var ids = Array.from(myForm.querySelectorAll('*[id]'))
-     let singleEstData = {}  
+     let singleEstData = {operations : []}  
      
      ids.map(element => {
        //singleEstHeaders.find(elemId => element.id === elemId)
@@ -132,9 +225,20 @@ function estimate(e){
                 return singleEstData["Hardware qty"] = element.value;     
               case "complexity":
                 return singleEstData["Hdw complexity"] = element.value;     
+              case "Assembly":
+                return singleEstData.operations.push({"Assembly count" : element.value}) ;
+              case "Bend":
+                return singleEstData.operations.push({"Bend count" : element.value})
+              case "Punch":
+                return singleEstData.operations.push({"Punch" : 1})
+              case "Weld":
+                return singleEstData.operations.push({"Weld percentage" : element.value/100})
               default: return{};
+              
               }
         });
+
+    
     console.log([singleEstData]);
     google.script.run
       .withSuccessHandler(printEstimate)
@@ -163,7 +267,7 @@ function onFailure(){
 
 //export default printEstimate;
 
-/******************************************* mess *******************************/
+/******************************************* Mas upload *******************************/
 //massGenericScript
 
         //Get XLS from input and listen for submit file

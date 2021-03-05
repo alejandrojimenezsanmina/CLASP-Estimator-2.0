@@ -139,7 +139,7 @@
                     <select id="strategy" name="strategy" disabled>
                       <option  disabled selected>Select</option>
                       <option value="3">Conservative (room for pricing improvement )</option>
-                      <option selected="selected" value="2">Medium (average market matl costs)</option>
+                      <option selected="selected" value="2">Average (average market matl costs)</option>
                       <option value="1">Agressive (lowest materials & labor costs in the market)</option>
                    </select>
                     <label>Type of Strategy</label>
@@ -228,22 +228,41 @@
            </select>
           </div>  <!--END OF FINISH TYPE SELECTION 2-->
          
-
           <div class="row">
-            <div class="input-field col s5">
-            <i class="material-icons prefix">change_history</i>   
-              <input id="bending" type="text"  class="validate">
-              <label for="bending"># Bendings</label>
-            </div>
             <div class="input-field col s5">
               <i class="material-icons prefix">date_range</i>    
               <input id="EAU" type="text" class="validate">
               <label for="EAU">EAU</label>
             </div>
           </div>
+          
+          <div class="processes">
+            <h4>Add process</h4>
+          </div><br>
 
+          <div class="row operation">
+            <div class="col s8">
+              <label for="finishTwo" class="labels">Operation type</label>
+              <select id="operationInput">
+                 <option  disabled selected>Select</option>
+                 <option value = "Assembly">Assembly</option>
+                 <option value= "Bend" >Bend</option>
+                 <option value="Punch">Punch</option>
+                 <option value="Weld">Weld</option>
+              </select>
+            </div>
+            <div class="col s4">
+              <button class="btn">Add</button>
+            </div>
+          </div>
+
+          
 <!-- ENTER NUMBER OF BENDINGS --> 
 <!--          EAU       --> 
+
+          <div class="addedOperations">
+
+          </div>
 
 
 
@@ -251,12 +270,12 @@
 
 <!-- TOGGLE HARDWARE OPTION -->         
         
-        <p>
+      <p class="includesHardw">
          <label for="hide">
          <input type="checkbox" id='hide'/>
          <span>This part includes hardware</span>
         </label>
-    </p>
+      </p>
 <!-- CHECKBOX -->   
          
 <!-- HARDWARE QTY AND COMPLEXITY-->
@@ -305,7 +324,7 @@
     </div>        
  
     
-   <button class="btn waves-effect waves-light" type="submit" id="submit">Estimate
+   <button class="btn waves-effect waves-light green darken-1" type="submit" id="submit">Estimate
         <i class="material-icons right">attach_money</i>
       </button> <br><br>
     </form>        
