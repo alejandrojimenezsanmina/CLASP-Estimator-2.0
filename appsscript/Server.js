@@ -65,15 +65,18 @@ function estimate(data, googleSheet, sheetName) {
       headerValues[0].forEach(function(elem,index){
         if (elem === key){
              keyIndex = index + 1;
+             return keyIndex
         }
       }) 
-      return keyIndex;
+      return null;
     }
 
     Object.keys(row).forEach(function (key){
       var column = getKeyIndex(key);
       var value = row.key
-      sheet.getRange(lastRow + 1, column ).setValue(row[key]) 
+      if (column){
+        sheet.getRange(lastRow + 1, column ).setValue(row[key]) 
+      }
     })
 
     var estimatedPrice
@@ -81,7 +84,6 @@ function estimate(data, googleSheet, sheetName) {
     if (sheetName === 'Sheet Metal'){
       estimatedPrice= calculate(row)
     }else if (sheetName === 'Plastics'){
-      Logger.log(row)
       estimatedPrice = [
         row["Calculated Number of cavities"],
         row["Cycle Time (Seconds)"],
@@ -104,9 +106,13 @@ function estimate(data, googleSheet, sheetName) {
      //return; 
 }
 
-// Load source sheet information
+
+// Load source sheet information --GLOBAL
 var materialPriceSheet = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1kFtNEVhIQr3mMaFbXXP8hMTl_nhTr-7pHtprRf4zf5U/edit#gid=0");
 var sheet = materialPriceSheet.getSheetByName('Sheet Metal');
+var ratesSheet = materialPriceSheet.getSheetByName('Production Costs')
+var ratesArr = ratesSheet.getRange(2, 1, 8, 3).getValues();
+
 
 ////////////////////Calculate prices and costs for SHEET METAL ////////////////////
 function calculate(row){
@@ -117,13 +123,12 @@ function calculate(row){
     row["Thickness"] =  row["Thickness"] * 25.4 ;
   }
   
-  
   var materialCosts = sheet.getRange(5, 1, 8, 5).getValues();
   var finishCosts = sheet.getRange(16, 1, 6, 4).getValues();
   var bendingCost = sheet.getRange(25, 2).getValue();
   var costFactor = sheet.getRange(30, 1, 6, 3).getValues();
   var hardwareCost = sheet.getRange(39, 1, 13, 2).getValues();
-  
+
   //Get cost factor
   costFactor.forEach(function (elem){
       if ( row["EAU"] >= elem[0] && row["EAU"] <= elem[1] ){
@@ -173,9 +178,36 @@ function calculate(row){
   var partWeight = (row["Length"]/1000) *  (row["Width"]/1000) *  row["Thickness"] * row["materialDensity"];
   var partSurfaceSqMt = (row["Length"]/1000) *  (row["Width"]/1000);
 
+  if (row["Length"] >= 1000 || (row["Width"] >= 1000)){
+    row["Time Factor"] = 1.5
+  }else{
+    row["Time Factor"] = 1
+  }
+
+  //Make object from ratesArray
+
+  var rates = ratesArr.map(function (element) {
+    var newObj = {}
+    newObj[element[0]] = []
+    newObj[element[0]].push(element[1])
+    newObj[element[0]].push(element[2])
+    return newObj
+  })
+
+
+  //Calculate cost for each operation and put into an Array
+    var operationCosts = row.operations.map(function(element){
+      var operation = Object.keys(element)[0]
+      var timeFactor = rates.operation[1]
+      var calculatedCost = Number(rates.operation[0] * timeFactor )
+      var obj = {}
+      obj[operation +  " calculated cost"] = [calculatedCost]
+    })
+
+    row["operationCosts"] = operationCosts
     row["Material cost"] = (partWeight * row["materialCost"]).toFixed(4);
     row["Finish cost"] = ((partSurfaceSqMt * row["finishPrice1"] *2 ) + (partSurfaceSqMt * row["finishPrice2"] * 2)).toFixed(4);
-    row["Labor cost"] = row["Bendings(#)"] * bendingCost;
+    row["Labor cost"] = 'Pending'
     if(row["Hardware qty"]){
       row["Hardware cost"]= row["hardwareCost"] * row["Hardware qty"];
     }else{
@@ -183,6 +215,8 @@ function calculate(row){
     }
     row["PRICE /each"] = Number(row["Material cost"]) + Number(row["Finish cost"]) + Number(row["Labor cost"]) + Number(row["Hardware cost"]) + Number(row["costFactorValue"])
   // formula: Weight = L/1000 * W/1000 * Thickness * Density  
+  Logger.log('row object is: ')
+  Logger.log(row)
   
   return [ row["Material cost"], row["Finish cost"],row["Hardware cost"],row["Labor cost"], row["PRICE /each"] ]
 }
