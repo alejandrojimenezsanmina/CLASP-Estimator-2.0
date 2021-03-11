@@ -186,28 +186,27 @@ function calculate(row){
 
   //Make object from ratesArray
 
-  var rates = ratesArr.map(function (element) {
-    var newObj = {}
-    newObj[element[0]] = []
-    newObj[element[0]].push(element[1])
-    newObj[element[0]].push(element[2])
-    return newObj
-  })
-
-
-  //Calculate cost for each operation and put into an Array
-    var operationCosts = row.operations.map(function(element){
-      var operation = Object.keys(element)[0]
-      var timeFactor = rates.operation[1]
-      var calculatedCost = Number(rates.operation[0] * timeFactor )
-      var obj = {}
-      obj[operation +  " calculated cost"] = [calculatedCost]
+    var rates = {}
+    ratesArr.forEach(function (element) {
+    rates[element[0]] = { 'usd/hr' : element[1], 'timeFactor' : element[2] }
     })
 
-    row["operationCosts"] = operationCosts
+    Logger.log(rates)
+
+    row['Total operation costs'] = 0
+   
+    
+    for( var operation in row.operations){
+      Logger.log(rates[operation]['usd/hr'])
+      Logger.log(rates[operation]['timeFactor'])
+      Logger.log(row.operations[operation][operation + " count"])
+        row['Total operation costs'] += rates[operation]['timeFactor'] * rates[operation]['usd/hr'] * row.operations[operation][operation + " count"]
+      
+    }
+    
     row["Material cost"] = (partWeight * row["materialCost"]).toFixed(4);
     row["Finish cost"] = ((partSurfaceSqMt * row["finishPrice1"] *2 ) + (partSurfaceSqMt * row["finishPrice2"] * 2)).toFixed(4);
-    row["Labor cost"] = 'Pending'
+    row["Labor cost"] = row['Total operation costs']
     if(row["Hardware qty"]){
       row["Hardware cost"]= row["hardwareCost"] * row["Hardware qty"];
     }else{

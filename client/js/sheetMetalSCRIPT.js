@@ -196,7 +196,7 @@ function estimate(e){
 
    e.preventDefault();
      var ids = Array.from(myForm.querySelectorAll('*[id]'))
-     let singleEstData = {operations : []}  
+     let singleEstData = { operations: {}}  
      
      ids.map(element => {
        //singleEstHeaders.find(elemId => element.id === elemId)
@@ -226,13 +226,13 @@ function estimate(e){
               case "complexity":
                 return singleEstData["Hdw complexity"] = element.value;     
               case "Assembly":
-                return singleEstData.operations.push({"Assembly count" : element.value}) ;
+                return singleEstData.operations["Assembly"] = {"Assembly count" : element.value} ;
               case "Bend":
-                return singleEstData.operations.push({"Bend count" : element.value})
+                return singleEstData.operations["Bend"] = {"Bend count" : element.value}
               case "Punch":
-                return singleEstData.operations.push({"Punch" : 1})
+                return singleEstData.operations["Punch"] = {"Punch count" : 1}
               case "Weld":
-                return singleEstData.operations.push({"Weld percentage" : element.value/100})
+                return singleEstData.operations["Weld"] = {"Weld count" : Number(element.value)/100}
               default: return{};
               
               }
@@ -255,7 +255,7 @@ function printEstimate (){
   dollar.classList.add('glowGreen')
   loader.style.display = 'none';
   myForm.style.display = 'block';
-  myForm.reset();
+  myForm.reset(); 
   }
 
 
