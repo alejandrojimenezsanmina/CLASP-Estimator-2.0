@@ -296,12 +296,12 @@ function onFailure(){
         fileReader.onload = (e)=>{
             let data = e.target.result;
             let workbook = XLSX.read(data, {type: "binary"})
-            //console.log(workbook);
             const jsonData = workbook.SheetNames.map(sheet =>{
                 return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet])
             })
-            // jsonData[0] = sheet metal jsonData[1] = plastics .. etc
-            console.log(jsonData[0], googleSheet);
+            // jsonData[0] = sheet metal , jsonData[1] = plastics .. etc
+            
+            console.log("json[0] is:", jsonData[0]);
             google.script.run
             .withSuccessHandler(printEstimate)
             .withFailureHandler(FailedToLoad)

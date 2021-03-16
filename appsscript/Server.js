@@ -101,6 +101,15 @@ function estimate(data, googleSheet, sheetName) {
     estimatedPrice.forEach(function (element, index){
       sheet.getRange(lastRow + 1, initCol + index).setValue(estimatedPrice[index])
     })
+
+    if(sheetName === "Sheet Metal"){
+      headerValues[0].forEach(function (element, index){
+        if(row[element]){
+          sheet.getRange(lastRow + 1, index + 1).setValue(row[element])
+        }
+      })
+    
+    }
     
   })
      //return; 
@@ -191,17 +200,11 @@ function calculate(row){
     rates[element[0]] = { 'usd/hr' : element[1], 'timeFactor' : element[2] }
     })
 
-    Logger.log(rates)
-
     row['Total operation costs'] = 0
    
     
     for( var operation in row.operations){
-      Logger.log(rates[operation]['usd/hr'])
-      Logger.log(rates[operation]['timeFactor'])
-      Logger.log(row.operations[operation][operation + " count"])
         row['Total operation costs'] += rates[operation]['timeFactor'] * rates[operation]['usd/hr'] * row.operations[operation][operation + " count"]
-      
     }
     
     row["Material cost"] = (partWeight * row["materialCost"]).toFixed(4);
@@ -214,8 +217,7 @@ function calculate(row){
     }
     row["PRICE /each"] = Number(row["Material cost"]) + Number(row["Finish cost"]) + Number(row["Labor cost"]) + Number(row["Hardware cost"]) + Number(row["costFactorValue"])
   // formula: Weight = L/1000 * W/1000 * Thickness * Density  
-  Logger.log('row object is: ')
-  Logger.log(row)
+ 
   
   return [ row["Material cost"], row["Finish cost"],row["Hardware cost"],row["Labor cost"], row["PRICE /each"] ]
 }
