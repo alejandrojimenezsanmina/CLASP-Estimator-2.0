@@ -326,9 +326,14 @@ function estimate(e) {
           "Punch count": 1
         };
 
+      case "Stamp":
+        return singleEstData.operations["Stamp"] = {
+          "Stamp count": 1
+        };
+
       case "Weld":
         return singleEstData.operations["Weld"] = {
-          "Weld percentage": Number(element.value) / 100
+          "Weld count": Number(element.value) / 100
         };
 
       default:
@@ -382,13 +387,46 @@ uploadFileForm.addEventListener('submit', function (e) {
     var data = e.target.result;
     var workbook = XLSX.read(data, {
       type: "binary"
-    }); //console.log(workbook);
-
+    });
     var jsonData = workbook.SheetNames.map(function (sheet) {
       return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
-    }); // jsonData[0] = sheet metal jsonData[1] = plastics .. etc
+    }); // jsonData[0] = sheet metal , jsonData[1] = plastics .. etc
 
-    console.log(jsonData[0], googleSheet);
+    console.log("json[0] is:", jsonData[0]);
+    jsonData[0].map(function (row) {
+      row["operations"] = {};
+
+      if (row["Assembly count"]) {
+        row.operations["Assembly"] = {
+          "Assembly count": row["Assembly count"]
+        };
+      }
+
+      if (row["Bend count"]) {
+        row.operations["Bend"] = {
+          "Bend count": row["Bend count"]
+        };
+      }
+
+      if (row["Punch count"]) {
+        row.operations["Punch"] = {
+          "Punch count": row["Punch count"]
+        };
+      }
+
+      if (row["Stamp count"]) {
+        row.operations["Stamp"] = {
+          "Stamp count": row["Stamp count"]
+        };
+      }
+
+      if (row["Weld count"]) {
+        row.operations["Weld"] = {
+          "Weld count": row["Weld count"]
+        };
+      }
+    });
+    console.log("json[0] is:", jsonData[0]);
     google.script.run.withSuccessHandler(printEstimate).withFailureHandler(FailedToLoad).estimate(jsonData[0], googleSheet, "Sheet Metal");
   };
 });

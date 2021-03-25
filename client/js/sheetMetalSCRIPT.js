@@ -231,6 +231,8 @@ function estimate(e){
                 return singleEstData.operations["Bend"] = {"Bend count" : element.value}
               case "Punch":
                 return singleEstData.operations["Punch"] = {"Punch count" : 1}
+              case "Stamp":
+                return singleEstData.operations["Stamp"] = {"Stamp count" : 1}
               case "Weld":
                 return singleEstData.operations["Weld"] = {"Weld count" : Number(element.value)/100}
               default: return{};
@@ -300,7 +302,28 @@ function onFailure(){
                 return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet])
             })
             // jsonData[0] = sheet metal , jsonData[1] = plastics .. etc
-            
+            console.log("json[0] is:", jsonData[0]);
+            jsonData[0].map(row => {
+              row["operations"] = {}
+
+              if (row["Assembly count"]) { 
+               row.operations["Assembly"] = {"Assembly count" : row["Assembly count"]}
+              }
+              if (row["Bend count"]) { 
+               row.operations["Bend"] = {"Bend count" : row["Bend count"]}
+              }
+              if (row["Punch count"]) { 
+                row.operations["Punch"] = {"Punch count" : row["Punch count"]}
+               }
+              if (row["Stamp count"]) { 
+              row.operations["Stamp"] = {"Stamp count" : row["Stamp count"]}
+              }
+              if (row["Weld count"]) { 
+                row.operations["Weld"] = {"Weld count" : row["Weld count"]}
+               }
+
+            })
+
             console.log("json[0] is:", jsonData[0]);
             google.script.run
             .withSuccessHandler(printEstimate)

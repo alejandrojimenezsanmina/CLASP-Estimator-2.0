@@ -1,0 +1,65 @@
+main{
+    padding-left: 1rem;
+    flex-direction: column;
+}
+
+h2{
+    padding:1rem;
+    margin: 0;
+}
+
+.carousel{
+    max-height: 250px;
+}
+
+.filter{
+    padding: 1rem;
+}
+
+.filters{
+    padding: 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.progressBar{
+    width: 50%;
+    margin: 3rem auto;
+
+}
+
+.imageOverText{
+    position: absolute;
+    bottom: 8px;
+    right: 16px; 
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    max-height: 150px;
+}
+
+.row p {
+    width: 16.7%;
+    text-align: center;
+}
+
+
+.header{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+}
+
+.header >h6{
+    width: 16.7%;
+    text-align: center;
+}

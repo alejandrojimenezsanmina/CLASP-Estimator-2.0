@@ -16,6 +16,7 @@ console.log(Route);
     Route.path('plastics',loadPlastics);
     Route.path('sheet',loadSheetMetal);
     Route.path('uploadFile',loadUploadFile);
+    Route.path('partcatalogue',loadPartCatalogue);
     Route.path('home',loadHome)
   
   if(Route[e.parameters.v] ){
@@ -46,6 +47,11 @@ function loadSheetMetal(){
 function loadUploadFile(){
 
    return HtmlService.createTemplateFromFile('uploadFile').evaluate();    
+}
+ 
+function loadPartCatalogue(){
+
+  return HtmlService.createTemplateFromFile('PartCatalogue').evaluate();    
 }
 
 //ESTIMATE FUNCTION triggered with click. Will estimate pricing based on the information input
@@ -355,3 +361,68 @@ function include(filename){
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
+var plastics;
+var sheetMetal;
+var gaskets;
+var heatsinks;
+var extrusions;
+
+var plasticsData;
+
+function loadPartCatalogueData(){
+    var wb = SpreadsheetApp.openById('1jSO1Kiq-JNFJC-2H3ECiFCe26235hzleju2zviGSniA');
+    plastics = wb.getSheetByName('Plastics');
+    sheetMetal = wb.getSheetByName('Sheet metal');
+    gaskets = wb.getSheetByName('Gaskets');
+    heatsinks = wb.getSheetByName('Heatsinks');
+    extrusions = wb.getSheetByName('Extrusion');
+    var lastColumn = plastics.getLastColumn();
+    
+    var header = plastics.getRange(1,1,1,lastColumn).getValues();
+    var plasticsValues = plastics.getDataRange().offset(1,0).getValues();
+    var sheetMetalValues = sheetMetal.getDataRange().offset(1,0).getValues();
+    var gasketsValues = gaskets.getDataRange().offset(1,0).getValues();
+    var heatsinksValues = heatsinks.getDataRange().offset(1,0).getValues();
+    var extrusionsValues = extrusions.getDataRange().offset(1,0).getValues();
+
+    var catalogueData = {}
+   
+    catalogueData.plastics = getData(plasticsValues)
+    catalogueData.sheetMetal = getData(sheetMetalValues)
+    catalogueData.gaskets = getData(gasketsValues)
+    catalogueData.heatsinks = getData(heatsinksValues)
+    catalogueData.extrusions = getData(extrusionsValues)
+    
+
+    return JSON.stringify(catalogueData);
+    
+}
+
+function getData(values){
+  var data = values.map(function(element){
+    if(element[0] !== ""){
+      return{
+       "Image url" : element[0],
+       "Project number" : element[1],
+       "Part Number" : element[2],
+       "Date quoted" : element[3],
+       "Best Price Supplier" : element[4],
+       "Quoted price" : element[5],
+       "Volume" : element[6],
+       "Part weight" : element[7],
+       "Units(grams/ounces)" : element[8],
+       "XYZ wrapper measure" : element[9],
+       "Units(cm/inch)" : element[10],
+       "Commodity" : element[11],
+       "Material" : element[12],
+       "Process" : element[13],
+       "Finish" : element[14],
+       "Part description" : element[15],
+       "File names" : element[16],
+       "File path" : element[17],
+       "Tooling" : element[18]
+      }
+    }
+  })
+  return data
+}

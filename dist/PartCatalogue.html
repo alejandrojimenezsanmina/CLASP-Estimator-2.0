@@ -445,7 +445,72 @@ main{
 .addedOperations{
   margin-left: 3rem;
 }
-</style>  
+</style> 
+    <style>main{
+    padding-left: 1rem;
+    flex-direction: column;
+}
+
+h2{
+    padding:1rem;
+    margin: 0;
+}
+
+.carousel{
+    max-height: 250px;
+}
+
+.filter{
+    padding: 1rem;
+}
+
+.filters{
+    padding: 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.progressBar{
+    width: 50%;
+    margin: 3rem auto;
+
+}
+
+.imageOverText{
+    position: absolute;
+    bottom: 8px;
+    right: 16px; 
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    max-height: 150px;
+}
+
+.row p {
+    width: 16.7%;
+    text-align: center;
+}
+
+
+.header{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+}
+
+.header >h6{
+    width: 16.7%;
+    text-align: center;
+}</style> 
     <script src="https://kit.fontawesome.com/6365c07014.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
   </head>
@@ -546,252 +611,56 @@ main{
   </ul>
    
 <main>   
-<!------------MASTER LEFT BEGINS ----------->  
-<div class="masterLeft">
- 
-    <h2> Sheet Metal </h2><br>
+    <h2> Part Catalogue </h2><br>
     
-    <div class="loader preloader-wrapper big active">
-    </div>
-  
-    
-    <form id="myForm">
-          <div class="row">
-            <div class="input-field col s6">
-            <i class="material-icons prefix">format_list_numbered</i>   
-              <input id="partNumber" type="text" class="validate" required="">
-              <label for="partNumber">Part Number</label>
-            </div>
-          </div>
+    <div class="selections">
+        <h5>Filter</h5>
+        <div class="filters">
+                <div class="input-field col s12 commodity">
+                    <select id="commodity">
+                        <option value="" disabled="" selected="">Choose one</option>
+                        <option value="sheetMetal">Sheet metal</option>
+                        <option value="plastics">Plastics</option>
+                        <option value="machined">Machined</option>
+                        <option value="casting">Casting</option>
+                        <option value="gaskets">Gaskets</option>
+                        <option value="heatsink">Heatsinks</option>
+                    </select>
+                    <label>Commodity</label>
+                </div>
+                <div class="input-field col s12 material">
+                    <select>
+                        <option value="" disabled="" selected="">Choose one</option>
+                        <option value="dos">Choose one</option>
+                    </select>
+                    <label>Material</label>
+                </div>
 
-
-    <div class="row"> 
-            <div class="input-field col s10">
-                <i class="material-icons prefix">business_center</i>
-                    <select id="strategy" name="strategy" disabled="">
-                      <option disabled="" selected="">Select</option>
-                      <option value="3">Conservative (room for pricing improvement )</option>
-                      <option selected="selected" value="2">Average (average market matl costs)</option>
-                      <option value="1">Agressive (lowest materials & labor costs in the market)</option>
-                   </select>
-                    <label>Type of Strategy</label>
-            </div>
+            <div class="process">Process</div>
+            <div class="weight">Weight</div>
         </div>
-
-
-
-
-<div class="row"> 
-    <div class="input-field col s5">
-        <i class="material-icons prefix">straighten</i>
-            <select id="units" name="units" required="">
-              <option disabled="" selected="">Select</option>
-              <option value="milimeters">Milimeters (mm)</option>
-              <option value="inches">Inches (in)</option>
-           </select>
-            <label>Units</label>
     </div>
-</div><!--END OF MEASSURES SELECTION-->
-    
 
-     
-    
-              <div class="row">
-                <div class="input-field col s3">
-                <i class="material-icons prefix">trending_flat</i>   
-                  <input id="length" type="text" class="validate" required="">
-                  <label for="length">Length</label>
-                </div>
-                <div class="input-field col s3">
-                 <i class="material-icons prefix">swap_horiz</i>    
-                  <input id="width" type="text" class="validate" required="">
-                  <label for="width">Width</label>
-                </div>
-                <div class="input-field col s3">
-                    <i class="material-icons prefix">vertical_align_center</i>  
-                        <input id="thickness" type="text" class="validate" required="">
-                        <label for="thickness">Thickness</label>
-                </div>
-              </div> <!--END OF UNITS SELECTION-->
+    <div class="progress progressBar">
+        <div class="indeterminate"></div>
+    </div>
 
-         
-       <div class="form-row">
-        <i class="material-icons prefix">gradient</i>         
-        <label for="material" class="labels"> Material</label>
-           <select name="material" id="material" required="">
-           <option disabled="" selected=""></option>
-           <option value="Alu alloy 5052">Alu alloy 5052</option>
-           <option value="CRS/SPCC">CRS/SPCC</option>
-           <option value="Zinc pre-plating/SECC">Zinc pre-plating/SECC</option>
-           <option value="Hot dipped Gal /SGCC">Hot dipped Gal /SGCC</option>
-           <option value="Tin pre-plating /SPTE">Tin pre-plating /SPTE</option>
-           <option value="Brass /copper">Brass /copper</option>
-           <option value="Stainless steel (Sus304/Sus301)">Stainless steel (Sus304/301)</option>
-           <option value="Alu alloy 6061">Alu Alloy 6061</option>  
-           </select>   
-        </div>     <!--END OF MATERIAL SELECTION-->
-         
-         
-         <div class="form-row">  
-          <i class="material-icons prefix">texture</i>
-           <label for="finishOne" class="labels">Finish type 1 </label>
-           <select id="finishOne" required="">
-              <option disabled="" selected=""></option>
-              <option value="Zinc plating ( all types)">Zinc plating ( all types)</option>
-              <option value="Chromate/alodine/anodized">Chromate/alodine/anodized</option>
-              <option value="Painting (Powder/oil)">Painting (Powder/oil)</option>
-              <option value="No finish required (degrease)">No finish required (degrease)</option>
-              <option value="Nickel/tin plating">Nickel/tin plating</option>
-              <option value="Silkscreen /printing">Silkscreen /printing</option>
-           </select>
-          </div>  <!--END OF FINISH TYPE SELECTION 1-->
-          
-        <div class="form-row">  
-          <i class="material-icons prefix">texture</i>
-           <label for="finishTwo" class="labels">Finish type 2 </label>
-           <select id="finishTwo">
-              <option disabled="" selected="">Select</option>
-              <option value="Zinc plating ( all types)">Zinc plating ( all types)</option>
-              <option value="Chromate/alodine/anodized">Chromate/alodine/anodized</option>
-              <option value="Painting (Powder/oil)">Painting (Powder/oil)</option>
-              <option value="No finish required (degrease)">No finish required (degrease)</option>
-              <option value="Nickel/tin plating">Nickel/tin plating</option>
-              <option value="Silkscreen /printing">Silkscreen /printing</option>
-           </select>
-          </div>  <!--END OF FINISH TYPE SELECTION 2-->
-         
-          <div class="row">
-            <div class="input-field col s5">
-              <i class="material-icons prefix">date_range</i>    
-              <input id="EAU" type="text" class="validate">
-              <label for="EAU">EAU</label>
-            </div>
-          </div>
-          
-          <div class="processes">
-            <h4>Add process</h4>
-          </div><br>
+    <div class="carousel carouselDiv">
+      <a class="carousel-item" href="#"><img src="https://via.placeholder.com/300.png/09f/fff"></a>
+    </div>
 
-          <div class="row operation">
-            <div class="col s8">
-              <label for="finishTwo" class="labels">Operation type</label>
-              <select id="operationInput">
-                 <option disabled="" selected="">Select</option>
-                 <option value="Assembly">Assembly</option>
-                 <option value="Bend">Bend</option>
-                 <option value="Punch">Punch</option>
-                 <option value="Weld">Weld</option>
-                 <option value="Stamp">Stamp</option>
-              </select>
-            </div>
-            <div class="col s4">
-              <button class="btn">Add</button>
-            </div>
-          </div>
-
-          
-<!-- ENTER NUMBER OF BENDINGS --> 
-<!--          EAU       --> 
-
-          <div class="addedOperations">
-
-          </div>
-
-
-
-
-
-<!-- TOGGLE HARDWARE OPTION -->         
-        
-      <p class="includesHardw">
-         <label for="hide">
-         <input type="checkbox" id="hide">
-         <span>This part includes hardware</span>
-        </label>
-      </p>
-<!-- CHECKBOX -->   
-         
-<!-- HARDWARE QTY AND COMPLEXITY-->
-
-   <div id="hdw" class="inline">   
-             <div class="row">
-                    <div class="input-field col s2">
-                      <input id="qtyHdw" type="text" class="validate">
-                      <label for="qtyHdw">Quantity</label>
-                    </div>
-                
-        </div> 
-
+    <div class="table">
+      <div class="header">
+        <h6>Image</h6>
+        <h6>Quoted Price</h6>
+        <h6>Material</h6>
+        <h6>Volume</h6>
+        <h6>Units</h6>
+        <h6><span class="material-icons">fullscreen</span></h6>
+      </div>
       
-<div class="container"> <!--CONTAINER-->   
-    <div class="left">
-        <div class="form-row">    
-             <label for="complexity">Complexity</label>  
-             <select name="complexity" class="qtyAndType" id="complexity">
-             <option selected="" disabled="">Select:</option>
-             <option value="Floating Self-Clinching Fasteners avg price each: $ 0.4154">Floating Self-Clinching Fasteners avg price each: $ 0.4154</option>
-             <option value="Self-Clinching Blind Fasteners avg price each: $ 0.2751">Self-Clinching Blind Fasteners avg price each: $ 0.2751</option>
-             <option value="Nuts – Types H avg price each: $ 0.2012">Nuts – Types H avg price each: $ 0.2012</option>
-             <option value="Nuts - Types S avg price each: $ 0.0745">Nuts - Types S avg price each: $ 0.0745</option>
-             <option value="Nuts for Ultra-Thin Sheets - Type SMPS/ SMPP avg price each: $ 0.0732">Nuts for Ultra-Thin Sheets - Type SMPS/ SMPP avg price each: $ 0.0732</option>
-             <option value="Floating Self-Clinching Fasteners A4/ AS/ AC  avg price each: $ 0.6851">Floating Self-Clinching Fasteners A4/ AS/ AC  avg price each: $ 0.6851</option>
-             <option value="Floating self-clinching/ locking thread fasteners LA4/ LAC/ LAS  avg price each: $ 0.8486">Floating self-clinching/ locking thread fasteners LA4/ LAC/ LAS  avg price each: $ 0.8486</option>
-             <option value="Self-Clinching Nuts - Types S/ SS/ CLS/ CLSS/ SP avg price each: $ 0.3159">Self-Clinching Nuts - Types S/ SS/ CLS/ CLSS/ SP avg price each: $ 0.3159</option>
-             <option value="PEMSERT® Self-Clinching Flush Fasteners - Type F4 avg price each: $ 0.1214">PEMSERT® Self-Clinching Flush Fasteners - Type F4 avg price each: $ 0.1214</option>
-             <option value="Nylon Insert Self-Locking Fasteners - Types PL and PLC avg price each: $ 0.1621">Nylon Insert Self-Locking Fasteners - Types PL and PLC avg price each: $ 0.1621</option>
-             <option value="Nylon Insert Self-Locking Fasteners - Types CFN avg price each: $ 0.1357">Nylon Insert Self-Locking Fasteners - Types CFN avg price each: $ 0.1357</option>
-             <option value="Aluminum Right Angle Fasteners - Type RAA avg price each: $ 0.33292">Aluminum Right Angle Fasteners - Type RAA avg price each: $ 0.33292</option>
-             <option value="Steel Threaded Right Angle Fastener - Type RAS avg price each: $ 0.3157">Steel Threaded Right Angle Fastener - Type RAS avg price each: $ 0.3157</option>
-           </select><br><br>
-        </div>       
     </div>
 
-    
-    
- <div class="right">   
-    <div id="infoMsg"></div>
-</div>
-
-</div><!--CONTAINER-->       
-        
-    </div>        
- 
-    
-   <button class="btn waves-effect waves-light green darken-1" type="submit" id="submit">Estimate
-        <i class="material-icons right">attach_money</i>
-      </button> <br><br>
-    </form>        
-    
-
-</div>
-<!-----------------END MASTER LEFT-------------> 
-<!-----------------BEGIN MASTER RIGHT-------------> 
-
-<div class="masterRight">
-
-<h2>Mass upload</h2><br>
-
-  <div class="progress">
-    <div class="indeterminate"></div>
-  </div>
-
-  <form id="uploadFileForm">
-      <label for="myfile">Select a file:</label>
-      <input type="file" id="myfile" name="myfile" accept=".xls, .xlsx"><br><br>
-    <div class="gif">
-      <p> - or -</p>
-    </div>  
-      <label for="sheetTemplate">Paste google sheet URL:</label>
-    <input type="text" id="sheetTemplate"><br><br>
-    <input type="submit" id="massUploadSubmit" class="btn btn-waves">
-  </form>        
-        
-  <div class="estimation1"> <br>  
-  </div>      
-     
-   
-</div>
-<!--END MASTER RIGHT--> 
 </main>      
 <footer class="page-footer transparent">
   <div class="footer-copyright">
@@ -803,7 +672,7 @@ main{
     </div>
   </div>
 </footer>
-  <script>// modules are defined as an array
+    <script>// modules are defined as an array
 // [ module function, map of requires ]
 //
 // map of requires is short require name -> numeric require
@@ -971,7 +840,7 @@ $(document).ready(function () {
   brandLogo.innerText = qims;
 });
 },{}]},{},["MypH"], null)</script>        
-   <script>// modules are defined as an array
+    <script>// modules are defined as an array
 // [ module function, map of requires ]
 //
 // map of requires is short require name -> numeric require
@@ -1090,326 +959,93 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"yHiL":[function(require,module,exports) {
-var downloadXls = document.getElementById('downloadXls');
-var openGSheets = document.getElementById("openGSheets");
-var googleSheetURL;
-
-if (localStorage.getItem("url")) {
-  googleSheetURL = localStorage.getItem("url");
-}
-
-if (googleSheetURL) {
-  var copyLink = document.querySelector('#copyLink');
-  var projNumHeader = document.querySelector('#projNumHeader');
-  var projNum = localStorage.getItem('projNum');
-  projNumHeader.innerText = projNum;
-  openGSheets.href = googleSheetURL;
-  openGSheets.target = "_blank";
-  var indexof = googleSheetURL.indexOf("edit?");
-  var substr = googleSheetURL.slice(0, indexof);
-  var downloadRoute = substr + "export?format=xlsx";
-  downloadXls.href = downloadRoute;
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-  var elems = document.querySelectorAll('select');
-  var instances = M.FormSelect.init(elems);
-}); //import{uploadFileForm, progress} from './massGenericSCRIPT';
-
-var arr = [];
-var myForm = document.querySelector('#myForm');
-var hdw = document.getElementById("hdw");
-hdw.style.display = "none";
-var loader = document.querySelector('.loader');
-loader.style.display = 'none';
-var operation = document.querySelector('.operation');
-var operationInput = document.getElementById('operationInput');
-var addedOperations = document.querySelector('.addedOperations');
-document.getElementById("infoMsg").style.display = "block";
-document.getElementById("infoMsg").style.display = "none";
-var hide = document.querySelector('#hide');
-operation.addEventListener('click', function (e) {
-  e.preventDefault();
-
-  if (e.target.nodeName === 'BUTTON') {
-    addOperation(operationInput.value);
-  }
+})({"Nnv0":[function(require,module,exports) {
+$(document).ready(function () {
+  $('.carousel').carousel();
+  $('.dropdown-trigger').dropdown();
+  $('select').formSelect();
+  google.script.run.withSuccessHandler(ready).loadPartCatalogueData();
+  filters.style.display = 'none';
+  progressBar.style.display = 'block';
 });
+var quoteData;
 
-var addOperation = function addOperation(operation) {
-  if (operation === 'Select') {
-    return false;
-  }
+function ready(data) {
+  quoteData = JSON.parse(data);
+  filters.style.display = 'flex';
+  progressBar.style.display = 'none';
+}
 
-  switch (operation) {
-    case "Weld":
-      return createWithRange(operation);
+var filters = document.querySelector('.filters');
+var progressBar = document.querySelector('.progressBar');
+progressBar.style.display = 'block';
+var carouselDiv = document.querySelector('.carouselDiv');
+var table = document.querySelector('.table');
+filters.addEventListener('change', function (e) {
+  e.stopPropagation();
+  console.log(e.target.value);
 
-    case "Paint":
-      return createWithRange(operation);
-
-    case "Bend":
-      return createWithInput(operation);
-
-    case "Punch":
-      return createElem(operation);
-
-    case "Stamp":
-      return createElem(operation);
-
-    case "Assembly":
-      return createWithInput(operation);
+  switch (e.target.value) {
+    case "plastics":
+      loadOptions("plastics");
+      break;
 
     default:
-      return console.log('what?');
+      console.log('default case');
+      break;
   }
-};
-
-var createElem = function createElem(operation) {
-  var tag = document.createElement('div');
-  tag.id = operation;
-  var newDiv = document.createElement('div');
-  newDiv.classList.add('percentages');
-  var innerText = tag.innerText = "✔️" + String(operation) + ' operation has been added to the item.';
-  newDiv.appendChild(tag);
-  addedOperations.appendChild(newDiv);
-};
-
-var createWithRange = function createWithRange(operation) {
-  var tag = document.createElement('div');
-  var newDiv = document.createElement('div');
-  newDiv.classList.add('percentages');
-  var innerText = tag.innerText = "✔️" + String(operation);
-  newDiv.appendChild(tag);
-  var addedinner = newDiv.innerHTML += "\n  <form action=\"#\">\n  <p class=\"range-field\"  >\n      <label for=\"".concat(operation, "\">Percentage of part affected by this process:</label>\n      <input type=\"range\" id=\"").concat(operation, "\" min=\"5\" max=\"80\" />\n      <div class=\"rangePercentage\">\n        <div>5%</div>\n        <div>15%</div>\n        <div>30%</div>\n        <div>40%</div>\n        <div>50%</div>\n        <div>60%</div>\n        <div>70%</div>\n        <div>80%</div>\n      </div>\n    </p>\n  </form>\n  ");
-  addedOperations.appendChild(newDiv);
-  addListeners();
-};
-
-var createWithInput = function createWithInput(operation) {
-  var tag = document.createElement('div');
-  var newDiv = document.createElement('div');
-  newDiv.classList.add('percentages');
-  var innerText = tag.innerText = "✔️" + String(operation);
-  newDiv.appendChild(tag);
-  var addedinner = newDiv.innerHTML += "\n      <div class=\"col s12\">\n          <div class=\"input-field col s2\">\n            <input id=\"".concat(operation, "\" type=\"number\" class=\"validate s-2\">\n            <label for=\"").concat(operation, "\">N\xB0 of operations</label>\n          </div>\n      </div>\n  ");
-  addedOperations.appendChild(newDiv);
-  addListeners();
-};
-
-var addListeners = function addListeners() {
-  addedOperations.addEventListener('change', function (e) {
-    console.log(e.target.value);
-  });
-};
-
-hide.addEventListener("click", toggle);
-
-function toggle() {
-  if (hdw.style.display === 'block') {
-    hdw.style.display = 'none';
-  } else {
-    hdw.style.display = 'block';
-  }
-} //Show Information square
-
-
-document.getElementById('complexity').addEventListener("change", toggleInfoSqr);
-
-function toggleInfoSqr() {
-  var value = document.getElementById('complexity').value;
-
-  if (value === 'Simple') {
-    document.getElementById("infoMsg").innerHTML = "ⓘ   Simple to install items such as screws.";
-    document.getElementById("infoMsg").style.display = "inline-block";
-  } else if (value === 'Medium') {
-    document.getElementById("infoMsg").innerHTML = "ⓘ    Medium complexity items, rivetting.";
-    document.getElementById("infoMsg").style.display = "inline-block";
-  } else if (value === 'Complex') {
-    document.getElementById("infoMsg").innerHTML = "ⓘ Complex items including soldering.";
-    document.getElementById("infoMsg").style.display = "inline-block";
-  }
-} //     ESTIMATE BUTTON , SUBMIT OBJECT WITH VALUE TO SERVER
-
-
-document.getElementById('submit').addEventListener("click", estimate);
-var sheet = "Sheet Metal";
-var sheetHeader = ["Part Number", "Units(mm/in)", "Length", "Width", "Thickness", "Material", "Finish Type", "Finish Type 2", "Bendings(#)", "EAU", "Hardware qty", "Hdw complexity", "Material cost", "Finish cost", "Hardware cost", "Labor cost", "PRICE /each"];
-
-function estimate(e) {
-  myForm.style.display = 'none';
-  loader.style.display = 'block';
-  e.preventDefault();
-  var ids = Array.from(myForm.querySelectorAll('*[id]'));
-  var singleEstData = {
-    operations: {}
-  };
-  ids.map(function (element) {
-    //singleEstHeaders.find(elemId => element.id === elemId)
-    switch (element.id) {
-      case "partNumber":
-        return singleEstData["Part Number"] = element.value;
-
-      case "units":
-        return singleEstData["Units(mm/in)"] = element.value;
-
-      case "length":
-        return singleEstData["Length"] = element.value;
-
-      case "width":
-        return singleEstData["Width"] = element.value;
-
-      case "thickness":
-        return singleEstData["Thickness"] = element.value;
-
-      case "material":
-        return singleEstData["Material"] = element.value;
-
-      case "finishOne":
-        return singleEstData["Finish Type"] = element.value;
-
-      case "finishTwo":
-        return singleEstData["Finish Type 2"] = element.value;
-
-      case "bending":
-        return singleEstData["Bendings(#)"] = element.value;
-
-      case "EAU":
-        return singleEstData["EAU"] = element.value;
-
-      case "qtyHdw":
-        return singleEstData["Hardware qty"] = element.value;
-
-      case "complexity":
-        return singleEstData["Hdw complexity"] = element.value;
-
-      case "Assembly":
-        return singleEstData.operations["Assembly"] = {
-          "Assembly count": element.value
-        };
-
-      case "Bend":
-        return singleEstData.operations["Bend"] = {
-          "Bend count": element.value
-        };
-
-      case "Punch":
-        return singleEstData.operations["Punch"] = {
-          "Punch count": 1
-        };
-
-      case "Stamp":
-        return singleEstData.operations["Stamp"] = {
-          "Stamp count": 1
-        };
-
-      case "Weld":
-        return singleEstData.operations["Weld"] = {
-          "Weld count": Number(element.value) / 100
-        };
-
-      default:
-        return {};
-    }
-  });
-  console.log([singleEstData]);
-  google.script.run.withSuccessHandler(printEstimate).withFailureHandler(onFailure).estimate([singleEstData], googleSheetURL, sheet);
-}
-
-function printEstimate() {
-  uploadFileForm.style.display = 'block';
-  progress.style.display = 'none';
-  var dollar = document.querySelector('#slideCeption');
-  dollar.classList.add('glowGreen');
-  loader.style.display = 'none';
-  myForm.style.display = 'block';
-  myForm.reset();
-}
-
-function onFailure() {
-  alert("Please review your input data");
-  loader.style.display = 'none';
-  myForm.style.display = 'block';
-} //export default printEstimate;
-
-/******************************************* Mas upload *******************************/
-//massGenericScript
-//Get XLS from input and listen for submit file
-
-
-var uploadFileForm = document.querySelector("#uploadFileForm");
-var massUploadSubmit = document.querySelector("#massUploadSubmit");
-var myfile = document.querySelector("#myfile");
-var data;
-var googleSheet = localStorage.getItem("url");
-var progress = document.querySelector('.progress');
-var slideCeption = document.querySelector('#slideCeption');
-progress.style.display = 'none';
-uploadFileForm.addEventListener('submit', function (e) {
-  e.preventDefault();
-  e.stopPropagation();
-  progress.style.display = 'block';
-  uploadFileForm.style.display = 'none';
-  var file = myfile.files[0];
-  var pNum = localStorage.getItem("projNum") || "test123";
-  var fileReader = new FileReader();
-  fileReader.readAsBinaryString(file);
-
-  fileReader.onload = function (e) {
-    var data = e.target.result;
-    var workbook = XLSX.read(data, {
-      type: "binary"
-    });
-    var jsonData = workbook.SheetNames.map(function (sheet) {
-      return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
-    }); // jsonData[0] = sheet metal , jsonData[1] = plastics .. etc
-
-    console.log("json[0] is:", jsonData[0]);
-    jsonData[0].map(function (row) {
-      row["operations"] = {};
-
-      if (row["Assembly count"]) {
-        row.operations["Assembly"] = {
-          "Assembly count": row["Assembly count"]
-        };
-      }
-
-      if (row["Bend count"]) {
-        row.operations["Bend"] = {
-          "Bend count": row["Bend count"]
-        };
-      }
-
-      if (row["Punch count"]) {
-        row.operations["Punch"] = {
-          "Punch count": row["Punch count"]
-        };
-      }
-
-      if (row["Stamp count"]) {
-        row.operations["Stamp"] = {
-          "Stamp count": row["Stamp count"]
-        };
-      }
-
-      if (row["Weld count"]) {
-        row.operations["Weld"] = {
-          "Weld count": row["Weld count"]
-        };
-      }
-    });
-    console.log("json[0] is:", jsonData[0]);
-    google.script.run.withSuccessHandler(printEstimate).withFailureHandler(FailedToLoad).estimate(jsonData[0], googleSheet, "Sheet Metal");
-  };
 });
 
-function FailedToLoad() {
-  alert("Please review your input data");
-  uploadFileForm.style.display = 'block';
-  progress.style.display = 'none';
+function loadOptions(commodity) {
+  console.log(quoteData[commodity]);
+  quoteData[commodity].map(function (element) {
+    var a = document.createElement("a");
+    a.classList.add("carousel-item");
+    a.href = '#';
+    var image = document.createElement("img");
+    a.appendChild(image);
+    var string = element["Image url"].split("d/")[1];
+    var id = string.split("/")[0];
+    console.log(id);
+    image.src = "https://drive.google.com/thumbnail?id=" + id;
+    carouselDiv.appendChild(a);
+    var text = document.createElement('div');
+    text.classList.add('imageOverText');
+    text.innerText = element["Material"];
+    a.appendChild(text);
+    var div = document.createElement('div');
+    div.classList.add('row');
+    var paragraph = document.createElement('p');
+    var newImg = document.createElement('img');
+    newImg.src = "https://drive.google.com/thumbnail?id=" + id;
+    newImg.style.display = 'block';
+    paragraph.appendChild(newImg);
+    div.appendChild(paragraph);
+    var price = document.createElement('p');
+    price.innerText = element['Quoted price'];
+    div.appendChild(price);
+    var material = document.createElement('p');
+    material.innerText = element['Material'];
+    div.appendChild(material);
+    var partWeight = document.createElement('p');
+    partWeight.innerText = element['Part weight'];
+    div.appendChild(partWeight);
+    var units = document.createElement('p');
+    units.innerText = element['Units(grams/ounces)'];
+    div.appendChild(units); // let quoteNumber = document.createElement('p')
+    // quoteNumber.innerText = element['Project number']
+    // div.appendChild(quoteNumber)
+
+    var file = document.createElement('a');
+    file.innerText = 'File link';
+    file.href = element['File path'];
+    file.target = '_blank';
+    div.appendChild(file);
+    table.appendChild(div);
+    $('.carousel').carousel();
+  });
 }
-},{}]},{},["yHiL"], null)</script>
+},{}]},{},["Nnv0"], null)</script>
    <!-- <script src="../js/massGenericSCRIPT.js"></script> -->
    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
