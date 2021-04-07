@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "parcel build client/html/Home.html --no-minify --no-source-maps --no-cache && parcel build client/html/sheetMetalHTML.html --no-minify --no-source-maps --no-cache && parcel build client/html/plasticsHTML.html --no-minify --no-source-maps --no-cache && parcel build client/html/PartCatalogue.html --no-minify --no-source-maps --no-cache && node util.js && clasp push"
+    "build": "parcel build client/html/Home.html --no-minify --no-source-maps --no-cache && parcel build client/html/sheetMetalHTML.html --no-minify --no-source-maps --no-cache && parcel build client/html/plasticsHTML.html --no-minify --no-source-maps --no-cache && parcel build client/html/PartCatalogue.html --no-minify --no-source-maps --no-cache && parcel build client/html/Machined.html --no-minify --no-source-maps --no-cache && node util.js && clasp push"
   },
   "author": "",
   "license": "ISC",

@@ -464,6 +464,10 @@ h2{
     padding: 1rem;
 }
 
+.selections h5{
+    padding-left: 5rem;
+}
+
 .filters{
     padding: 2rem;
     display: flex;
@@ -493,11 +497,23 @@ h2{
     max-height: 150px;
 }
 
+.row:nth-child(odd){
+    background-color: lightgray;
+}
+
 .row p {
     width: 16.7%;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.row p a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .header{
     display: flex;
@@ -505,11 +521,55 @@ h2{
     width: 100%;
     justify-content: space-between;
     margin-bottom: 3rem;
+    background-color: lightgray;
+    margin-top: 3rem;
 }
 
 .header >h6{
     width: 16.7%;
     text-align: center;
+    margin-left: none;
+}
+
+.spanParagraph{
+    color:darkblue;
+}
+
+.table{
+    height: 500px;
+    overflow: auto;
+}
+
+.header{
+    position: sticky;
+    top:0;
+}
+
+.searchBar{
+    padding-right: 5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.bar{
+    width: 200px;
+    height: 2rem;
+    border: 1px solid darkgray;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-right: 0
+}
+
+.searchButton{
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid darkgray;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: 0;
 }</style> 
     <script src="https://kit.fontawesome.com/6365c07014.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
@@ -611,10 +671,17 @@ h2{
   </ul>
    
 <main>   
-    <h2> Part Catalogue </h2><br>
+    <h2><span class="material-icons">collections_bookmark</span> Part Catalogue</h2><br>
     
     <div class="selections">
         <h5>Filter</h5>
+
+        <div class="searchBar">
+          <h6>Search by description &nbsp &nbsp &nbsp &nbsp </h6>
+          <div class="bar"><input type="text"></div>
+          <div class="searchButton"> <a><span class="material-icons">search</span> </a></div>
+        </div>
+
         <div class="filters">
                 <div class="input-field col s12 commodity">
                     <select id="commodity">
@@ -624,14 +691,14 @@ h2{
                         <option value="machined">Machined</option>
                         <option value="casting">Casting</option>
                         <option value="gaskets">Gaskets</option>
-                        <option value="heatsink">Heatsinks</option>
+                        <option value="heatsinks">Heatsinks</option>
+                        <option value="extrusions">Extrusions</option>
                     </select>
                     <label>Commodity</label>
                 </div>
                 <div class="input-field col s12 material">
-                    <select>
+                    <select class="materialfilter" id="materialfilter">
                         <option value="" disabled="" selected="">Choose one</option>
-                        <option value="dos">Choose one</option>
                     </select>
                     <label>Material</label>
                 </div>
@@ -645,19 +712,11 @@ h2{
         <div class="indeterminate"></div>
     </div>
 
-    <div class="carousel carouselDiv">
-      <a class="carousel-item" href="#"><img src="https://via.placeholder.com/300.png/09f/fff"></a>
+    
+    <div class="table">
     </div>
 
-    <div class="table">
-      <div class="header">
-        <h6>Image</h6>
-        <h6>Quoted Price</h6>
-        <h6>Material</h6>
-        <h6>Volume</h6>
-        <h6>Units</h6>
-        <h6><span class="material-icons">fullscreen</span></h6>
-      </div>
+    <div class="modals">
       
     </div>
 
@@ -961,9 +1020,9 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   return newRequire;
 })({"Nnv0":[function(require,module,exports) {
 $(document).ready(function () {
-  $('.carousel').carousel();
   $('.dropdown-trigger').dropdown();
   $('select').formSelect();
+  $('.modal').modal();
   google.script.run.withSuccessHandler(ready).loadPartCatalogueData();
   filters.style.display = 'none';
   progressBar.style.display = 'block';
@@ -979,8 +1038,10 @@ function ready(data) {
 var filters = document.querySelector('.filters');
 var progressBar = document.querySelector('.progressBar');
 progressBar.style.display = 'block';
-var carouselDiv = document.querySelector('.carouselDiv');
 var table = document.querySelector('.table');
+var modals = document.querySelector('.modals');
+var materialfilter = document.querySelector('#materialfilter');
+var selections = document.querySelector('.selections');
 filters.addEventListener('change', function (e) {
   e.stopPropagation();
   console.log(e.target.value);
@@ -990,61 +1051,110 @@ filters.addEventListener('change', function (e) {
       loadOptions("plastics");
       break;
 
+    case "sheetMetal":
+      loadOptions("sheetMetal");
+      break;
+
+    case "gaskets":
+      loadOptions("gaskets");
+      break;
+
+    case "heatsinks":
+      loadOptions("heatsinks");
+      break;
+
+    case "extrusions":
+      loadOptions("extrusions");
+      break;
+      loadOptions("machined");
+      break;
+
     default:
       console.log('default case');
       break;
   }
-});
+}); // catalogueData.plastics = getData(plasticsValues)
+// catalogueData.sheetMetal = getData(sheetMetalValues)
+// catalogueData.gaskets = getData(gasketsValues)
+// catalogueData.heatsinks = getData(heatsinksValues)
+// catalogueData.extrusions = getData(extrusionsValues)
 
 function loadOptions(commodity) {
+  table.innerHTML = "";
+  var header = "\n        <div class=\"header\">\n            <h6>Image</h6>\n            <h6>Quoted Price</h6>\n            <h6>Material</h6>\n            <h6>Volume</h6>\n            <h6>Units</h6>\n            <h6><span class=\"material-icons\">zoom_in</span></h6>\n        </div>\n    ";
+  table.innerHTML += header;
   console.log(quoteData[commodity]);
-  quoteData[commodity].map(function (element) {
-    var a = document.createElement("a");
-    a.classList.add("carousel-item");
-    a.href = '#';
-    var image = document.createElement("img");
-    a.appendChild(image);
-    var string = element["Image url"].split("d/")[1];
-    var id = string.split("/")[0];
-    console.log(id);
-    image.src = "https://drive.google.com/thumbnail?id=" + id;
-    carouselDiv.appendChild(a);
-    var text = document.createElement('div');
-    text.classList.add('imageOverText');
-    text.innerText = element["Material"];
-    a.appendChild(text);
-    var div = document.createElement('div');
-    div.classList.add('row');
-    var paragraph = document.createElement('p');
-    var newImg = document.createElement('img');
-    newImg.src = "https://drive.google.com/thumbnail?id=" + id;
-    newImg.style.display = 'block';
-    paragraph.appendChild(newImg);
-    div.appendChild(paragraph);
-    var price = document.createElement('p');
-    price.innerText = element['Quoted price'];
-    div.appendChild(price);
-    var material = document.createElement('p');
-    material.innerText = element['Material'];
-    div.appendChild(material);
-    var partWeight = document.createElement('p');
-    partWeight.innerText = element['Part weight'];
-    div.appendChild(partWeight);
-    var units = document.createElement('p');
-    units.innerText = element['Units(grams/ounces)'];
-    div.appendChild(units); // let quoteNumber = document.createElement('p')
-    // quoteNumber.innerText = element['Project number']
-    // div.appendChild(quoteNumber)
+  quoteData[commodity].map(function (element, index) {
+    if (element !== null) {
+      var div = document.createElement('div');
+      div.classList.add('row');
+      var paragraph = document.createElement('p');
+      var imgUrl = element['Image url'];
+      id = imgUrl.split("d/")[1].split("/")[0];
+      var newImg = document.createElement('img');
+      newImg.src = "https://drive.google.com/thumbnail?id=" + id;
+      newImg.style.display = 'block';
+      paragraph.appendChild(newImg);
+      div.appendChild(paragraph);
+      var price = document.createElement('p');
+      price.innerText = "$" + element['Quoted price'];
+      div.appendChild(price);
+      var material = document.createElement('p');
+      material.innerText = element['Material'];
+      div.appendChild(material);
+      var partWeight = document.createElement('p');
+      partWeight.innerText = element['Part weight'];
+      div.appendChild(partWeight);
+      var units = document.createElement('p');
+      units.innerText = element['Units(grams/ounces)'];
+      div.appendChild(units); // let quoteNumber = document.createElement('p')
+      // quoteNumber.innerText = element['Project number']
+      // div.appendChild(quoteNumber)
 
-    var file = document.createElement('a');
-    file.innerText = 'File link';
-    file.href = element['File path'];
-    file.target = '_blank';
-    div.appendChild(file);
-    table.appendChild(div);
-    $('.carousel').carousel();
+      var fileP = document.createElement('p');
+      var viewButton = document.createElement('a');
+      viewButton.innerHTML = "<span class=\"material-icons\">zoom_in</span>";
+      viewButton.href = "#" + element['Part Number'] + element['Project number'];
+      viewButton.target = '_blank';
+      viewButton.classList.add('btn', 'btn-waves', 'modal-trigger');
+      var addToCart = document.createElement('a');
+      addToCart.innerHTML = "<span class=\"material-icons\">shopping_cart</span>";
+      addToCart.classList.add('btn', 'btn-waves', 'yellow', 'accent-4');
+      fileP.appendChild(viewButton);
+      fileP.appendChild(addToCart);
+      div.appendChild(fileP);
+      table.appendChild(div);
+      var modalDiv = "\n        <div id=".concat(element['Part Number'] + element['Project number'], " class=\"modal\">\n            <div class=\"modal-content\">\n                <h5>Part Number: <span class=\"spanParagraph\">").concat(element['Part Number'], "</span></h5>\n                <img src=").concat("https://drive.google.com/thumbnail?id=" + id, ">\n                <p>Part description: <span class=\"spanParagraph\">").concat(element['Part description'], "</span></p>\n                <p>Commodity: <span class=\"spanParagraph\">").concat(element['Commodity'], "</span></p>\n                <p>Material: <span class=\"spanParagraph\">").concat(element['Material'], "</span></p>\n                <p>Finish: <span class=\"spanParagraph\">").concat(element['Finish'], "</span></p>\n                <p>Process: <span class=\"spanParagraph\">").concat(element['Process'], "</span></p>\n                <p>Part Weight: <span class=\"spanParagraph\">").concat(element['Part weight']).concat(element['Units(grams/ounces)'], "</span></p>\n                <p>XYZ wrapper measure: <span class=\"spanParagraph\">").concat(element['XYZ wrapper measure']).concat(element['Units(cm/inch)'], "</span></p>\n                <p>Volume quoted: <span class=\"spanParagraph\">").concat(element['Volume'], "</span></p>\n                <p>Project Number where quoted: <span class=\"spanParagraph\">").concat(element['Project number'], "</span></p>\n                <p>Best price supplier: <span class=\"spanParagraph\">").concat(element['Best Price Supplier'], "</span></p>\n                <p>Quoted price: <span class=\"spanParagraph\">").concat(element['Quoted price'], "</span></p>\n                <p>Date quoted: <span class=\"spanParagraph\">").concat(element['Date quoted'], "</span></p>\n                <a href=").concat(element['File path'], " target=_blank> File name: ").concat(element['File names'], "</a>\n            </div>\n            <div class=\"modal-footer\">\n                <a class=\"modal-close waves-effect waves-green btn\">Add to cart</a>\n            </div>\n        </div>\n        ");
+      modals.innerHTML += modalDiv;
+      $('.modal').modal();
+    }
+  });
+  $('.modal').modal();
+  loadSelect(commodity, 'Material');
+  $('select').formSelect();
+}
+
+function loadSelect(commodity, filterType) {
+  var options = materialfilter.querySelectorAll('option');
+  console.log(options);
+  options.forEach(function (option, index) {
+    materialfilter.options[index];
+    materialfilter.remove([materialfilter.index]);
+  });
+  quoteData[commodity].map(function (element) {
+    if (element !== null) {
+      console.log(element);
+      var option = document.createElement('option');
+      option.text = element[filterType];
+      option.value = element[filterType];
+      materialfilter.add(option);
+    }
   });
 }
+
+selections.getElementsByTagName('INPUT')[0].style.height = '2rem';
+selections.getElementsByTagName('INPUT')[0].style.border = '0';
+selections.getElementsByTagName('INPUT')[0].style.padding = '0px 0px 0px 5px';
 },{}]},{},["Nnv0"], null)</script>
    <!-- <script src="../js/massGenericSCRIPT.js"></script> -->
    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>

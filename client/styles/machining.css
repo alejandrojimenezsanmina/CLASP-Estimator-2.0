@@ -1,0 +1,50 @@
+main{
+    padding: 1rem;
+}
+
+.helpme{
+    color: white;
+    background-color: black;
+    border-radius: 50%;
+}
+
+.workPieceImages{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.workPieceImg{
+    width: 33%;
+}
+
+.envelopeImg img{
+    width: 150%;
+    height: auto;
+}
+
+.roughtStock{
+    margin: -2rem;
+}
+
+.percentageInput{
+    display: flex;
+    flex-direction: row;   
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    
+}
+.bar{
+    width: 60%;
+    margin-left: 0px;
+}
+
+.barInp{
+    width: 10%;
+}
+
+.range-field{
+    width: 100%;
+}

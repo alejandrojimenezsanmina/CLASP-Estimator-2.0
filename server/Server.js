@@ -17,6 +17,7 @@ console.log(Route);
     Route.path('sheet',loadSheetMetal);
     Route.path('uploadFile',loadUploadFile);
     Route.path('partcatalogue',loadPartCatalogue);
+    Route.path('machined',loadMachined);
     Route.path('home',loadHome)
   
   if(Route[e.parameters.v] ){
@@ -52,6 +53,11 @@ function loadUploadFile(){
 function loadPartCatalogue(){
 
   return HtmlService.createTemplateFromFile('PartCatalogue').evaluate();    
+}
+
+function loadMachined(){
+
+  return HtmlService.createTemplateFromFile('Machined').evaluate();    
 }
 
 //ESTIMATE FUNCTION triggered with click. Will estimate pricing based on the information input
@@ -425,4 +431,32 @@ function getData(values){
     }
   })
   return data
+}
+
+
+function loadMaterialData(){
+  // get material workbook
+  var wb = SpreadsheetApp.openById('1kFtNEVhIQr3mMaFbXXP8hMTl_nhTr-7pHtprRf4zf5U');
+  var machinedInfosheet = wb.getSheetByName('Machined');
+  var dataArrFormat = machinedInfosheet.getDataRange().getValues();
+
+  var data = dataArrFormat.map(function(element, index){
+    if (index !== 0){
+      return {
+        "Material" : element[0],
+        "Shape" : element[1],
+        "Kg/cm (lineal)" : element[2],
+        "A (cm)" : element[3],
+        "B (cm)" : element[4],
+        "Surface cm2" : element[5],
+        "Image" : element[6],
+        "Lengt cm" : element[7],
+        "Price per Kg" : element[8],
+        "Price per workpiece" : element[9]
+      }
+    }
+  })
+
+  return data
+
 }

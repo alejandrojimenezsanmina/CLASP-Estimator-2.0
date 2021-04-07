@@ -115,10 +115,17 @@
   </ul>
    
 <main>   
-    <h2> Part Catalogue </h2><br/>
+    <h2><span class="material-icons">collections_bookmark</span> Part Catalogue</h2><br/>
     
     <div class="selections">
         <h5>Filter</h5>
+
+        <div class="searchBar">
+          <h6>Search by description &nbsp &nbsp &nbsp &nbsp </h6>
+          <div class="bar"><input type="text"></div>
+          <div class="searchButton"> <a><span class="material-icons">search</span> </a></div>
+        </div>
+
         <div class="filters">
                 <div class="input-field col s12 commodity">
                     <select id="commodity">
@@ -128,14 +135,14 @@
                         <option value="machined">Machined</option>
                         <option value="casting">Casting</option>
                         <option value="gaskets">Gaskets</option>
-                        <option value="heatsink">Heatsinks</option>
+                        <option value="heatsinks">Heatsinks</option>
+                        <option value="extrusions">Extrusions</option>
                     </select>
                     <label>Commodity</label>
                 </div>
                 <div class="input-field col s12 material">
-                    <select>
+                    <select class="materialfilter" id="materialfilter">
                         <option value="" disabled selected>Choose one</option>
-                        <option value="dos" >Choose one</option>
                     </select>
                     <label>Material</label>
                 </div>
@@ -149,19 +156,11 @@
         <div class="indeterminate"></div>
     </div>
 
-    <div class="carousel carouselDiv">
-      <a class="carousel-item" href="#"><img src="https://via.placeholder.com/300.png/09f/fff"></a>
+    
+    <div class="table">
     </div>
 
-    <div class="table">
-      <div class="header">
-        <h6>Image</h6>
-        <h6>Quoted Price</h6>
-        <h6>Material</h6>
-        <h6>Volume</h6>
-        <h6>Units</h6>
-        <h6><span class="material-icons">fullscreen</span></h6>
-      </div>
+    <div class="modals">
       
     </div>
 
