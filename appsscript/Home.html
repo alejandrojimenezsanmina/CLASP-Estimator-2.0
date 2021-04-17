@@ -378,9 +378,25 @@ h6{
 
   main {
     flex: 1 0 auto;
-  }</style>
+  }
+
+  .userIconAndName{
+    display: flex;
+
+    align-items: center;
+    
+  }
+
+  #userIcon{
+
+  }
+ #userName{
+   
+  
+ }</style>
     <script src="https://kit.fontawesome.com/6365c07014.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
   </head>
   
@@ -874,9 +890,19 @@ restart.addEventListener("click", function () {
 $(document).ready(function () {
   $(".dropdown-trigger").dropdown();
   $('.modal').modal();
+  google.script.run.withSuccessHandler(updateUserInfo).getUserInfo();
 });
+
+function updateUserInfo(user) {
+  if (user) {
+    localStorage.setItem("userEmail", user);
+  }
+}
+
+var userEmail;
 var sheetUrl;
 var qims;
+userEmail = localStorage.getItem("userEmail") || "User";
 
 if (localStorage.getItem("url")) {
   sheetUrl = localStorage.getItem("url");

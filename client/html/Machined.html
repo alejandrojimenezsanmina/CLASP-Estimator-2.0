@@ -268,16 +268,16 @@
 
             <div class="row percentageInput">
               <div class="bar">
-                <div class="range-field col s8 bar">
+                <div class="range-field col bar">
                   <i class="material-icons prefix"><span class="material-icons">
                     extension
                     </span></i>
-                  <label for="finalVolume">Volume of Final Machined Part vs Raw work piece (%)</label>
+                  <label for="finalVolume">Volume of Final Machined Part vs Workpiece(%)</label>
                   <input type="range" id="finalVolume" min="5" max="80" />
                 </div>
               </div>
               <div class="barInp">
-                <input type="text" disabled> 
+                <input type="text" id="finalVolumeInput" disabled> 
               </div>
             </div>
 
@@ -327,13 +327,13 @@
                   <input type="range" id="millingOperation" min="5" max="80" class="margin-top" />
                 </div>
               </div>
-              <div class="barInp">
-                <input type="text" disabled> 
+              <div class="barInp" >
+                <input type="text" id="millingInput" disabled> 
               </div>
               <div class="selectBox">
                 <label>
-                  <input type="checkbox" />
-                  <span>Add</span>
+                  <input type="checkbox" id="millingCheckbox"/>
+                  <span>Add process</span>
                 </label>
               </div>
             </div>
@@ -351,12 +351,12 @@
                 </div>
               </div>
               <div class="barInp">
-                <input type="text" disabled> 
+                <input type="text" id="latheInput" disabled> 
               </div>
               <div class="selectBox">
                 <label>
-                  <input type="checkbox"  />
-                  <span>Add</span>
+                  <input type="checkbox"  id="turningCheckbox"/>
+                  <span >Add process</span>
                 </label>
               </div>
             </div>
@@ -373,13 +373,13 @@
                   <input type="range" id="drillingOperation" min="5" max="80" class="margin-top" />
                 </div>
               </div>
-              <div class="barInp">
-                <input type="text" disabled> 
+              <div class="barInp" >
+                <input type="text" id="drillingInput" disabled> 
               </div>
               <div class="selectBox">
                 <label>
-                  <input type="checkbox" />
-                  <span>Add</span>
+                  <input type="checkbox" id="drillingCheckbox"/>
+                  <span>Add process</span>
                 </label>
               </div>
             </div>
@@ -392,43 +392,64 @@
               <li><p>The average machine shop in the U.S. charges $60-80/hour</p></li>
               <li><p>The average machine shop in the China charges $35-75/hour </p></li>
               <li><p>The average machine shop in the México charges $45-65/hour </p></li>
-            </ul>
+            </ul><br><br>
             <div class="workPieceImages">
               <div class="workPieceImg">
-                <img src="https://drive.google.com/thumbnail?id=100tdttIh8Z1uYUJPl6JC-7L2o_xgpO8i" alt="mrr">
+                <img src="https://drive.google.com/thumbnail?id=102hOzMr3ANinqsEUBe5UcXBKBKdXezhA" alt="shopRate">
               </div>
             </div>
-          </div>
+          </div><br>
         </div>
       <!-- end of modal for workpiece information -->
 
             <div class="row percentageInput">
               <div class="bar">
-                <div class="range-field col s8 bar">
+                <div class="range-field col bar">
                   <div class="mrr">
                     <h6>Machine shop rate ($usd)
                       <a class="modal-trigger" href="#shopRate">
                         <span class="material-icons helpme glow">
                         help_outline
-                        </span></h6>
+                        </span>
                       </a>
+                    </h6>
                   </div>
-                  <input type="range" id="mrr" min="35" max="90" class="margin-top" />
+                  <input type="range" id="machineRate" min="35" max="90" class="margin-top" />
                 </div>
               </div>
               <div class="barInp">
-                <input type="text" disabled> 
+                <input type="text" id="machinedRateInput" disabled>
               </div>
             </div>
+            <br><br>
 
-      </form>  
+            <button class="btn waves-effect waves-light green darken-1">Estimate</button>
+      </form> <br><br> 
     </div>
 
-    <div class="masterRight">
+    <div class="masterRight"> <br><br>
+      <h4>Estimated price</h4>
+
       <br><br>
-      <h4>Cutting speed calculator</h4><br> <br>
-      <script type="text/javascript" src="https://www.custompartnet.com/gembed/milling-speed-and-feed.js"></script>        
+      <div class="calculators">
+        <h5>Milling speed calculator <button id="millingCalc" class="calcShowButton glow">+</button></h5><br>
+          <div id="millingCalculator">
+            <script type="text/javascript" src="https://www.custompartnet.com/gembed/milling-speed-and-feed.js"></script>
+          </div>
+        <br>
+        <h5>Turning speed calculator <button id="turningCalc" class="calcShowButton glow">+</button></h5>
+          <div id="turningCalculator">
+            <script type="text/javascript" src="https://www.custompartnet.com/gembed/turning-speed-and-feed.js"></script>
+          </div>
+        <br>
+        <h5>Drilling speed calculator <button id="drillingCalc" class="calcShowButton glow">+</button></h5>
+          <div id="drillingCalculator">
+            <script type="text/javascript" src="https://www.custompartnet.com/gembed/drilling-speed-and-feed.js"></script>
+          </div>
+      </div>
+
     </div>
+
     
   </main>
 

@@ -9,6 +9,8 @@ Route.path = function (route,callback){
 function doGet(e) {
 //DriveApp.getRootFolder();
 //UrlFetchApp.fetch("");
+//UrlFetchApp.fetch("")
+//Session.getActiveUser()
 
 Logger.log(Route);
 console.log(Route);
@@ -433,14 +435,40 @@ function getData(values){
   return data
 }
 
+var machinedData;
+
+function getMachinedData (workPieceType){
+  // get material workbook
+  var wb = SpreadsheetApp.openById('1kFtNEVhIQr3mMaFbXXP8hMTl_nhTr-7pHtprRf4zf5U');
+  var machinedInfosheet = wb.getSheetByName('Machined');
+  var dataArrFormat = machinedInfosheet.getDataRange().getValues();
+
+    machinedData = dataArrFormat.map(function(element, index){
+    
+      if (index != 0 && element[1] === workPieceType ){
+        return {
+          "Material" : element[0],
+          "Shape" : element[1],
+          "Kg/cm (lineal)" : element[2],
+          "A (cm)" : element[3],
+          "B (cm)" : element[4],
+          "Surface cm2" : element[5],
+          "Image" : element[6],
+          "Lengt cm" : element[7],
+          "Price per Kg" : element[8],
+          "Price per workpiece" : element[9]
+        }
+      }
+    })
+}
 
 function loadMaterialData(){
   // get material workbook
   var wb = SpreadsheetApp.openById('1kFtNEVhIQr3mMaFbXXP8hMTl_nhTr-7pHtprRf4zf5U');
   var machinedInfosheet = wb.getSheetByName('Machined');
   var dataArrFormat = machinedInfosheet.getDataRange().getValues();
-
-  var data = dataArrFormat.map(function(element, index){
+  
+   machinedData = dataArrFormat.map(function(element, index){
     if (index !== 0){
       return {
         "Material" : element[0],
@@ -456,7 +484,147 @@ function loadMaterialData(){
       }
     }
   })
+  return machinedData
+}
 
-  return data
+function estimateMachined(variables){
+
+  getMachinedData(variables['workpiece'])
+
+  var estimationData = {};
+  Logger.log("variables : ")
+  Logger.log(variables)
+  if(variables['units'] === 'inches'){
+    variables['length'] = Number(variables['length']) * 2.54;
+    variables['width']  = Number(variables['length']) * 2.54;
+    variables['height'] = Number(variables['length']) * 2.54;
+    if (variables['millingOperation']) {variables['millingOperation'] = Number(variables['length']) * 16.387;}
+    if (variables['turningOperation']) {variables['turningOperation'] = Number(variables['length']) * 16.387;}
+    if (variables['drillingOperation']) {variables['drillingOperation'] = Number(variables['length']) * 16.387;}
+  }
+  
+  estimationData['single part length'] = variables['length']
+  estimationData['number of workpieces'] = (Number(variables['EAU']) * Number(variables['length']))/ Number(machinedData["Lengt cm"]) + 1
+  estimationData['Part surface (cm2)'] = Number(variables['width']) * Number(variables['height'])
+  estimationData['Single part volume']; 
+  
+  machinedData.forEach(function(element){
+    if(element['Surface cm2'] >= estimationData['Part surface (cm2)']){
+      estimationData['workpiece weigth'] = Number(element["Kg/cm (lineal)"]) * Number(element["Lengt cm"])
+      estimationData['Workpiece volume each'] = Number(element['Surface cm2']) * Number(element["Lengt cm"])
+    }
+  })
+
+  estimationData['Cut pieces adder'] = Number(variables['EAU']) * 1.5
+  estimationData['Vr'] =  Number(estimationData['Workpiece volume each']) * estimationData['number of workpieces'] 
+  estimationData['Vm'] = estimationData['Vr'] *  Number(variables['finalVolume']/100)
+  estimationData['Tm'] = 0
+
+  if(variables['millingOperation'] != ""){
+    estimationData['Tm'] += 1 / Number(variables['millingOperation'])
+  }
+  if(variables['turningOperation'] != ""){
+    estimationData['Tm'] += 1 / Number(variables['turningOperation'])
+  }
+  if(variables['drillingOperation'] != ""){
+    estimationData['Tm'] += 1 / Number(variables['drillingOperation'])
+  }
+
+  estimationData['Rt'] = Number(variables['machineRate'])
+  
+  estimationData['Part Lot Cost'] = Number(variables['EAU']) * 
+   ( (estimationData['Vr'] - estimationData['Vm'] ) * estimationData['Tm'] * estimationData['Rt'] * (1/60))
+
+   Logger.log(estimationData)
+   
+   return estimationData
 
 }
+
+// 1  .05
+// 2 : 1
+// 1 inch per 2min
+// 0.5 per min
+
+// Milling operations: 0.5 in3 / min ( 2 min/in3 ) to 500 in3 / min ( 0.002 min/in3 )
+// Small dia. end mill – Shell insert cutter
+// Lathe turning: from 0.5 ( 2 min/in3 ) to 50 in3 / min ( 0.02 min/in3 )
+// Drilling: from 0.3 ( 3.33 min/in3 ) to 36 in3 / min ( 0.028 min/in3 )
+
+//Part Lot Cost =  N x [ ( Vr – Vm ) x Tm x Rt x (1hr/60min) ] + Ohm + Sc 
+
+// Vr = Volume of Rough Stock (in3, mm3 )
+// Vm = Volume of Final Machined Part (in3 , mm3 )
+// Tm = Material Removal minutes per unit volume (min/in3 , min/mm3 )
+// Rt = Machine shop rate ($/ hr )
+// Ohm = Machine shop overhead ($)
+// Sc = Lot manufacturing setup costs ($)
+// N = Lot built quantity
+// Metal removal rates vary as follows:
+
+function getUserInfo(){
+  var user = Session.getEffectiveUser().getEmail();
+  return user;
+}
+
+function loadToGoogleSheet (estimationData) {
+  var wb = SpreadsheetApp.openByUrl(estimationData['sheetURL'])
+  var ss = wb.getSheetByName('Machined')
+  var header = [
+    'Part number',
+    'Units',
+    'Lenght',
+    'Widht',
+    'Height',
+    'EAU',
+    'Material',
+    'Work piece',
+    'Milling -material removal rate',
+    'Lathe turning -material removal rate',
+    'Drilling -material removal rate',
+    'Shop rate ($/hr)',
+    'Machining cost ea',
+    'Cut piece adder',
+    'Part cost each'
+
+    // estimationData.variablesObj['partNumber'],
+    // estimationData.variablesObj['units'],
+    // estimationData.variablesObj['length'],
+    // estimationData.variablesObj['width'],
+    // estimationData.variablesObj['height'],
+    // estimationData.variablesObj['EAU'],
+    // estimationData.variablesObj['material'],
+    // estimationData.variablesObj['workpiece'],
+    // estimationData.variablesObj['millingInput'],
+    // estimationData.variablesObj['latheInput'],
+    // estimationData.variablesObj['drillingInput'],
+    // estimationData.variablesObj['machineRate'],
+  ]
+
+  header.forEach(function (element, index){
+    ss.getRange( 1,index + 1 ).setValue(element)
+  })
+
+  ss.getRange(1,1,1,12).setBackground("#333").setFontColor("#fff").setFontSize(11).setFontWeight(800)  
+  ss.getRange(1,13,1,3).setBackground("orange").setFontColor("#fff").setFontSize(11).setFontWeight(800)
+  
+  var lastRow = ss.getLastRow();
+
+  ss.getRange(lastRow + 1, 1).setValue(estimationData['Input values']['partNumber'])
+  ss.getRange(lastRow + 1, 2).setValue(estimationData['Input values']['units'])
+  ss.getRange(lastRow + 1, 3).setValue(estimationData['Input values']['length'])
+  ss.getRange(lastRow + 1, 4).setValue(estimationData['Input values']['width'])
+  ss.getRange(lastRow + 1, 5).setValue(estimationData['Input values']['height'])
+  ss.getRange(lastRow + 1, 6).setValue(estimationData['Input values']['EAU'])
+  ss.getRange(lastRow + 1, 7).setValue(estimationData['Input values']['material'])
+  ss.getRange(lastRow + 1, 8).setValue(estimationData['Input values']['workpiece'])
+  ss.getRange(lastRow + 1, 9).setValue(estimationData['Input values']['millingInput'])
+  ss.getRange(lastRow + 1, 10).setValue(estimationData['Input values']['latheInput'])
+  ss.getRange(lastRow + 1, 11).setValue(estimationData['Input values']['drillingInput'])
+  ss.getRange(lastRow + 1, 12).setValue(estimationData['Input values']['machineRate'])
+  ss.getRange(lastRow + 1, 13).setValue(estimationData['machining cost ea'])
+  ss.getRange(lastRow + 1, 14).setValue(1.50)
+  ss.getRange(lastRow + 1, 15).setValue(estimationData['part cost each'])
+  
+}
+

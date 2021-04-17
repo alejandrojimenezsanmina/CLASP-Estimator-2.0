@@ -371,3 +371,18 @@ h6{
   main {
     flex: 1 0 auto;
   }
+
+  .userIconAndName{
+    display: flex;
+
+    align-items: center;
+    
+  }
+
+  #userIcon{
+
+  }
+ #userName{
+   
+  
+ }

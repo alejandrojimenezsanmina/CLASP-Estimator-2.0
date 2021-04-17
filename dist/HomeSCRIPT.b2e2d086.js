@@ -125,9 +125,19 @@ restart.addEventListener("click", function () {
 $(document).ready(function () {
   $(".dropdown-trigger").dropdown();
   $('.modal').modal();
+  google.script.run.withSuccessHandler(updateUserInfo).getUserInfo();
 });
+
+function updateUserInfo(user) {
+  if (user) {
+    localStorage.setItem("userEmail", user);
+  }
+}
+
+var userEmail;
 var sheetUrl;
 var qims;
+userEmail = localStorage.getItem("userEmail") || "User";
 
 if (localStorage.getItem("url")) {
   sheetUrl = localStorage.getItem("url");
