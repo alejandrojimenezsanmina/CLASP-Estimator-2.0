@@ -1325,11 +1325,25 @@ function estimateMachined(variablesObj) {
   console.log('variablesObj', variablesObj);
   console.log('estimationData', estimationData);
   google.script.run.withSuccessHandler(completed).loadToGoogleSheet(estimationData);
+  myForm.style.display = 'none';
+  loadingCircle.style.display = 'block';
   estimationData = {};
 }
 
 function completed() {
-  console.log('completed!');
+  loadingCircle.style.display = 'none';
+  myForm.style.display = 'block';
+  var sheetNewUrl = localStorage.getItem('url');
+  var dollar = document.querySelector('#slideCeption');
+  dollar.classList.add('glowGreen');
+  var openGSheets = document.querySelector('#openGSheets');
+  openGSheets.href = sheetNewUrl;
+  openGSheets.target = '_blank';
+  var downloadXls = document.querySelector('#downloadXls');
+  var indexof = sheetNewUrl.indexOf("edit?");
+  var substr = sheetNewUrl.slice(0, indexof);
+  var downloadRoute = substr + "export?format=xlsx";
+  downloadXls.href = downloadRoute;
 }
 
 function updateUnits(units) {

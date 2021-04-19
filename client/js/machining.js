@@ -254,13 +254,29 @@ function estimateMachined(variablesObj){
   console.log('variablesObj', variablesObj)
   console.log('estimationData', estimationData)
   google.script.run.withSuccessHandler(completed).loadToGoogleSheet(estimationData)
+  myForm.style.display = 'none';
+  loadingCircle.style.display = 'block';
   estimationData = {}
   
 }
 
 
 function completed(){
-  console.log('completed!');
+  loadingCircle.style.display = 'none';
+  myForm.style.display = 'block';
+  let sheetNewUrl = localStorage.getItem('url')
+  let dollar = document.querySelector('#slideCeption');
+  dollar.classList.add('glowGreen');
+  let openGSheets = document.querySelector('#openGSheets')
+  openGSheets.href = sheetNewUrl
+  openGSheets.target ='_blank'
+  let downloadXls = document.querySelector('#downloadXls');
+
+  let indexof = sheetNewUrl.indexOf("edit?")
+  let substr = sheetNewUrl.slice(0, indexof);
+  let downloadRoute = substr + "export?format=xlsx";
+  downloadXls.href = downloadRoute;
+
 }
 
 function updateUnits(units){
