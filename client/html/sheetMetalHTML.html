@@ -58,10 +58,10 @@
   
   <!-- Dropdown Structure -->
 <ul id="dropdown1" class="dropdown-content">
-  <li><a href= "https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=sheet" >Sheet metal</a></li>
-  <li><a href="#!">Plastics</a></li>
-  <li><a href="#!"><i class="material-icons right">work_off</i>Machined </a></li>
-  <li><a href="#!"><i class="material-icons right">work_off</i>Part catalogue</a></li>
+  <li><a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=sheet" >Sheet metal</a></li>
+  <li><a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=plastics">Plastics</a></li>
+  <li><a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=machined">Machined </a></li>
+  <li><a><i class="material-icons right">work_off</i>Part catalogue</a></li>
     <li class="divider"></li> 
   <li><a href="https://docs.google.com/spreadsheets/d/1ueBSTWRHtVQD10h0QmZYZBNtvV7jgVF5o1l1IoD06Wc/export?format=xlsx" 
          id="downloadTemplate" 
@@ -282,54 +282,82 @@
 <!-- HARDWARE QTY AND COMPLEXITY-->
 
    <div id="hdw" class="inline">   
-             <div class="row">
-                    <div class="input-field col s2">
+             <div class="fixVisualMess">
+               
+                  <div class="input-field col s2 qtyHdwDiv">
                       <input id="qtyHdw" type="text" class="validate" id="qtyHdw">
                       <label for="qtyHdw">Quantity</label>
-                    </div>
-                
-        </div> 
-
+                  </div>
+               
+                <div class="form-row qtyAndTypeDiv" >
+                     <label for="complexity">Complexity</label>
+                     <select name="complexity" class="qtyAndType" id= "complexity" >
+                      <option selected disabled >Select:</option>
+                      <option value="Floating Self-Clinching Fasteners avg price each: $ 0.4154">Floating Self-Clinching Fasteners avg price each: $ 0.4154</option>
+                      <option value="Self-Clinching Blind Fasteners avg price each: $ 0.2751">Self-Clinching Blind Fasteners avg price each: $ 0.2751</option>
+                      <option value="Nuts – Types H avg price each: $ 0.2012">Nuts – Types H avg price each: $ 0.2012</option>
+                      <option value="Nuts - Types S avg price each: $ 0.0745">Nuts - Types S avg price each: $ 0.0745</option>
+                      <option value="Nuts for Ultra-Thin Sheets - Type SMPS/ SMPP avg price each: $ 0.0732">Nuts for Ultra-Thin Sheets - Type SMPS/ SMPP avg price each: $ 0.0732</option>
+                      <option value="Floating Self-Clinching Fasteners A4/ AS/ AC  avg price each: $ 0.6851">Floating Self-Clinching Fasteners A4/ AS/ AC  avg price each: $ 0.6851</option>
+                      <option value="Floating self-clinching/ locking thread fasteners LA4/ LAC/ LAS  avg price each: $ 0.8486">Floating self-clinching/ locking thread fasteners LA4/ LAC/ LAS  avg price each: $ 0.8486</option>
+                      <option value="Self-Clinching Nuts - Types S/ SS/ CLS/ CLSS/ SP avg price each: $ 0.3159">Self-Clinching Nuts - Types S/ SS/ CLS/ CLSS/ SP avg price each: $ 0.3159</option>
+                      <option value="PEMSERT® Self-Clinching Flush Fasteners - Type F4 avg price each: $ 0.1214">PEMSERT® Self-Clinching Flush Fasteners - Type F4 avg price each: $ 0.1214</option>
+                      <option value="Nylon Insert Self-Locking Fasteners - Types PL and PLC avg price each: $ 0.1621">Nylon Insert Self-Locking Fasteners - Types PL and PLC avg price each: $ 0.1621</option>
+                      <option value="Nylon Insert Self-Locking Fasteners - Types CFN avg price each: $ 0.1357">Nylon Insert Self-Locking Fasteners - Types CFN avg price each: $ 0.1357</option>
+                      <option value="Aluminum Right Angle Fasteners - Type RAA avg price each: $ 0.33292">Aluminum Right Angle Fasteners - Type RAA avg price each: $ 0.33292</option>
+                      <option value="Steel Threaded Right Angle Fastener - Type RAS avg price each: $ 0.3157">Steel Threaded Right Angle Fastener - Type RAS avg price each: $ 0.3157</option>
+                   </select><br><br>
+                </div>
+             </div>
       
 <div class="container"> <!--CONTAINER-->   
-    <div class="left">
-        <div class="form-row" >    
-             <label for="complexity">Complexity</label>  
-             <select name="complexity" class="qtyAndType" id= "complexity" >
-             <option selected disabled >Select:</option>
-             <option value="Floating Self-Clinching Fasteners avg price each: $ 0.4154">Floating Self-Clinching Fasteners avg price each: $ 0.4154</option>
-             <option value="Self-Clinching Blind Fasteners avg price each: $ 0.2751">Self-Clinching Blind Fasteners avg price each: $ 0.2751</option>
-             <option value="Nuts – Types H avg price each: $ 0.2012">Nuts – Types H avg price each: $ 0.2012</option>
-             <option value="Nuts - Types S avg price each: $ 0.0745">Nuts - Types S avg price each: $ 0.0745</option>
-             <option value="Nuts for Ultra-Thin Sheets - Type SMPS/ SMPP avg price each: $ 0.0732">Nuts for Ultra-Thin Sheets - Type SMPS/ SMPP avg price each: $ 0.0732</option>
-             <option value="Floating Self-Clinching Fasteners A4/ AS/ AC  avg price each: $ 0.6851">Floating Self-Clinching Fasteners A4/ AS/ AC  avg price each: $ 0.6851</option>
-             <option value="Floating self-clinching/ locking thread fasteners LA4/ LAC/ LAS  avg price each: $ 0.8486">Floating self-clinching/ locking thread fasteners LA4/ LAC/ LAS  avg price each: $ 0.8486</option>
-             <option value="Self-Clinching Nuts - Types S/ SS/ CLS/ CLSS/ SP avg price each: $ 0.3159">Self-Clinching Nuts - Types S/ SS/ CLS/ CLSS/ SP avg price each: $ 0.3159</option>
-             <option value="PEMSERT® Self-Clinching Flush Fasteners - Type F4 avg price each: $ 0.1214">PEMSERT® Self-Clinching Flush Fasteners - Type F4 avg price each: $ 0.1214</option>
-             <option value="Nylon Insert Self-Locking Fasteners - Types PL and PLC avg price each: $ 0.1621">Nylon Insert Self-Locking Fasteners - Types PL and PLC avg price each: $ 0.1621</option>
-             <option value="Nylon Insert Self-Locking Fasteners - Types CFN avg price each: $ 0.1357">Nylon Insert Self-Locking Fasteners - Types CFN avg price each: $ 0.1357</option>
-             <option value="Aluminum Right Angle Fasteners - Type RAA avg price each: $ 0.33292">Aluminum Right Angle Fasteners - Type RAA avg price each: $ 0.33292</option>
-             <option value="Steel Threaded Right Angle Fastener - Type RAS avg price each: $ 0.3157">Steel Threaded Right Angle Fastener - Type RAS avg price each: $ 0.3157</option>
-           </select><br><br>
-        </div>       
-    </div>
+   
 
-    
-    
- <div class="right">   
-    <div id="infoMsg" ></div>
-</div>
+  <div class="addYourOwn">
+      <div class="addCheckbox">
+          <span>Add own hardware (Optional)</span>
+      </div>
+      <div class="row ownHdwDiv">
+        <div class="col s4 descriptionInput">
+          <input type="text" name="descInput">
+          <label for="descInput">Description</label>
+        </div>
+        <div class="col s2 priceInput">
+          <input type="text" name="priceInp">
+          <label for="priceInp">Price </label>
+        </div>
+        <div class="col s2 qtyInput">
+          <input type="number" name="qtyIn">
+          <label for="qtyIn">Qty </label>
+        </div>
+        <div class="col">
+          <button class="btn"type='button'>Add</button>
+        </div>        
+      </div>
+      
+      <div class="ownHdwList">
+        <ul>
+          <div>Una cosa</div>
+        </ul>
+      </div>
+      
+  </div>
 
-</div><!--CONTAINER-->       
-        
-    </div>        
+
+
+       
+</div><!--CONTAINER-->  
+</div>        
  
     
-   <button class="btn waves-effect waves-light green darken-1" type="submit" id="submit">Estimate
-        <i class="material-icons right">attach_money</i>
-      </button> <br><br>
-    </form>        
-    
+
+
+</form>        
+
+<div id="estimationButton">
+  <button class="btn waves-effect waves-light green darken-1" type="submit" id="submit">Estimate
+  </button>
+</div>
 
 </div>
 <!-----------------END MASTER LEFT-------------> 

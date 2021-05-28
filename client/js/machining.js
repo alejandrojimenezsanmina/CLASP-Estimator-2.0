@@ -262,6 +262,7 @@ function estimateMachined(variablesObj){
 
 
 function completed(){
+  
   loadingCircle.style.display = 'none';
   myForm.style.display = 'block';
   let sheetNewUrl = localStorage.getItem('url')
@@ -276,6 +277,7 @@ function completed(){
   let substr = sheetNewUrl.slice(0, indexof);
   let downloadRoute = substr + "export?format=xlsx";
   downloadXls.href = downloadRoute;
+  myForm.reset();
 
 }
 
@@ -309,6 +311,7 @@ function clearFilter(filterName){
 }
         
 function gotMtlData(data){
+  console.log('Finish is: ', data['Finish']);
   console.log('data', data);
   fillMaterialFilter(data)
   loadingCircle.style.display = 'none';

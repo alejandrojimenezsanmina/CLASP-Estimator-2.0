@@ -63,3 +63,44 @@ main{
 .addedOperations{
   margin-left: 3rem;
 }
+
+
+#estimationButton button{
+  width: 100%;
+  
+}
+.ownHdwDiv:{
+  display:flex;
+  width: 100% !important;
+}
+
+.descriptionInput{
+ 
+}
+
+.priceInput{
+ 
+}
+
+.left{
+  width: 100%;
+}
+
+.btn{
+  width: inherit;
+}
+
+.fixVisualMess{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  
+}
+
+.qtyHdwDiv{
+  width: 20%;
+}
+
+.qtyAndTypeDiv{
+  width: 70%;
+}

@@ -612,8 +612,6 @@ function doCalcObject (obj)
   var total = f + o + p;
   total = Math.round(total*100)/100;
   obj["Total Estimated Cost per Part:"]= "$" + total;
-
-  
 }
 /**************************************************DO CALC************************************* */  
 

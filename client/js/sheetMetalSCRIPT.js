@@ -43,8 +43,8 @@ let operation = document.querySelector('.operation');
 let operationInput = document.getElementById('operationInput')
 let addedOperations = document.querySelector('.addedOperations')
 
-document.getElementById("infoMsg").style.display = "block";
-document.getElementById("infoMsg").style.display = "none";
+// document.getElementById("infoMsg").style.display = "block";
+// document.getElementById("infoMsg").style.display = "none";
 
 var hide = document.querySelector('#hide');
 
@@ -148,22 +148,22 @@ hide.addEventListener("click",toggle);
          }
         }  
        
-//Show Information square
-  document.getElementById('complexity').addEventListener("change",toggleInfoSqr);
+// //Show Information square
+//   document.getElementById('complexity').addEventListener("change",toggleInfoSqr);
   
-            function toggleInfoSqr (){
-            var value = document.getElementById('complexity').value;
-            if(value ==='Simple'){
-                document.getElementById("infoMsg").innerHTML = "ⓘ   Simple to install items such as screws.";
-                document.getElementById("infoMsg").style.display = "inline-block";  
-               }else if  (value ==='Medium'){
-                    document.getElementById("infoMsg").innerHTML = "ⓘ    Medium complexity items, rivetting.";
-                    document.getElementById("infoMsg").style.display = "inline-block";   
-                     }else if(value ==='Complex'){
-                         document.getElementById("infoMsg").innerHTML = "ⓘ Complex items including soldering.";
-                          document.getElementById("infoMsg").style.display = "inline-block";
-                         }
-                }            
+//             function toggleInfoSqr (){
+//             var value = document.getElementById('complexity').value;
+//             if(value ==='Simple'){
+//                 document.getElementById("infoMsg").innerHTML = "ⓘ   Simple to install items such as screws.";
+//                 document.getElementById("infoMsg").style.display = "inline-block";  
+//                }else if  (value ==='Medium'){
+//                     document.getElementById("infoMsg").innerHTML = "ⓘ    Medium complexity items, rivetting.";
+//                     document.getElementById("infoMsg").style.display = "inline-block";   
+//                      }else if(value ==='Complex'){
+//                          document.getElementById("infoMsg").innerHTML = "ⓘ Complex items including soldering.";
+//                           document.getElementById("infoMsg").style.display = "inline-block";
+//                          }
+//                 }            
             
 
 //     ESTIMATE BUTTON , SUBMIT OBJECT WITH VALUE TO SERVER

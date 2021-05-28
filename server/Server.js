@@ -65,6 +65,7 @@ function loadMachined(){
 //ESTIMATE FUNCTION triggered with click. Will estimate pricing based on the information input
 function estimate(data, googleSheet, sheetName) {
 
+
   var ws = SpreadsheetApp.openByUrl(googleSheet);
   var sheet = ws.getSheetByName(sheetName);
   
@@ -121,11 +122,14 @@ function estimate(data, googleSheet, sheetName) {
         if(row[element]){
           sheet.getRange(lastRow + 1, index + 1).setValue(row[element])
         }
-      })
-    
+      })   
     }
     
   })
+
+  if(sheetName === 'Plastics'){
+    
+  }
      //return; 
 }
 
@@ -443,23 +447,24 @@ function getMachinedData (workPieceType){
   var machinedInfosheet = wb.getSheetByName('Machined');
   var dataArrFormat = machinedInfosheet.getDataRange().getValues();
 
-    machinedData = dataArrFormat.map(function(element, index){
-    
-      if (index != 0 && element[1] === workPieceType ){
-        return {
-          "Material" : element[0],
-          "Shape" : element[1],
-          "Kg/cm (lineal)" : element[2],
-          "A (cm)" : element[3],
-          "B (cm)" : element[4],
-          "Surface cm2" : element[5],
-          "Image" : element[6],
-          "Lengt cm" : element[7],
-          "Price per Kg" : element[8],
-          "Price per workpiece" : element[9]
-        }
+  machinedData = dataArrFormat.map(function(element, index){
+  
+    if (index != 0 && element[1] === workPieceType ){
+      return {
+        "Material" : element[0],
+        "Shape" : element[1],
+        "Kg/cm (lineal)" : element[2],
+        "A (cm)" : element[3],
+        "B (cm)" : element[4],
+        "Surface cm2" : element[5],
+        "Image" : element[6],
+        "Lengt cm" : element[7],
+        "Price per Kg" : element[8],
+        "Price per workpiece" : element[9]
       }
-    })
+    }
+  })
+
 }
 
 function loadMaterialData(){
@@ -484,12 +489,26 @@ function loadMaterialData(){
       }
     }
   })
+
+  var finishSheet = wb.getSheetByName('Finish cost');
+  var lastRow = finishSheet.getLastRow();
+  var finishArray = finishSheet.getRange(3, 1, lastRow - 3, 2 ).getValues();
+
+  var finishCosts = finishArray.map(function(element){
+      return {
+        "Finish" : element[0],
+        "Cost per kg" : element[1]
+      }
+  })
+
+  machinedData['Finish'] = finishCosts;
+  
   return machinedData
 }
 
 function estimateMachined(variables){
 
-  getMachinedData(variables['workpiece'])
+  getMachinedData(variables['workpiece']);
 
   var estimationData = {};
   Logger.log("variables : ")
@@ -541,26 +560,6 @@ function estimateMachined(variables){
 
 }
 
-// 1  .05
-// 2 : 1
-// 1 inch per 2min
-// 0.5 per min
-
-// Milling operations: 0.5 in3 / min ( 2 min/in3 ) to 500 in3 / min ( 0.002 min/in3 )
-// Small dia. end mill – Shell insert cutter
-// Lathe turning: from 0.5 ( 2 min/in3 ) to 50 in3 / min ( 0.02 min/in3 )
-// Drilling: from 0.3 ( 3.33 min/in3 ) to 36 in3 / min ( 0.028 min/in3 )
-
-//Part Lot Cost =  N x [ ( Vr – Vm ) x Tm x Rt x (1hr/60min) ] + Ohm + Sc 
-
-// Vr = Volume of Rough Stock (in3, mm3 )
-// Vm = Volume of Final Machined Part (in3 , mm3 )
-// Tm = Material Removal minutes per unit volume (min/in3 , min/mm3 )
-// Rt = Machine shop rate ($/ hr )
-// Ohm = Machine shop overhead ($)
-// Sc = Lot manufacturing setup costs ($)
-// N = Lot built quantity
-// Metal removal rates vary as follows:
 
 function getUserInfo(){
   var user = Session.getEffectiveUser().getEmail();
@@ -587,18 +586,6 @@ function loadToGoogleSheet (estimationData) {
     'Cut piece adder',
     'Part cost each'
 
-    // estimationData.variablesObj['partNumber'],
-    // estimationData.variablesObj['units'],
-    // estimationData.variablesObj['length'],
-    // estimationData.variablesObj['width'],
-    // estimationData.variablesObj['height'],
-    // estimationData.variablesObj['EAU'],
-    // estimationData.variablesObj['material'],
-    // estimationData.variablesObj['workpiece'],
-    // estimationData.variablesObj['millingInput'],
-    // estimationData.variablesObj['latheInput'],
-    // estimationData.variablesObj['drillingInput'],
-    // estimationData.variablesObj['machineRate'],
   ]
 
   header.forEach(function (element, index){
