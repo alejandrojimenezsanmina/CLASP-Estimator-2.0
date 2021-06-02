@@ -64,11 +64,9 @@
   
   .left{
     width:300px;
-    float: left;
-    
-    
-    
+    float: left;  
   }
+  
   .right{
     width: 150px;
     float: right;
@@ -439,6 +437,9 @@ main{
   display: flex;
   width: 80%;
   padding: 10px 0px;
+  align-items: center;
+  justify-content: space-between;
+  max-height: 4rem;
 }
 
 .percentages input{
@@ -460,7 +461,63 @@ main{
 .addedOperations{
   margin-left: 3rem;
 }
-</style>  
+
+
+#estimationButton button{
+  width: 100%;
+  
+}
+.ownHdwDiv:{
+  display:flex;
+  width: 100% !important;
+}
+
+.descriptionInput{
+ 
+}
+
+.priceInput{
+ 
+}
+
+.left{
+  width: 100%;
+}
+
+.btn{
+  width: inherit;
+}
+
+.fixVisualMess{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  
+}
+
+.qtyHdwDiv{
+  width: 20%;
+}
+
+.qtyAndTypeDiv{
+  width: 70%;
+}
+
+.hdwListItem{
+  font-size: .8rem;
+  font-weight: 100;
+}
+
+.toast.bottom{
+  top: 300px;
+}
+.hidden{
+  display: none;
+}
+
+.show{
+  display: block;
+}</style>  
     <script src="https://kit.fontawesome.com/6365c07014.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
   </head>
@@ -694,9 +751,11 @@ main{
                  <option disabled="" selected="">Select</option>
                  <option value="Assembly">Assembly</option>
                  <option value="Bend">Bend</option>
-                 <option value="Punch">Punch</option>
-                 <option value="Weld">Weld</option>
-                 <option value="Stamp">Stamp</option>
+                 <option value="Punch">Punch(simple holes)</option>
+                 <option value="Aluminum weld">Aluminum weld</option>
+                 <option value="SS/Steel weld">SS/Steel weld</option>
+                 <option value="Threaded hole">Threaded hole</option>
+                 <option value="Countersunk hole">Countersunk hole</option>
               </select>
             </div>
             <div class="col s4">
@@ -728,56 +787,77 @@ main{
          
 <!-- HARDWARE QTY AND COMPLEXITY-->
 
-   <div id="hdw" class="inline">   
-             <div class="row">
-                    <div class="input-field col s2">
+   <div id="hdw" class="inline hidden">   
+             <div class="fixVisualMess">
+               
+                  <div class="input-field col s2 qtyHdwDiv">
                       <input id="qtyHdw" type="text" class="validate">
                       <label for="qtyHdw">Quantity</label>
-                    </div>
-                
-        </div> 
-
+                  </div>
+               
+                <div class="form-row qtyAndTypeDiv">
+                     <label for="complexity">Complexity</label>
+                     <select name="complexity" class="qtyAndType" id="complexity">
+                      <option selected="" disabled="">Select:</option>
+                      <option value="Floating Self-Clinching Fasteners avg price each: $ 0.4154">Floating Self-Clinching Fasteners avg price each: $ 0.4154</option>
+                      <option value="Self-Clinching Blind Fasteners avg price each: $ 0.2751">Self-Clinching Blind Fasteners avg price each: $ 0.2751</option>
+                      <option value="Nuts – Types H avg price each: $ 0.2012">Nuts – Types H avg price each: $ 0.2012</option>
+                      <option value="Nuts - Types S avg price each: $ 0.0745">Nuts - Types S avg price each: $ 0.0745</option>
+                      <option value="Nuts for Ultra-Thin Sheets - Type SMPS/ SMPP avg price each: $ 0.0732">Nuts for Ultra-Thin Sheets - Type SMPS/ SMPP avg price each: $ 0.0732</option>
+                      <option value="Floating Self-Clinching Fasteners A4/ AS/ AC  avg price each: $ 0.6851">Floating Self-Clinching Fasteners A4/ AS/ AC  avg price each: $ 0.6851</option>
+                      <option value="Floating self-clinching/ locking thread fasteners LA4/ LAC/ LAS  avg price each: $ 0.8486">Floating self-clinching/ locking thread fasteners LA4/ LAC/ LAS  avg price each: $ 0.8486</option>
+                      <option value="Self-Clinching Nuts - Types S/ SS/ CLS/ CLSS/ SP avg price each: $ 0.3159">Self-Clinching Nuts - Types S/ SS/ CLS/ CLSS/ SP avg price each: $ 0.3159</option>
+                      <option value="PEMSERT® Self-Clinching Flush Fasteners - Type F4 avg price each: $ 0.1214">PEMSERT® Self-Clinching Flush Fasteners - Type F4 avg price each: $ 0.1214</option>
+                      <option value="Nylon Insert Self-Locking Fasteners - Types PL and PLC avg price each: $ 0.1621">Nylon Insert Self-Locking Fasteners - Types PL and PLC avg price each: $ 0.1621</option>
+                      <option value="Nylon Insert Self-Locking Fasteners - Types CFN avg price each: $ 0.1357">Nylon Insert Self-Locking Fasteners - Types CFN avg price each: $ 0.1357</option>
+                      <option value="Aluminum Right Angle Fasteners - Type RAA avg price each: $ 0.33292">Aluminum Right Angle Fasteners - Type RAA avg price each: $ 0.33292</option>
+                      <option value="Steel Threaded Right Angle Fastener - Type RAS avg price each: $ 0.3157">Steel Threaded Right Angle Fastener - Type RAS avg price each: $ 0.3157</option>
+                   </select><br><br>
+                </div>
+             </div>
       
 <div class="container"> <!--CONTAINER-->   
-    <div class="left">
-        <div class="form-row">    
-             <label for="complexity">Complexity</label>  
-             <select name="complexity" class="qtyAndType" id="complexity">
-             <option selected="" disabled="">Select:</option>
-             <option value="Floating Self-Clinching Fasteners avg price each: $ 0.4154">Floating Self-Clinching Fasteners avg price each: $ 0.4154</option>
-             <option value="Self-Clinching Blind Fasteners avg price each: $ 0.2751">Self-Clinching Blind Fasteners avg price each: $ 0.2751</option>
-             <option value="Nuts – Types H avg price each: $ 0.2012">Nuts – Types H avg price each: $ 0.2012</option>
-             <option value="Nuts - Types S avg price each: $ 0.0745">Nuts - Types S avg price each: $ 0.0745</option>
-             <option value="Nuts for Ultra-Thin Sheets - Type SMPS/ SMPP avg price each: $ 0.0732">Nuts for Ultra-Thin Sheets - Type SMPS/ SMPP avg price each: $ 0.0732</option>
-             <option value="Floating Self-Clinching Fasteners A4/ AS/ AC  avg price each: $ 0.6851">Floating Self-Clinching Fasteners A4/ AS/ AC  avg price each: $ 0.6851</option>
-             <option value="Floating self-clinching/ locking thread fasteners LA4/ LAC/ LAS  avg price each: $ 0.8486">Floating self-clinching/ locking thread fasteners LA4/ LAC/ LAS  avg price each: $ 0.8486</option>
-             <option value="Self-Clinching Nuts - Types S/ SS/ CLS/ CLSS/ SP avg price each: $ 0.3159">Self-Clinching Nuts - Types S/ SS/ CLS/ CLSS/ SP avg price each: $ 0.3159</option>
-             <option value="PEMSERT® Self-Clinching Flush Fasteners - Type F4 avg price each: $ 0.1214">PEMSERT® Self-Clinching Flush Fasteners - Type F4 avg price each: $ 0.1214</option>
-             <option value="Nylon Insert Self-Locking Fasteners - Types PL and PLC avg price each: $ 0.1621">Nylon Insert Self-Locking Fasteners - Types PL and PLC avg price each: $ 0.1621</option>
-             <option value="Nylon Insert Self-Locking Fasteners - Types CFN avg price each: $ 0.1357">Nylon Insert Self-Locking Fasteners - Types CFN avg price each: $ 0.1357</option>
-             <option value="Aluminum Right Angle Fasteners - Type RAA avg price each: $ 0.33292">Aluminum Right Angle Fasteners - Type RAA avg price each: $ 0.33292</option>
-             <option value="Steel Threaded Right Angle Fastener - Type RAS avg price each: $ 0.3157">Steel Threaded Right Angle Fastener - Type RAS avg price each: $ 0.3157</option>
-           </select><br><br>
-        </div>       
+   
+
+  <div class="addYourOwn">
+      <div class="addCheckbox">
+          <span style="color : darkgray">Add own hardware (Optional)</span>
+      </div>
+      <div class="row ownHdwDiv">
+        <div class="col s5 descriptionInput">
+          <input type="text" name="descInput">
+          <label for="descInput">Description</label>
+        </div>
+        <div class="col s2 priceInput">
+          <input type="text" name="priceInp">
+          <label for="priceInp">Price </label>
+        </div>
+        <div class="col s2 qtyInput">
+          <input type="number" name="qtyIn">
+          <label for="qtyIn">Qty </label>
+        </div>
+        <div class="col">
+          <button class="btn" type="button" id="addOwnHdwBtn">Add</button>
+        </div>  
+      </div>
+
+      <div class="ownHdwList">
+        <ul>
+        </ul>
+      </div>
+
+  </div>
+
+
+</div><!--CONTAINER-->  
+</div>         
+
+    <div id="estimationButton">
+      <button class="btn waves-effect waves-light green darken-1" type="submit" id="submit">Estimate
+      </button>
     </div>
 
-    
-    
- <div class="right">   
-    <div id="infoMsg"></div>
-</div>
-
-</div><!--CONTAINER-->       
-        
-    </div>        
- 
-    
-   <button class="btn waves-effect waves-light green darken-1" type="submit" id="submit">Estimate
-        <i class="material-icons right">attach_money</i>
-      </button> <br><br>
-    </form>        
-    
-
+</form>       
 </div>
 <!-----------------END MASTER LEFT-------------> 
 <!-----------------BEGIN MASTER RIGHT-------------> 
@@ -1134,16 +1214,50 @@ document.addEventListener('DOMContentLoaded', function () {
 
 var arr = [];
 var myForm = document.querySelector('#myForm');
-var hdw = document.getElementById("hdw");
-hdw.style.display = "none";
 var loader = document.querySelector('.loader');
 loader.style.display = 'none';
 var operation = document.querySelector('.operation');
 var operationInput = document.getElementById('operationInput');
-var addedOperations = document.querySelector('.addedOperations');
-document.getElementById("infoMsg").style.display = "block";
-document.getElementById("infoMsg").style.display = "none";
+var addedOperations = document.querySelector('.addedOperations'); // document.getElementById("infoMsg").style.display = "block";
+// document.getElementById("infoMsg").style.display = "none";
+
 var hide = document.querySelector('#hide');
+var ownHdwDiv = document.querySelector('.ownHdwDiv');
+var addOwnHdwBtn = document.querySelector('#addOwnHdwBtn');
+var ownHdwList = document.querySelector('.ownHdwList');
+var whatUnits;
+var units = document.querySelector('#units');
+units.addEventListener('change', function (e) {
+  return whatUnits = e.target.value;
+});
+ownHdwDiv.addEventListener('click', function (e) {
+  if (e.target.nodeName === 'BUTTON') {
+    var inputsArray = Array.from(ownHdwDiv.getElementsByTagName('input')); // let list = ownHdwList.getElementsByTagName('ul')[0]
+    // let li = document.createElement('li')
+    // li.innerHTML = `Hdw: ${inputsArray[0].value} Qty:${inputsArray[1].value} Price:$${inputsArray[2].value}`
+    // li.classList.add('hdwListItem')
+    // list.appendChild(li) 
+
+    if (inputsArray[0].value != '' && inputsArray[1].value != '' && inputsArray[2].value != '') {
+      M.toast({
+        html: "\u2714\uFE0F Added ".concat(inputsArray[2].value, " ").concat(inputsArray[0].value, " @ ").concat(inputsArray[1].value),
+        inDuration: 1500,
+        displayLength: 3000,
+        outDuration: 2000,
+        classes: 'bottom'
+      });
+    }
+
+    singleEstData['User added hardware'].push({
+      'Description': inputsArray[0].value,
+      'Price': inputsArray[1].value,
+      'Qty': inputsArray[2].value
+    });
+    inputsArray.forEach(function (element) {
+      return element.value = '';
+    });
+  }
+});
 operation.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -1158,22 +1272,28 @@ var addOperation = function addOperation(operation) {
   }
 
   switch (operation) {
-    case "Weld":
-      return createWithRange(operation);
-
     case "Paint":
-      return createWithRange(operation);
+      return createWithInput(operation);
 
     case "Bend":
       return createWithInput(operation);
 
     case "Punch":
-      return createElem(operation);
+      return createWithInput(operation);
 
     case "Stamp":
       return createElem(operation);
 
-    case "Assembly":
+    case "Aluminum weld":
+      return createWithInput(operation);
+
+    case "SS/Steel weld":
+      return createWithInput(operation);
+
+    case "Threaded hole":
+      return createWithInput(operation);
+
+    case "Countersunk hole":
       return createWithInput(operation);
 
     default:
@@ -1206,9 +1326,15 @@ var createWithInput = function createWithInput(operation) {
   var tag = document.createElement('div');
   var newDiv = document.createElement('div');
   newDiv.classList.add('percentages');
-  var innerText = tag.innerText = "✔️" + String(operation);
+  var innerText = tag.innerText = String(operation);
   newDiv.appendChild(tag);
-  var addedinner = newDiv.innerHTML += "\n      <div class=\"col s12\">\n          <div class=\"input-field col s2\">\n            <input id=\"".concat(operation, "\" type=\"number\" class=\"validate s-2\">\n            <label for=\"").concat(operation, "\">N\xB0 of operations</label>\n          </div>\n      </div>\n  ");
+
+  if (!operation.includes('weld')) {
+    newDiv.innerHTML += "\n        <div class=\"col s12\">\n            <div class=\"input-field col s2\">\n              <input id=\"".concat(operation, "\" type=\"number\" min=\"1\" class=\"validate s-2\">\n              <label for=\"").concat(operation, "\">N\xB0 of operations</label>\n            </div>\n        </div>\n        <div class=\"remove\" style=\"color:red\"> \uD83D\uDDD9 </div>\n    ");
+  } else {
+    newDiv.innerHTML += "\n        <div class=\"col s12\">\n            <div class=\"input-field col s2\">\n              <input id=\"".concat(operation, "\" type=\"number\" min=\"1\" class=\"validate s-2\">\n              <label for=\"").concat(operation, "\">Lineal ").concat(whatUnits, "</label>\n            </div>\n        </div>\n        <div class=\"remove\" style=\"color:red\">\uD83D\uDDD9</div>\n    ");
+  }
+
   addedOperations.appendChild(newDiv);
   addListeners();
 };
@@ -1219,49 +1345,39 @@ var addListeners = function addListeners() {
   });
 };
 
-hide.addEventListener("click", toggle);
-
-function toggle() {
-  if (hdw.style.display === 'block') {
-    hdw.style.display = 'none';
-  } else {
-    hdw.style.display = 'block';
+hide.addEventListener('click', function (e) {
+  if (hide.checked === false) {
+    if (hdw.classList.contains('show')) {
+      hdw.classList.remove('show');
+    }
+  } else if (!hdw.classList.contains('show')) {
+    hdw.classList.add('show');
   }
-} //Show Information square
 
-
-document.getElementById('complexity').addEventListener("change", toggleInfoSqr);
-
-function toggleInfoSqr() {
-  var value = document.getElementById('complexity').value;
-
-  if (value === 'Simple') {
-    document.getElementById("infoMsg").innerHTML = "ⓘ   Simple to install items such as screws.";
-    document.getElementById("infoMsg").style.display = "inline-block";
-  } else if (value === 'Medium') {
-    document.getElementById("infoMsg").innerHTML = "ⓘ    Medium complexity items, rivetting.";
-    document.getElementById("infoMsg").style.display = "inline-block";
-  } else if (value === 'Complex') {
-    document.getElementById("infoMsg").innerHTML = "ⓘ Complex items including soldering.";
-    document.getElementById("infoMsg").style.display = "inline-block";
+  console.log(hide.checked);
+});
+addedOperations.addEventListener('click', function (e) {
+  if (e.target.classList.contains('remove')) {
+    addedOperations.removeChild(e.target.parentNode);
   }
-} //     ESTIMATE BUTTON , SUBMIT OBJECT WITH VALUE TO SERVER
-
+}); //     ESTIMATE BUTTON , SUBMIT OBJECT WITH VALUE TO SERVER
 
 document.getElementById('submit').addEventListener("click", estimate);
 var sheet = "Sheet Metal";
 var sheetHeader = ["Part Number", "Units(mm/in)", "Length", "Width", "Thickness", "Material", "Finish Type", "Finish Type 2", "Bendings(#)", "EAU", "Hardware qty", "Hdw complexity", "Material cost", "Finish cost", "Hardware cost", "Labor cost", "PRICE /each"];
+var singleEstData = {
+  operations: {}
+};
+singleEstData['User added hardware'] = [];
 
 function estimate(e) {
   myForm.style.display = 'none';
   loader.style.display = 'block';
   e.preventDefault();
-  var ids = Array.from(myForm.querySelectorAll('*[id]'));
-  var singleEstData = {
-    operations: {}
-  };
+  var ids = Array.from(myForm.querySelectorAll('*[id]')); //  let singleEstData = { operations: {}}     ----MOVED 5 LINES UP ^^^
+
+  console.log(ids);
   ids.map(function (element) {
-    //singleEstHeaders.find(elemId => element.id === elemId)
     switch (element.id) {
       case "partNumber":
         return singleEstData["Part Number"] = element.value;
@@ -1319,9 +1435,24 @@ function estimate(e) {
           "Stamp count": 1
         };
 
-      case "Weld":
-        return singleEstData.operations["Weld"] = {
-          "Weld count": Number(element.value) / 100
+      case "Aluminum weld":
+        return singleEstData.operations["Aluminum weld"] = {
+          "Aluminum weld count": element.value
+        };
+
+      case "SS/Steel weld":
+        return singleEstData.operations["SS/Steel weld"] = {
+          "SS/Steel weld count": element.value
+        };
+
+      case "Threaded hole":
+        return singleEstData.operations["Threaded hole"] = {
+          "Threaded hole count": element.value
+        };
+
+      case "Countersunk hole":
+        return singleEstData.operations["Countersunk hole"] = {
+          "Countersunk hole count": element.value
         };
 
       default:
@@ -1333,6 +1464,13 @@ function estimate(e) {
 }
 
 function printEstimate() {
+  //Clear estimation data
+  hide.checked = false;
+  singleEstData = {
+    operations: {}
+  };
+  singleEstData['User added hardware'] = [];
+  addedOperations.innerHTML = '';
   uploadFileForm.style.display = 'block';
   progress.style.display = 'none';
   var dollar = document.querySelector('#slideCeption');

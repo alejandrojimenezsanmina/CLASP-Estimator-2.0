@@ -65,6 +65,7 @@ function loadMachined(){
 //ESTIMATE FUNCTION triggered with click. Will estimate pricing based on the information input
 function estimate(data, googleSheet, sheetName) {
 
+
   var ws = SpreadsheetApp.openByUrl(googleSheet);
   var sheet = ws.getSheetByName(sheetName);
   
@@ -121,8 +122,28 @@ function estimate(data, googleSheet, sheetName) {
         if(row[element]){
           sheet.getRange(lastRow + 1, index + 1).setValue(row[element])
         }
-      })
-    
+      })   
+    }
+    if(sheetName === 'Plastics'){
+      sheet.getRange(lastRow + 1, 1).setValue(row['Part Number'])
+      sheet.getRange(lastRow + 1, 2).setValue(row['Units'])
+      sheet.getRange(lastRow + 1, 3).setValue(row['Material'])
+      sheet.getRange(lastRow + 1, 4).setValue(row['Material Gravity'])
+      sheet.getRange(lastRow + 1, 5).setValue(row['Material volume (cm3 / in3)'])
+      sheet.getRange(lastRow + 1, 6).setValue(row['Part Weight'])
+      sheet.getRange(lastRow + 1, 7).setValue(row['Cost of Material'])
+      sheet.getRange(lastRow + 1, 8).setValue(row['Estimated cost per part'])
+      sheet.getRange(lastRow + 1, 9).setValue(row['EAU'])
+      sheet.getRange(lastRow + 1, 10).setValue(row['Wall thickness (in / mm)'])
+      sheet.getRange(lastRow + 1, 11).setValue(row['Projected area of part (in 2 / cm 2)'])
+      sheet.getRange(lastRow + 1, 12).setValue(row['Press size'])
+      sheet.getRange(lastRow + 1, 13).setValue(row['Press size cost ($/hr)'])
+      sheet.getRange(lastRow + 1, 14).setValue(row['Cavities'])
+      sheet.getRange(lastRow + 1, 15).setValue(row['Number of cavities'])
+      sheet.getRange(lastRow + 1, 16).setValue(row['Overhead contingencies'])
+      sheet.getRange(lastRow + 1, 17).setValue(row['Cycle time'])
+      sheet.getRange(lastRow + 1, 18).setValue(row['Seconds per cycle'])
+      sheet.getRange(lastRow + 1, 19).setValue(row['Number of cavities'])
     }
     
   })
@@ -134,7 +155,7 @@ function estimate(data, googleSheet, sheetName) {
 var materialPriceSheet = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1kFtNEVhIQr3mMaFbXXP8hMTl_nhTr-7pHtprRf4zf5U/edit#gid=0");
 var sheet = materialPriceSheet.getSheetByName('Sheet Metal');
 var ratesSheet = materialPriceSheet.getSheetByName('Production Costs')
-var ratesArr = ratesSheet.getRange(2, 1, 8, 3).getValues();
+var ratesArr = ratesSheet.getRange(2, 1, 12, 3).getValues();
 
 
 ////////////////////Calculate prices and costs for SHEET METAL ////////////////////
@@ -213,6 +234,7 @@ function calculate(row){
     ratesArr.forEach(function (element) {
     rates[element[0]] = { 'usd/hr' : element[1], 'timeFactor' : element[2] }
     })
+    Logger.log(rates);
 
     row['Total operation costs'] = 0
    

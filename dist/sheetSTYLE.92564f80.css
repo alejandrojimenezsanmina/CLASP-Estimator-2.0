@@ -42,6 +42,9 @@ main{
   display: flex;
   width: 80%;
   padding: 10px 0px;
+  align-items: center;
+  justify-content: space-between;
+  max-height: 4rem;
 }
 
 .percentages input{
@@ -62,4 +65,61 @@ main{
 
 .addedOperations{
   margin-left: 3rem;
+}
+
+
+#estimationButton button{
+  width: 100%;
+  
+}
+.ownHdwDiv:{
+  display:flex;
+  width: 100% !important;
+}
+
+.descriptionInput{
+ 
+}
+
+.priceInput{
+ 
+}
+
+.left{
+  width: 100%;
+}
+
+.btn{
+  width: inherit;
+}
+
+.fixVisualMess{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  
+}
+
+.qtyHdwDiv{
+  width: 20%;
+}
+
+.qtyAndTypeDiv{
+  width: 70%;
+}
+
+.hdwListItem{
+  font-size: .8rem;
+  font-weight: 100;
+}
+
+.toast.bottom{
+  top: 300px;
+}
+.hidden{
+  display: none;
+}
+
+.show{
+  display: block;
 }

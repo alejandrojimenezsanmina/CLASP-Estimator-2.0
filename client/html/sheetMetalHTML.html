@@ -247,9 +247,11 @@
                  <option  disabled selected>Select</option>
                  <option value = "Assembly">Assembly</option>
                  <option value= "Bend" >Bend</option>
-                 <option value="Punch">Punch</option>
-                 <option value="Weld">Weld</option>
-                 <option value="Stamp">Stamp</option>
+                 <option value="Punch">Punch(simple holes)</option>
+                 <option value="Aluminum weld">Aluminum weld</option>
+                 <option value="SS/Steel weld">SS/Steel weld</option>
+                 <option value="Threaded hole">Threaded hole</option>
+                 <option value="Countersunk hole">Countersunk hole</option>
               </select>
             </div>
             <div class="col s4">
@@ -281,7 +283,7 @@
          
 <!-- HARDWARE QTY AND COMPLEXITY-->
 
-   <div id="hdw" class="inline">   
+   <div id="hdw" class="inline hidden">   
              <div class="fixVisualMess">
                
                   <div class="input-field col s2 qtyHdwDiv">
@@ -315,10 +317,10 @@
 
   <div class="addYourOwn">
       <div class="addCheckbox">
-          <span>Add own hardware (Optional)</span>
+          <span style="color : darkgray">Add own hardware (Optional)</span>
       </div>
       <div class="row ownHdwDiv">
-        <div class="col s4 descriptionInput">
+        <div class="col s5 descriptionInput">
           <input type="text" name="descInput">
           <label for="descInput">Description</label>
         </div>
@@ -331,34 +333,27 @@
           <label for="qtyIn">Qty </label>
         </div>
         <div class="col">
-          <button class="btn"type='button'>Add</button>
-        </div>        
+          <button class="btn"type='button' id="addOwnHdwBtn">Add</button>
+        </div>  
       </div>
-      
+
       <div class="ownHdwList">
         <ul>
-          <div>Una cosa</div>
         </ul>
       </div>
-      
+
   </div>
 
 
-
-       
 </div><!--CONTAINER-->  
-</div>        
- 
-    
+</div>         
 
+    <div id="estimationButton">
+      <button class="btn waves-effect waves-light green darken-1" type="submit" id="submit">Estimate
+      </button>
+    </div>
 
-</form>        
-
-<div id="estimationButton">
-  <button class="btn waves-effect waves-light green darken-1" type="submit" id="submit">Estimate
-  </button>
-</div>
-
+</form>       
 </div>
 <!-----------------END MASTER LEFT-------------> 
 <!-----------------BEGIN MASTER RIGHT-------------> 

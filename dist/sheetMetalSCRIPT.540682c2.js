@@ -146,16 +146,50 @@ document.addEventListener('DOMContentLoaded', function () {
 
 var arr = [];
 var myForm = document.querySelector('#myForm');
-var hdw = document.getElementById("hdw");
-hdw.style.display = "none";
 var loader = document.querySelector('.loader');
 loader.style.display = 'none';
 var operation = document.querySelector('.operation');
 var operationInput = document.getElementById('operationInput');
-var addedOperations = document.querySelector('.addedOperations');
-document.getElementById("infoMsg").style.display = "block";
-document.getElementById("infoMsg").style.display = "none";
+var addedOperations = document.querySelector('.addedOperations'); // document.getElementById("infoMsg").style.display = "block";
+// document.getElementById("infoMsg").style.display = "none";
+
 var hide = document.querySelector('#hide');
+var ownHdwDiv = document.querySelector('.ownHdwDiv');
+var addOwnHdwBtn = document.querySelector('#addOwnHdwBtn');
+var ownHdwList = document.querySelector('.ownHdwList');
+var whatUnits;
+var units = document.querySelector('#units');
+units.addEventListener('change', function (e) {
+  return whatUnits = e.target.value;
+});
+ownHdwDiv.addEventListener('click', function (e) {
+  if (e.target.nodeName === 'BUTTON') {
+    var inputsArray = Array.from(ownHdwDiv.getElementsByTagName('input')); // let list = ownHdwList.getElementsByTagName('ul')[0]
+    // let li = document.createElement('li')
+    // li.innerHTML = `Hdw: ${inputsArray[0].value} Qty:${inputsArray[1].value} Price:$${inputsArray[2].value}`
+    // li.classList.add('hdwListItem')
+    // list.appendChild(li) 
+
+    if (inputsArray[0].value != '' && inputsArray[1].value != '' && inputsArray[2].value != '') {
+      M.toast({
+        html: "\u2714\uFE0F Added ".concat(inputsArray[2].value, " ").concat(inputsArray[0].value, " @ ").concat(inputsArray[1].value),
+        inDuration: 1500,
+        displayLength: 3000,
+        outDuration: 2000,
+        classes: 'bottom'
+      });
+    }
+
+    singleEstData['User added hardware'].push({
+      'Description': inputsArray[0].value,
+      'Price': inputsArray[1].value,
+      'Qty': inputsArray[2].value
+    });
+    inputsArray.forEach(function (element) {
+      return element.value = '';
+    });
+  }
+});
 operation.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -170,22 +204,28 @@ var addOperation = function addOperation(operation) {
   }
 
   switch (operation) {
-    case "Weld":
-      return createWithRange(operation);
-
     case "Paint":
-      return createWithRange(operation);
+      return createWithInput(operation);
 
     case "Bend":
       return createWithInput(operation);
 
     case "Punch":
-      return createElem(operation);
+      return createWithInput(operation);
 
     case "Stamp":
       return createElem(operation);
 
-    case "Assembly":
+    case "Aluminum weld":
+      return createWithInput(operation);
+
+    case "SS/Steel weld":
+      return createWithInput(operation);
+
+    case "Threaded hole":
+      return createWithInput(operation);
+
+    case "Countersunk hole":
       return createWithInput(operation);
 
     default:
@@ -218,9 +258,15 @@ var createWithInput = function createWithInput(operation) {
   var tag = document.createElement('div');
   var newDiv = document.createElement('div');
   newDiv.classList.add('percentages');
-  var innerText = tag.innerText = "✔️" + String(operation);
+  var innerText = tag.innerText = String(operation);
   newDiv.appendChild(tag);
-  var addedinner = newDiv.innerHTML += "\n      <div class=\"col s12\">\n          <div class=\"input-field col s2\">\n            <input id=\"".concat(operation, "\" type=\"number\" class=\"validate s-2\">\n            <label for=\"").concat(operation, "\">N\xB0 of operations</label>\n          </div>\n      </div>\n  ");
+
+  if (!operation.includes('weld')) {
+    newDiv.innerHTML += "\n        <div class=\"col s12\">\n            <div class=\"input-field col s2\">\n              <input id=\"".concat(operation, "\" type=\"number\" min=\"1\" class=\"validate s-2\">\n              <label for=\"").concat(operation, "\">N\xB0 of operations</label>\n            </div>\n        </div>\n        <div class=\"remove\" style=\"color:red\"> \uD83D\uDDD9 </div>\n    ");
+  } else {
+    newDiv.innerHTML += "\n        <div class=\"col s12\">\n            <div class=\"input-field col s2\">\n              <input id=\"".concat(operation, "\" type=\"number\" min=\"1\" class=\"validate s-2\">\n              <label for=\"").concat(operation, "\">Lineal ").concat(whatUnits, "</label>\n            </div>\n        </div>\n        <div class=\"remove\" style=\"color:red\">\uD83D\uDDD9</div>\n    ");
+  }
+
   addedOperations.appendChild(newDiv);
   addListeners();
 };
@@ -231,49 +277,39 @@ var addListeners = function addListeners() {
   });
 };
 
-hide.addEventListener("click", toggle);
-
-function toggle() {
-  if (hdw.style.display === 'block') {
-    hdw.style.display = 'none';
-  } else {
-    hdw.style.display = 'block';
+hide.addEventListener('click', function (e) {
+  if (hide.checked === false) {
+    if (hdw.classList.contains('show')) {
+      hdw.classList.remove('show');
+    }
+  } else if (!hdw.classList.contains('show')) {
+    hdw.classList.add('show');
   }
-} //Show Information square
 
-
-document.getElementById('complexity').addEventListener("change", toggleInfoSqr);
-
-function toggleInfoSqr() {
-  var value = document.getElementById('complexity').value;
-
-  if (value === 'Simple') {
-    document.getElementById("infoMsg").innerHTML = "ⓘ   Simple to install items such as screws.";
-    document.getElementById("infoMsg").style.display = "inline-block";
-  } else if (value === 'Medium') {
-    document.getElementById("infoMsg").innerHTML = "ⓘ    Medium complexity items, rivetting.";
-    document.getElementById("infoMsg").style.display = "inline-block";
-  } else if (value === 'Complex') {
-    document.getElementById("infoMsg").innerHTML = "ⓘ Complex items including soldering.";
-    document.getElementById("infoMsg").style.display = "inline-block";
+  console.log(hide.checked);
+});
+addedOperations.addEventListener('click', function (e) {
+  if (e.target.classList.contains('remove')) {
+    addedOperations.removeChild(e.target.parentNode);
   }
-} //     ESTIMATE BUTTON , SUBMIT OBJECT WITH VALUE TO SERVER
-
+}); //     ESTIMATE BUTTON , SUBMIT OBJECT WITH VALUE TO SERVER
 
 document.getElementById('submit').addEventListener("click", estimate);
 var sheet = "Sheet Metal";
 var sheetHeader = ["Part Number", "Units(mm/in)", "Length", "Width", "Thickness", "Material", "Finish Type", "Finish Type 2", "Bendings(#)", "EAU", "Hardware qty", "Hdw complexity", "Material cost", "Finish cost", "Hardware cost", "Labor cost", "PRICE /each"];
+var singleEstData = {
+  operations: {}
+};
+singleEstData['User added hardware'] = [];
 
 function estimate(e) {
   myForm.style.display = 'none';
   loader.style.display = 'block';
   e.preventDefault();
-  var ids = Array.from(myForm.querySelectorAll('*[id]'));
-  var singleEstData = {
-    operations: {}
-  };
+  var ids = Array.from(myForm.querySelectorAll('*[id]')); //  let singleEstData = { operations: {}}     ----MOVED 5 LINES UP ^^^
+
+  console.log(ids);
   ids.map(function (element) {
-    //singleEstHeaders.find(elemId => element.id === elemId)
     switch (element.id) {
       case "partNumber":
         return singleEstData["Part Number"] = element.value;
@@ -331,9 +367,24 @@ function estimate(e) {
           "Stamp count": 1
         };
 
-      case "Weld":
-        return singleEstData.operations["Weld"] = {
-          "Weld count": Number(element.value) / 100
+      case "Aluminum weld":
+        return singleEstData.operations["Aluminum weld"] = {
+          "Aluminum weld count": element.value
+        };
+
+      case "SS/Steel weld":
+        return singleEstData.operations["SS/Steel weld"] = {
+          "SS/Steel weld count": element.value
+        };
+
+      case "Threaded hole":
+        return singleEstData.operations["Threaded hole"] = {
+          "Threaded hole count": element.value
+        };
+
+      case "Countersunk hole":
+        return singleEstData.operations["Countersunk hole"] = {
+          "Countersunk hole count": element.value
         };
 
       default:
@@ -345,6 +396,13 @@ function estimate(e) {
 }
 
 function printEstimate() {
+  //Clear estimation data
+  hide.checked = false;
+  singleEstData = {
+    operations: {}
+  };
+  singleEstData['User added hardware'] = [];
+  addedOperations.innerHTML = '';
   uploadFileForm.style.display = 'block';
   progress.style.display = 'none';
   var dollar = document.querySelector('#slideCeption');
