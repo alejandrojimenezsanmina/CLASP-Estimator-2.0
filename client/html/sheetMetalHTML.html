@@ -287,7 +287,7 @@
              <div class="fixVisualMess">
                
                   <div class="input-field col s2 qtyHdwDiv">
-                      <input id="qtyHdw" type="text" class="validate" id="qtyHdw">
+                      <input id="qtyHdw" type="number" class="validate" id="qtyHdw">
                       <label for="qtyHdw">Quantity</label>
                   </div>
                
@@ -325,11 +325,11 @@
           <label for="descInput">Description</label>
         </div>
         <div class="col s2 priceInput">
-          <input type="text" name="priceInp">
-          <label for="priceInp">Price </label>
+          <input type="number" name="priceInp" min="0.0001">
+          <label for="priceInp" >Price </label>
         </div>
         <div class="col s2 qtyInput">
-          <input type="number" name="qtyIn">
+          <input type="number" name="qtyIn" min="1">
           <label for="qtyIn">Qty </label>
         </div>
         <div class="col">

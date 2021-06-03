@@ -246,11 +246,33 @@ function calculate(row){
     row["Material cost"] = (partWeight * row["materialCost"]).toFixed(4);
     row["Finish cost"] = ((partSurfaceSqMt * row["finishPrice1"] *2 ) + (partSurfaceSqMt * row["finishPrice2"] * 2)).toFixed(4);
     row["Labor cost"] = row['Total operation costs']
-    if(row["Hardware qty"]){
-      row["Hardware cost"]= row["hardwareCost"] * row["Hardware qty"];
+    if(row["Hardware qty"] !== ''){
+      row["Hardware cost"]= Number (row["hardwareCost"] * row["Hardware qty"]);
     }else{
       row["Hardware cost"] = 0;
     }
+    if(row['User added hardware'].length > 0){
+      var textAllHdw = '';
+      var totalPrice = 0;
+      var totalHdwQty = 0;
+      row['User added hardware'].forEach( function (element){
+        textAllHdw += ' | ' + element['Description'] +  ' @ $' + element['Price'] + 'ea |'
+        totalPrice += Number(element['Price'])
+        totalHdwQty += Number(element['Qty'])
+      })
+      row['Total usr hdw'] = {'textAllHdw': textAllHdw,'totalPrice' : totalPrice, 'totalHdwQty' : totalHdwQty}
+      if(row['Hardware qty'] !== ''){
+        row['Hardware qty'] += Number(row['Total usr hdw'].totalHdwQty)
+        row['Hdw complexity'] += row['Total usr hdw'].textAllHdw
+        row["Hardware cost"] += Number(row['Total usr hdw'].totalPrice) * Number(row['Total usr hdw'].totalHdwQty)
+      }else{
+        row['Hardware qty'] = row['Total usr hdw'].totalHdwQty
+        row['Hdw complexity'] = row['Total usr hdw'].textAllHdw
+        row["Hardware cost"] = Number(row['Total usr hdw'].totalPrice) * Number(row['Total usr hdw'].totalHdwQty)
+      }
+    }
+
+
     row["PRICE /each"] = Number(row["Material cost"]) + Number(row["Finish cost"]) + Number(row["Labor cost"]) + Number(row["Hardware cost"]) + Number(row["costFactorValue"])
   // formula: Weight = L/1000 * W/1000 * Thickness * Density  
  

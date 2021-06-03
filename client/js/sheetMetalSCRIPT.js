@@ -89,6 +89,8 @@ const addOperation = operation => {
   switch(operation){
     case "Paint" :
         return createWithInput(operation)
+    case "Assembly" :
+        return createWithInput(operation)
     case "Bend" :
         return createWithInput(operation)
     case "Punch":
@@ -239,7 +241,6 @@ function estimate(e){
    e.preventDefault();
      var ids = Array.from(myForm.querySelectorAll('*[id]'))
     //  let singleEstData = { operations: {}}     ----MOVED 5 LINES UP ^^^
-     console.log(ids)
      ids.map(element => {
        
             switch(element.id){
@@ -264,7 +265,7 @@ function estimate(e){
               case "EAU":
                 return singleEstData["EAU"] = element.value;     
               case "qtyHdw":
-                return singleEstData["Hardware qty"] = element.value;     
+                return singleEstData["Hardware qty"] = Number(element.value);     
               case "complexity":
                 return singleEstData["Hdw complexity"] = element.value;     
               case "Assembly":

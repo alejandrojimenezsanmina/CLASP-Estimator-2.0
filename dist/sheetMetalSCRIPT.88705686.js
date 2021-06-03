@@ -207,6 +207,9 @@ var addOperation = function addOperation(operation) {
     case "Paint":
       return createWithInput(operation);
 
+    case "Assembly":
+      return createWithInput(operation);
+
     case "Bend":
       return createWithInput(operation);
 
@@ -308,7 +311,6 @@ function estimate(e) {
   e.preventDefault();
   var ids = Array.from(myForm.querySelectorAll('*[id]')); //  let singleEstData = { operations: {}}     ----MOVED 5 LINES UP ^^^
 
-  console.log(ids);
   ids.map(function (element) {
     switch (element.id) {
       case "partNumber":
@@ -342,7 +344,7 @@ function estimate(e) {
         return singleEstData["EAU"] = element.value;
 
       case "qtyHdw":
-        return singleEstData["Hardware qty"] = element.value;
+        return singleEstData["Hardware qty"] = Number(element.value);
 
       case "complexity":
         return singleEstData["Hdw complexity"] = element.value;

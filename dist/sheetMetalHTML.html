@@ -791,7 +791,7 @@ main{
              <div class="fixVisualMess">
                
                   <div class="input-field col s2 qtyHdwDiv">
-                      <input id="qtyHdw" type="text" class="validate">
+                      <input id="qtyHdw" type="number" class="validate">
                       <label for="qtyHdw">Quantity</label>
                   </div>
                
@@ -829,11 +829,11 @@ main{
           <label for="descInput">Description</label>
         </div>
         <div class="col s2 priceInput">
-          <input type="text" name="priceInp">
+          <input type="number" name="priceInp" min="0.0001">
           <label for="priceInp">Price </label>
         </div>
         <div class="col s2 qtyInput">
-          <input type="number" name="qtyIn">
+          <input type="number" name="qtyIn" min="1">
           <label for="qtyIn">Qty </label>
         </div>
         <div class="col">
@@ -1275,6 +1275,9 @@ var addOperation = function addOperation(operation) {
     case "Paint":
       return createWithInput(operation);
 
+    case "Assembly":
+      return createWithInput(operation);
+
     case "Bend":
       return createWithInput(operation);
 
@@ -1376,7 +1379,6 @@ function estimate(e) {
   e.preventDefault();
   var ids = Array.from(myForm.querySelectorAll('*[id]')); //  let singleEstData = { operations: {}}     ----MOVED 5 LINES UP ^^^
 
-  console.log(ids);
   ids.map(function (element) {
     switch (element.id) {
       case "partNumber":
@@ -1410,7 +1412,7 @@ function estimate(e) {
         return singleEstData["EAU"] = element.value;
 
       case "qtyHdw":
-        return singleEstData["Hardware qty"] = element.value;
+        return singleEstData["Hardware qty"] = Number(element.value);
 
       case "complexity":
         return singleEstData["Hdw complexity"] = element.value;
