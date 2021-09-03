@@ -435,6 +435,7 @@ main{
 
 .percentages{
   display: flex;
+  position: relative;
   width: 80%;
   padding: 10px 0px;
   align-items: center;
@@ -517,7 +518,27 @@ main{
 
 .show{
   display: block;
-}</style>  
+}
+
+
+.removeTag{
+  display: none;
+  position: absolute;
+  top:10px;
+  left: 100%;
+  z-index: 999;
+  color: lightcoral;
+  width:100%;
+}
+
+.remove:hover{
+ cursor: pointer;
+}
+
+.remove:hover + .removeTag{
+ display: block;
+}
+</style>  
     <script src="https://kit.fontawesome.com/6365c07014.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
   </head>
@@ -576,7 +597,7 @@ main{
 <div class="navbar-fixed">
 <nav>
   <div class="nav-wrapper">
-    <div><a href="#!" class="brand-logo"></a> </div>
+    <div><a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=home" class="brand-logo"></a> </div>
     <ul class=" hide-on-med-and-down">
       <!-- Dropdown Trigger -->
       <li><a href="#" data-target="slide-out" id="slideCeption" class="sidenav-trigger"><i class="fas fa-dollar-sign "></i></a></li>
@@ -1186,6 +1207,24 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"yHiL":[function(require,module,exports) {
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var downloadXls = document.getElementById('downloadXls');
 var openGSheets = document.getElementById("openGSheets");
 var googleSheetURL;
@@ -1333,9 +1372,9 @@ var createWithInput = function createWithInput(operation) {
   newDiv.appendChild(tag);
 
   if (!operation.includes('weld')) {
-    newDiv.innerHTML += "\n        <div class=\"col s12\">\n            <div class=\"input-field col s2\">\n              <input id=\"".concat(operation, "\" type=\"number\" min=\"1\" class=\"validate s-2\">\n              <label for=\"").concat(operation, "\">N\xB0 of operations</label>\n            </div>\n        </div>\n        <div class=\"remove\" style=\"color:red\"> \uD83D\uDDD9 </div>\n    ");
+    newDiv.innerHTML += "\n        <div class=\"col s12\">\n            <div class=\"input-field col s2\">\n              <input id=\"".concat(operation, "\" type=\"number\" min=\"1\" class=\"validate s-2\">\n              <label for=\"").concat(operation, "\">N\xB0 of operations</label>\n            </div>\n        </div>\n        <div class=\"remove\" style=\"color:red\"> \uD83D\uDDD9 </div>\n        <div class=\"removeTag\"> Remove ").concat(operation, "</div>\n    ");
   } else {
-    newDiv.innerHTML += "\n        <div class=\"col s12\">\n            <div class=\"input-field col s2\">\n              <input id=\"".concat(operation, "\" type=\"number\" min=\"1\" class=\"validate s-2\">\n              <label for=\"").concat(operation, "\">Lineal ").concat(whatUnits, "</label>\n            </div>\n        </div>\n        <div class=\"remove\" style=\"color:red\">\uD83D\uDDD9</div>\n    ");
+    newDiv.innerHTML += "\n        <div class=\"col s12\">\n            <div class=\"input-field col s2\">\n              <input id=\"".concat(operation, "\" type=\"number\" min=\"1\" class=\"validate s-2\">\n              <label for=\"").concat(operation, "\">Lineal ").concat(whatUnits, "</label>\n            </div>\n        </div>\n        <div class=\"remove\" style=\"color:red\">\uD83D\uDDD9</div>\n        <div class=\"removeTag\"> Remove ").concat(operation, " </div>\n    ");
   }
 
   addedOperations.appendChild(newDiv);
@@ -1465,9 +1504,14 @@ function estimate(e) {
   google.script.run.withSuccessHandler(printEstimate).withFailureHandler(onFailure).estimate([singleEstData], googleSheetURL, sheet);
 }
 
-function printEstimate() {
-  //Clear estimation data
+function printEstimate(serverData) {
+  console.log(serverData);
   hide.checked = false;
+
+  if (hdw.classList.contains('show')) {
+    hdw.classList.remove('show');
+  }
+
   singleEstData = {
     operations: {}
   };
@@ -1512,50 +1556,44 @@ uploadFileForm.addEventListener('submit', function (e) {
   fileReader.readAsBinaryString(file);
 
   fileReader.onload = function (e) {
-    var data = e.target.result;
+    var data = e.target.result; // XLSX is a 3rd party library (LOADED FROM CDN SEE SCRIPT TAG AT THE HEADER OF HTML)
+    // let workbook = XLSX.read(data, {type: "binary"})
+    // const jsonData = workbook.SheetNames.map(sheet =>{
+    //     return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet])
+    // })
+    //Vertical xlsx template
+
     var workbook = XLSX.read(data, {
       type: "binary"
     });
     var jsonData = workbook.SheetNames.map(function (sheet) {
-      return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
+      return XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
     }); // jsonData[0] = sheet metal , jsonData[1] = plastics .. etc
 
-    console.log("json[0] is:", jsonData[0]);
-    jsonData[0].map(function (row) {
-      row["operations"] = {};
+    console.log("json[0] is:", jsonData[0]); // GET JSON AND ARRANGE INTO ROW FORMAT
 
-      if (row["Assembly count"]) {
-        row.operations["Assembly"] = {
-          "Assembly count": row["Assembly count"]
-        };
-      }
+    var arrangedJson = transformData(jsonData[0]); // jsonData[0].map(row => {
+    //   row["operations"] = {}
+    //   if (row["Assembly count"]) { 
+    //    row.operations["Assembly"] = {"Assembly count" : row["Assembly count"]}
+    //   }
+    //   if (row["Bend count"]) { 
+    //    row.operations["Bend"] = {"Bend count" : row["Bend count"]}
+    //   }
+    //   if (row["Punch count"]) { 
+    //     row.operations["Punch"] = {"Punch count" : row["Punch count"]}
+    //    }
+    //   if (row["Stamp count"]) { 
+    //   row.operations["Stamp"] = {"Stamp count" : row["Stamp count"]}
+    //   }
+    //   if (row["Weld count"]) { 
+    //     row.operations["Weld"] = {"Weld count" : row["Weld count"]}
+    //    }
+    // })
 
-      if (row["Bend count"]) {
-        row.operations["Bend"] = {
-          "Bend count": row["Bend count"]
-        };
-      }
-
-      if (row["Punch count"]) {
-        row.operations["Punch"] = {
-          "Punch count": row["Punch count"]
-        };
-      }
-
-      if (row["Stamp count"]) {
-        row.operations["Stamp"] = {
-          "Stamp count": row["Stamp count"]
-        };
-      }
-
-      if (row["Weld count"]) {
-        row.operations["Weld"] = {
-          "Weld count": row["Weld count"]
-        };
-      }
-    });
-    console.log("json[0] is:", jsonData[0]);
-    google.script.run.withSuccessHandler(printEstimate).withFailureHandler(FailedToLoad).estimate(jsonData[0], googleSheet, "Sheet Metal");
+    console.log("arrangedJson is ", arrangedJson);
+    google.script.run.withSuccessHandler(printEstimate).withFailureHandler(FailedToLoad) // .estimate(jsonData[0], googleSheet, "Sheet Metal");   
+    .estimate(arrangedJson, googleSheet, "Sheet Metal");
   };
 });
 
@@ -1563,6 +1601,67 @@ function FailedToLoad() {
   alert("Please review your input data");
   uploadFileForm.style.display = 'block';
   progress.style.display = 'none';
+} // TRANSFORM into rows
+
+
+function transformData(data) {
+  var numOfParts = getNumberOfParts(data);
+  var rowObj = {
+    operations: {},
+    "User added hardware": [{}]
+  };
+  var objArray = [];
+
+  var _loop = function _loop(i) {
+    data.forEach(function (row) {
+      row["Parameter / Part"] === "Part Number" ? rowObj["Part Number"] = Object.values(row)[i] : row["Parameter / Part"] === "EAU" ? rowObj["EAU"] = Object.values(row)[i] : row["Parameter / Part"] === "Units(mm/in)" ? rowObj["Units(mm/in)"] = Object.values(row)[i] : row["Parameter / Part"] === "Material" ? rowObj["Material"] = Object.values(row)[i] : row["Parameter / Part"] === "Length" ? rowObj["Length"] = Object.values(row)[i] : row["Parameter / Part"] === "Width" ? rowObj["Width"] = Object.values(row)[i] : row["Parameter / Part"] === "Thickness" ? rowObj["Thickness"] = Object.values(row)[i] : row["Parameter / Part"] === "Finish Type" ? rowObj["Finish Type"] = Object.values(row)[i] : row["Parameter / Part"] === "Finish Type 2" ? rowObj["Finish Type 2"] = Object.values(row)[i] : row["Parameter / Part"] === "Hardware qty" ? rowObj["Hardware qty"] = Object.values(row)[i] : row["Parameter / Part"] === "Hdw complexity" ? rowObj["Hdw complexity"] = Object.values(row)[i] : row["Parameter / Part"] === "Assembly count" ? rowObj.operations["Assembly"] = {
+        "Assembly count": Object.values(row)[i] || 0
+      } : row["Parameter / Part"] === "Bend count" ? rowObj.operations["Bend"] = {
+        "Bend count": Object.values(row)[i] || 0
+      } : row["Parameter / Part"] === "Punch count" ? rowObj.operations["Punch"] = {
+        "Punch count": Object.values(row)[i] || 0
+      } : row["Parameter / Part"] === "Stamp" ? rowObj.operations["Stamp"] = {
+        "Stamp count": Object.values(row)[i] || 0
+      } : row["Parameter / Part"] === "Aluminum weld (in/mm)" ? rowObj.operations["Aluminum weld"] = {
+        "Aluminum weld count": Object.values(row)[i] || 0
+      } : row["Parameter / Part"] === "SS/Steel weld (in/mm)" ? rowObj.operations["SS/Steel weld"] = {
+        "SS/Steel weld count": Object.values(row)[i] || 0
+      } : row["Parameter / Part"] === "Threaded hole count" ? rowObj.operations["Threaded hole"] = {
+        "Threaded hole count": Object.values(row)[i] || 0
+      } : row["Parameter / Part"] === "Countersunk hole count" ? rowObj.operations["Countersunk hole"] = {
+        "Countersunk hole count": Object.values(row)[i] || 0
+      } : row["Parameter / Part"] === "Own Hardware quantity" ? // Here starts user added hardware 
+      rowObj["User added hardware"][0]["Qty"] = Object.values(row)[i] || 0 : row["Parameter / Part"] === "Own Hdw description" ? rowObj["User added hardware"][0]["Description"] = Object.values(row)[i] || 0 : row["Parameter / Part"] === "Own Hdw price" ? rowObj["User added hardware"][0]["Price"] = Object.values(row)[i] || 0 : row["Parameter / Part"] === "Hardware description" && row.hasOwnProperty(String('Part ' + Number(i))) ? rowObj["Hdw complexity"] = row[String("Part " + Number(i))] || 0 : row["Parameter / Part"] === "Hardware quantity" && row.hasOwnProperty(String('Part ' + Number(i))) ? rowObj["Hardware qty"] = row[String("Part " + Number(i))] || 0 : null;
+    });
+
+    if (rowObj["Part Number"] !== "Part Number") {
+      var obj = _objectSpread({}, rowObj);
+
+      objArray = [].concat(_toConsumableArray(objArray), [obj]);
+    }
+
+    rowObj = {
+      operations: {},
+      "User added hardware": [{}]
+    };
+  };
+
+  for (var i = 0; i < numOfParts; i++) {
+    _loop(i);
+  }
+
+  console.log("objArray is : ", objArray);
+  return objArray;
+}
+
+function getNumberOfParts(data) {
+  var numOfParts;
+  data.forEach(function (element, index) {
+    if (element["Parameter / Part"] === "Part Number") {
+      numOfParts = Object.keys(data[index]).length;
+    }
+  });
+  return numOfParts;
 }
 },{}]},{},["yHiL"], null)</script>
    <!-- <script src="../js/massGenericSCRIPT.js"></script> -->

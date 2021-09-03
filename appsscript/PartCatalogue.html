@@ -435,6 +435,7 @@ main{
 
 .percentages{
   display: flex;
+  position: relative;
   width: 80%;
   padding: 10px 0px;
   align-items: center;
@@ -517,7 +518,27 @@ main{
 
 .show{
   display: block;
-}</style> 
+}
+
+
+.removeTag{
+  display: none;
+  position: absolute;
+  top:10px;
+  left: 100%;
+  z-index: 999;
+  color: lightcoral;
+  width:100%;
+}
+
+.remove:hover{
+ cursor: pointer;
+}
+
+.remove:hover + .removeTag{
+ display: block;
+}
+</style> 
     <style>main{
     padding-left: 1rem;
     flex-direction: column;
@@ -701,7 +722,7 @@ h2{
 <div class="navbar-fixed">
 <nav>
   <div class="nav-wrapper">
-    <div><a href="#!" class="brand-logo"></a> </div>
+    <div><a href="https://script.google.com/a/sanmina.com/macros/s/AKfycbwIwsG7uxBM-iQaCAocMKx2k8ZAnMZxeVSs7nJn1ege/dev?v=home" class="brand-logo"></a> </div>
     <ul class=" hide-on-med-and-down">
       <!-- Dropdown Trigger -->
       <li><a href="#" data-target="slide-out" id="slideCeption" class="sidenav-trigger"><i class="fas fa-dollar-sign "></i></a></li>

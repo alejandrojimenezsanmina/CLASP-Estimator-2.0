@@ -69,7 +69,6 @@
   myForm.style.display = 'none'
 
   function changeTrigger(e){
-    console.log('changeTrigger fired, change in "myForm"');
     switch (e.target.id) {
         case "units":
           updateUnits(e.target.value)
@@ -223,17 +222,18 @@ function estimateMachined(variablesObj){
   estimationData['Tm'] = 0
 
   if(variablesObj['millingCheckbox']){
-    estimationData['Tm'] += variablesObj['millingOperation']
+    estimationData['Tm'] += Number(variablesObj['millingOperation'])
     average++ 
   }
   if(variablesObj['turningCheckbox']){
-    estimationData['Tm'] += variablesObj['turningOperation']
+    estimationData['Tm'] += Number(variablesObj['turningOperation'])
     average++
   }
   if(variablesObj['drillingCheckbox'] ){ 
-    estimationData['Tm'] += variablesObj['drillingOperation']
+    estimationData['Tm'] += Number(variablesObj['drillingOperation'])
     average++
   }
+
   console.log('Tm before average',estimationData['Tm'])
   estimationData['Tm'] /= average
 

@@ -1,5 +1,3 @@
-
-
 var downloadXls = document.getElementById('downloadXls');
 var openGSheets = document.getElementById("openGSheets");
 var googleSheetURL;
@@ -163,6 +161,7 @@ const createWithInput = (operation) =>{
             </div>
         </div>
         <div class="remove" style="color:red"> 🗙 </div>
+        <div class="removeTag"> Remove ${operation}</div>
     `)
   }else{
     newDiv.innerHTML +=(`
@@ -173,6 +172,7 @@ const createWithInput = (operation) =>{
             </div>
         </div>
         <div class="remove" style="color:red">🗙</div>
+        <div class="removeTag"> Remove ${operation} </div>
     `)
   }
   addedOperations.appendChild(newDiv)
@@ -299,9 +299,12 @@ function estimate(e){
    }
    
 
-function printEstimate (){
-  //Clear estimation data
+function printEstimate (serverData){
+  console.log(serverData)
   hide.checked = false
+  if(hdw.classList.contains('show')){
+    hdw.classList.remove('show')
+  }
   singleEstData = { operations: {}}    
   singleEstData['User added hardware'] = []
   addedOperations. innerHTML = ''
@@ -352,38 +355,54 @@ function onFailure(){
         fileReader.readAsBinaryString(file)
         fileReader.onload = (e)=>{
             let data = e.target.result;
+            // XLSX is a 3rd party library (LOADED FROM CDN SEE SCRIPT TAG AT THE HEADER OF HTML)
+            // let workbook = XLSX.read(data, {type: "binary"})
+            // const jsonData = workbook.SheetNames.map(sheet =>{
+            //     return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet])
+            // })
+
+            //Vertical xlsx template
             let workbook = XLSX.read(data, {type: "binary"})
             const jsonData = workbook.SheetNames.map(sheet =>{
-                return XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet])
+
+                return XLSX.utils.sheet_to_json(workbook.Sheets[sheet])
             })
+
             // jsonData[0] = sheet metal , jsonData[1] = plastics .. etc
             console.log("json[0] is:", jsonData[0]);
-            jsonData[0].map(row => {
-              row["operations"] = {}
+            // GET JSON AND ARRANGE INTO ROW FORMAT
+            const arrangedJson =  transformData(jsonData[0]);
+            
 
-              if (row["Assembly count"]) { 
-               row.operations["Assembly"] = {"Assembly count" : row["Assembly count"]}
-              }
-              if (row["Bend count"]) { 
-               row.operations["Bend"] = {"Bend count" : row["Bend count"]}
-              }
-              if (row["Punch count"]) { 
-                row.operations["Punch"] = {"Punch count" : row["Punch count"]}
-               }
-              if (row["Stamp count"]) { 
-              row.operations["Stamp"] = {"Stamp count" : row["Stamp count"]}
-              }
-              if (row["Weld count"]) { 
-                row.operations["Weld"] = {"Weld count" : row["Weld count"]}
-               }
 
-            })
+            // jsonData[0].map(row => {
+            //   row["operations"] = {}
 
-            console.log("json[0] is:", jsonData[0]);
+            //   if (row["Assembly count"]) { 
+            //    row.operations["Assembly"] = {"Assembly count" : row["Assembly count"]}
+            //   }
+            //   if (row["Bend count"]) { 
+            //    row.operations["Bend"] = {"Bend count" : row["Bend count"]}
+            //   }
+            //   if (row["Punch count"]) { 
+            //     row.operations["Punch"] = {"Punch count" : row["Punch count"]}
+            //    }
+            //   if (row["Stamp count"]) { 
+            //   row.operations["Stamp"] = {"Stamp count" : row["Stamp count"]}
+            //   }
+            //   if (row["Weld count"]) { 
+            //     row.operations["Weld"] = {"Weld count" : row["Weld count"]}
+            //    }
+
+            // })
+
+            console.log("arrangedJson is ", arrangedJson);
+
             google.script.run
             .withSuccessHandler(printEstimate)
             .withFailureHandler(FailedToLoad)
-            .estimate(jsonData[0], googleSheet, "Sheet Metal");   
+            // .estimate(jsonData[0], googleSheet, "Sheet Metal");   
+            .estimate(arrangedJson, googleSheet, "Sheet Metal");   
         };
 
         })
@@ -392,4 +411,85 @@ function onFailure(){
         alert("Please review your input data");
         uploadFileForm.style.display = 'block'
         progress.style.display = 'none';
+    }
+    // TRANSFORM into rows
+    function transformData(data){
+     let numOfParts = getNumberOfParts(data)
+     let rowObj = {operations:{}, "User added hardware": [{}] }
+     let objArray = []
+     for(let i = 0 ; i < numOfParts; i++ ){
+
+       data.forEach((row)=>{
+         
+         row["Parameter / Part"] === "Part Number" ?
+          rowObj["Part Number"] = Object.values(row)[i]
+        : row["Parameter / Part"] === "EAU" ?
+          rowObj["EAU"] = Object.values(row)[i]
+        : row["Parameter / Part"] === "Units(mm/in)" ?
+        rowObj["Units(mm/in)"] = Object.values(row)[i]
+        : row["Parameter / Part"] === "Material" ?
+        rowObj["Material"] = Object.values(row)[i]
+        : row["Parameter / Part"] === "Length" ?
+        rowObj["Length"] = Object.values(row)[i]
+        : row["Parameter / Part"] === "Width" ?
+        rowObj["Width"] = Object.values(row)[i]
+        : row["Parameter / Part"] === "Thickness" ?
+        rowObj["Thickness"] = Object.values(row)[i]
+        : row["Parameter / Part"] === "Finish Type" ?
+        rowObj["Finish Type"] = Object.values(row)[i]
+        : row["Parameter / Part"] === "Finish Type 2" ?
+        rowObj["Finish Type 2"] = Object.values(row)[i]
+        : row["Parameter / Part"] === "Hardware qty" ?
+        rowObj["Hardware qty"] = Object.values(row)[i]
+        : row["Parameter / Part"] === "Hdw complexity" ?
+        rowObj["Hdw complexity"] = Object.values(row)[i]
+        : row["Parameter / Part"] === "Assembly count"  ?
+        rowObj.operations["Assembly"] = {"Assembly count" : Object.values(row)[i] || 0}
+        : row["Parameter / Part"] === "Bend count" ?
+        rowObj.operations["Bend"] = {"Bend count" : Object.values(row)[i] || 0}
+        : row["Parameter / Part"] === "Punch count" ?
+        rowObj.operations["Punch"] = {"Punch count" : Object.values(row)[i] || 0}
+        : row["Parameter / Part"] === "Stamp" ?
+        rowObj.operations["Stamp"] = {"Stamp count" : Object.values(row)[i] || 0}
+        : row["Parameter / Part"] === "Aluminum weld (in/mm)" ?
+        rowObj.operations["Aluminum weld"] = {"Aluminum weld count":Object.values(row)[i] || 0}
+        : row["Parameter / Part"] === "SS/Steel weld (in/mm)" ?
+        rowObj.operations["SS/Steel weld"] = {"SS/Steel weld count":Object.values(row)[i] || 0}
+        : row["Parameter / Part"] === "Threaded hole count" ?
+        rowObj.operations["Threaded hole"] = {"Threaded hole count": Object.values(row)[i] || 0}
+        : row["Parameter / Part"] === "Countersunk hole count" ?
+        rowObj.operations["Countersunk hole"] = {"Countersunk hole count":Object.values(row)[i] || 0}
+        : row["Parameter / Part"] === "Own Hardware quantity" ?  // Here starts user added hardware 
+        rowObj["User added hardware"][0]["Qty"] = Object.values(row)[i] || 0
+        : row["Parameter / Part"] === "Own Hdw description" ?
+        rowObj["User added hardware"][0]["Description"] = Object.values(row)[i] || 0
+        : row["Parameter / Part"] === "Own Hdw price" ?
+        rowObj["User added hardware"][0]["Price"] = Object.values(row)[i] || 0 
+        : (row["Parameter / Part"] === "Hardware description") && row.hasOwnProperty(String('Part ' + Number(i))) ?
+        rowObj["Hdw complexity"] = row[String("Part " + Number(i ))] || 0 
+        : row["Parameter / Part"] === "Hardware quantity" && row.hasOwnProperty(String('Part ' + Number(i)))  ?
+        rowObj["Hardware qty"] = row[String("Part " + Number(i))] || 0
+        
+        : null
+      })
+      
+      if(rowObj["Part Number"] !== "Part Number"){
+          let obj = {...rowObj}
+          objArray = [...objArray, obj]
+        }
+
+        rowObj = {operations:{}, "User added hardware": [{}] }
+      }
+      console.log("objArray is : ", objArray);
+      return objArray;
+    }
+    
+    function getNumberOfParts(data){
+        let numOfParts ;
+        data.forEach((element, index) => {
+          if (element["Parameter / Part"] === "Part Number"){
+            numOfParts = Object.keys(data[index]).length
+          }
+        })  
+        return numOfParts;
     }

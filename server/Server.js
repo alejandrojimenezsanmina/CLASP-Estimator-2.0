@@ -147,7 +147,7 @@ function estimate(data, googleSheet, sheetName) {
     }
     
   })
-     //return; 
+     
 }
 
 
@@ -243,21 +243,30 @@ function calculate(row){
         row['Total operation costs'] += rates[operation]['timeFactor'] * rates[operation]['usd/hr'] * row.operations[operation][operation + " count"]
     }
     
+  
     row["Material cost"] = (partWeight * row["materialCost"]).toFixed(4);
     row["Finish cost"] = ((partSurfaceSqMt * row["finishPrice1"] *2 ) + (partSurfaceSqMt * row["finishPrice2"] * 2)).toFixed(4);
     row["Labor cost"] = row['Total operation costs']
-    if(row["Hardware qty"] !== ''){
+    if(row["Hardware qty"] && row["Hardware qty"] > 0){
+      Logger.log('Hardware qty is not empty')
       row["Hardware cost"]= Number (row["hardwareCost"] * row["Hardware qty"]);
+      Logger.log('Hardware cost is')
+      Logger.log(row["Hardware cost"])
     }else{
       row["Hardware cost"] = 0;
+      Logger.log('Hardwar IS empty')
+      Logger.log('Hardware cost is')
+      Logger.log(row["Hardware cost"])
     }
     if(row['User added hardware'].length > 0){
+      Logger.log("row['User added hardware'] is")
+      Logger.log(row['User added hardware'])
       var textAllHdw = '';
       var totalPrice = 0;
       var totalHdwQty = 0;
       row['User added hardware'].forEach( function (element){
         textAllHdw += ' | ' + element['Description'] +  ' @ $' + element['Price'] + 'ea |'
-        totalPrice += Number(element['Price'])
+        totalPrice += Number(element['Price'])  
         totalHdwQty += Number(element['Qty'])
       })
       row['Total usr hdw'] = {'textAllHdw': textAllHdw,'totalPrice' : totalPrice, 'totalHdwQty' : totalHdwQty}
